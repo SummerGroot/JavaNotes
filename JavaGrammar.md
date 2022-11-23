@@ -483,11 +483,146 @@ public class Char01 {
    `char c3 = '\n';//'\n'表示换行符`
 
 3. 在Java中，char的本质是一个整数，在输出时，是unucode码对应的字符。
+
 4. 可以直接给char赋一个整数，然后输出时，会按照对应的unicode字符输出[97]
+
 5. char类型时可以进行运算的，相当于一个整数，因为它都对应有unicode码。
 
+```java
+public class CharDetail {
+    public static void main(String[] args) {
+        char c1 = 97;
+        System.out.println(c1);//a
+        char c2 = 'a';
+        System.out.println((int)c2);
+        char c3 = '夏';
+        System.out.println((int)c3);//22799
+        System.out.println((char)(c2 + 10));//107
+        char c5 ='b'+1;
+        System.out.println((int)c5);//99
+        System.out.println(c5);//c
+    }
 
+```
+
+- 字符类型本质探讨
+
+1. 字符型存储到计算机中，需要将字符对应的码值（整数）找出来，比如`'a'`
+
+存储：`'a'==>码值97==>二进制==>存储`
+
+读取：`二进制==>97==>'a'==>显示`
+
+2. 字符和码值的对应关系时通过字符编码表绝对的（规定好的）
+
+#### 布尔类型：boolean
+
+- 基本介绍
+
+1. 布尔类型也叫boolean类型，boolean类型数据只允许取值true和false，无null
+2. boolean类型占1个字节
+3. boolean类型试于逻辑运算，一般用于程序流程控制
+   - if条件控制语句
+   - while循环控制语句
+   - do-while循环控制语句
+   - for循环控制语句
+
+```java
+public class Boolean {
+    public static void main(String[] args) {
+        //定义一个布尔变量
+        boolean pass = true;
+        if(pass == true){
+            System.out.println("考试通过");
+        }else {
+            System.out.println("考试未通过");
+        }
+    }
+}
+```
+
+- 使用细节说明
+
+不可以用0或非0的整数代替false和true，这点和C语言不同
 
 ### 编码
 
+- 介绍一下字符编码表
+
+ASCII(ASCII编码一个字节表示，一个128个字符，实际上一个字节可以表示256个字符，只用128个)
+
+Unicode（Unicode编码表固定大小的编码使用两个字节来表示字符，字母和汉字统一都是占用两个字节，这样浪费空间）
+
+utf-8（编码表，大小可变的编码字母使用1个字节，汉字使用3个字节）
+
+gbk（可以表示汉字，而且范围广，字母使用1个字节，汉字2个字节）
+
+gb2312（可以表示汉字，gb2312<gbk）
+
+big5码（繁体中文，台湾，香港）
+
+- ASCII码介绍
+
+1. ASCII码：上个设计60年代，美国制定了一套字符编码（使用一个字节），对英语字符与二进制位之间的关系，做了统一规定。这被称为ASCII码。ASCII码一共规定了128个字符的编码，只占用了一个字节的后面7位，最前面的1位统一规定为0。
+
 ### 数据类型转换
+
+- 自动类型转换
+
+当java程序在进行赋值或运算时，精度小的类型自动转换为精度达的数据类型，这个就是自动类型转换。
+
+数据类型精度（容量）大小排序为（背，规则）
+
+![image-20221123153016573](JavaGrammar.assets/image-20221123153016573.png)
+
+```java
+public class AutoConvert {
+    public static void main(String[] args) {
+        int a = 'c';
+        double d= 80;
+        System.out.println(a);//99
+        System.out.println(d);//80.0
+    }
+}
+```
+
+- 自动类型转换注意和细节
+
+1. 有多种类型的数据混合运算时，系统首先自动将所有数据转换成容量最大的那种数据类型，然后再进行计算。
+2. 当我们把精度（容量）大的数据类型赋值给精度（容量）小的数据类型时，就会报错，反之就会进行自动类型转换。
+3. （byte、short）和char之间不会相互自动转换。
+4. byte、short、char他们三者可以计算，在计算时首先转换为int类型
+5. boolean不参与转换
+6. 自动提升原则：表达式结果的类型自动提升为操作数中最大的类型
+
+```java
+public class AutoConvertDetail {
+    public static void main(String[] args) {
+        //有多种类型的数据混合运算时，系统首先自动将所有数据转换成容量最大的那种数据类型，然后再进行计算.
+        int n1 = 10;
+        //float d1 = n1+1.1;//错误 n1+1.1 =>结果是double类型;
+        //float d1= n1+1.1F;
+        double d1 = n1 + 1.1;
+        //（byte、short）和char之间不会相互自动转换.
+        //当把具体数赋给byte时，先判断改数是否在byte范围内，如果时就可以
+        byte b1 = 10;
+        int n2 = 1;//n2是int
+        //byte b2 = n2;//错误，如果是变量赋值，判断类型
+        //char c1 =b1;//错误，byte不饿能自动转成char
+        //byte、short、char他们三者可以计算，在计算时首先转换为int类型
+        byte b2 = 1;
+        byte b3 = 2;
+        short s1 = 1;
+        //short s2 =b2 + s1;//错误，b2 + s1=>int
+        int s2 = b2 + s1;
+        //byte b4 = b2+b3;//错误，b2+b3=>int
+        byte b4 = 1;
+        short s3 = 100;
+        int num200 = 1;
+        float num300 = 1.1F;
+        double num500 = b4 + s3 + num200 + num300;
+    }
+}
+```
+
+- 强制类型转换
