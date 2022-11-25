@@ -547,7 +547,7 @@ public class Boolean {
 
 ### 编码
 
-- 介绍一下字符编码表
+#### 介绍一下字符编码表
 
 ASCII(ASCII编码一个字节表示，一个128个字符，实际上一个字节可以表示256个字符，只用128个)
 
@@ -563,7 +563,22 @@ big5码（繁体中文，台湾，香港）
 
 - ASCII码介绍
 
-1. ASCII码：上个设计60年代，美国制定了一套字符编码（使用一个字节），对英语字符与二进制位之间的关系，做了统一规定。这被称为ASCII码。ASCII码一共规定了128个字符的编码，只占用了一个字节的后面7位，最前面的1位统一规定为0。
+1. ASCII码：上个设计60年代，美国制定了一套字符编码（使用一个字节），对英语字符与二进制位之间的关系，做了统一规定。这被称为ASCII码。ASCII码一共规定了128个字符的编码，只占用了一个字节的后面7位，最前面的1位统一规定为0。特别提示：一个字节可以表示256字符，ASCII码只用了128个字符。
+2. 看完整的ASCII码表
+3. 缺点：不能表示所有字符
+
+- Unicode编码
+
+1. 好处：一种编码，将世界上所有的字符都纳入其中。每一个符号都给予一个独一无二的编码，使用Unicode没有乱码的问题。
+2. 缺点、：一个英文字母和一个汉字都占用2个字节，这对于存储空间来说时浪费。
+3. 2的16次方时65536，所以最多编码时655367个字符
+4.  编码0~127的字符是与ASCII的编码一样。比如：`'a'`在ASCII码是0x61，在Unicode码是0x0061，都对应97.因此Unicode码兼容ASCII码。
+
+- UTF-8编码
+
+1. UTF-8是在互联网上使用最广的一种Unicode的实现方式
+2. UTF-8是一种变长的编码方式。它可以使使用1-6个字符表示一个符号，根据不同的符号变化字节长度。
+3. 使用大小可变的编码字母占1个字节，汉字占3个字节。
 
 ### 数据类型转换
 
@@ -626,3 +641,189 @@ public class AutoConvertDetail {
 ```
 
 - 强制类型转换
+
+自动类型转换的逆过程，将容量大的数据类型转换为容量小的数据类型，使用时哟啊加上强制转换符（），但可能照成精度降低或溢出，格外注意。
+
+```java
+public class ForceConvert {
+    public static void main(String[] args) {
+        int i = (int) 1.9;//精度损失
+        System.out.println("n1=" + i);
+        int i2 = 2000;
+        byte b1 = (byte) i2;//-48 数据溢出
+        System.out.println("b1=" + b1);
+    }
+}
+```
+
+- 强制类型转换细节说明
+
+1. 当进行数据的大小从大->小，就需要使用强制转换
+
+2. 强转符号只针对于最近的操作数有效，往往会使用小括号提升优先级
+
+   ```java
+   //int x =(int10*3.5+6*1.5;//double->int
+   int x = (int)(10*3.5+6*1.5);
+   System.out.println(x);
+   ```
+
+3. char类型可以报错int的常量值，但不能保存int的变量值，需要强转
+
+   ```java
+   char c1 = 100;//ok
+   int m =100;//ok
+   //char c2 = m;//错误
+   char c2 = (char)m;
+   System.out.println(c2);
+   ```
+
+4. byte和short类型在进行运算时，当作int类型处理
+
+#### 基本数据类型转换-练习
+
+```java
+short s = 12;//ok
+s = s - 9;//no int -> short
+byte b = 10;//ok
+b = b + 11;//no int ->byte
+b = (byte) (b + 11);//ok
+char c = 'a';//ok
+int i = 16;//ok
+float d = .314F;//ok
+double result = c + i + d;//ok
+byte b = 16;//ok
+short s 14;//ok
+short s +b;//no int->short
+```
+
+#### 基本数据类型和String类型的转换
+
+在程序开发中，我们进程需要将基本数据类型转成String类型。或者将String类型转成基本数据类型。
+
+基本类型转String类型
+
+`语法：将基本类型的值+""即可`
+
+```java
+//基本->String
+int n1 = 100;
+float f1 = 1.1F;
+double d1 = 4.5;
+boolean b1 = true;
+String s1 = n1 + "";
+String s2 = f1 + "";
+String s3 = d1 + "";
+String s4 = b1 + "";
+System.out.println(s1 + "\t" + s2 + "\t" + s3 + "\t" + s4);//100	1.1	4.5	true
+```
+
+String类型转基本数据类型
+
+`语法：通过基本类型的包装类调用parseXX方法即可`
+
+```java
+//String->对应的基本数据类型
+//解读 使用基本数据类型对应的包装类，得到基本数据类型
+String s5 = "123";
+int num1 = Integer.parseInt(s5);//123
+double num2 = Double.parseDouble(s5);//123.0
+float num3 = Float.parseFloat(s5);//123.0
+System.out.println(num1 + "\t" + num2 + "\t" + num3);
+//怎么把字符串转成字符char->含义是指把字符串的第一个字符得到
+//解读s5.charAt(0)得到s5字符串的第一个字符'1'
+System.out.println(s5.charAt(0));
+```
+
+1. 在将String类型转成基本数据类型时，要确保String类型能够转成有效的数，比如：我们把“123”转成一个整数，但是不能把“hello”转成一个整数。
+2. 如果合适不正确，就会抛出异常，程序就会终止。
+
+### 本章作业
+
+```java
+//1、程序阅读，看看输出什么？HomeWork01.java
+public class HomeWork01 {
+    public static void main(String[] args) {
+        int n1;
+        n1 = 13;
+        int n2;
+        n2 = 17;
+        int n3;
+        n3 = n1 + n2;
+        System.out.println("n3=" + n3);//30
+        int n4 = 38;
+        int n5 = n4 - n3;
+        System.out.println("n5=" + n5);//8
+    }
+}
+```
+
+```java
+//2、使用char类型，分别保存\n\t\r\\ 1 2 3 等字符，并打印输出
+public class HomeWork02 {
+    public static void main(String[] args) {
+        char c1 = '\n';//换行
+        char c2 = '\t';//制表位
+        char c3 = '\r';//回车
+        char c4 = '\\';//斜杠
+        char c5 = '1';//‘1’
+        char c6 = '2';//‘2‘
+        char c7 = '3';//’3‘
+        System.out.println(c1 + "\t" + c2 + "\t" + c3 + "\t" + c4 + "\t" + c5 + "\t" + c6 + "\t" + c7);
+    }
+}
+```
+
+```java
+//3、编程，保存两本书名，用+拼接，看效果。保存两个性别，用+拼接，看效果。
+public class HomeWork03 {
+    public static void main(String[] args) {
+        //保存两本书名，用+拼接
+        String book01 = "天龙八部";
+        String book02 = "笑傲江湖";
+        System.out.println(book01+book02);//天龙八部笑傲江湖
+        //保存两个性别
+        char sex01='男';
+        char sex02='女';
+        System.out.println(sex01+sex02);//52906 男 字符码值+女 字符码值
+        
+    }
+}
+```
+
+```java
+//4、编程实现如下效果
+public class HomeWork04 {
+    public static void main(String[] args) {
+        //4、编程实现如下效果
+        //姓名    年龄  成绩  性别  爱好
+        /*
+        要求：
+        1、用变量将姓名、年龄、成绩、性别、爱好存储
+        2、使用+
+        3、添加适当的注释
+        4、添加转义字符，使用一条语句输出
+        */
+        String name = "范夏源";
+        byte age = 24;
+        double score = 98.9;
+        char gender = '男';
+        String like = "篮球";
+        System.out.println("姓名：" + name + "\n" +
+                "年龄：" + age + "\n" +
+                "成绩：" + score + "\n" +
+                "性别：" + gender + "\n" +
+                 "爱好：" + like + "\n");
+    }
+}
+/*
+姓名：范夏源
+年龄：24
+成绩：98.9
+性别：男
+爱好：篮球
+*/
+```
+
+## 第4章	运算符
+
