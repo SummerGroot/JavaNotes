@@ -316,7 +316,7 @@ char gender = '男';
 String name = "johnny";
 ```
 
-变量使用注意事项
+#### 变量使用注意事项
 
 1. 变量表示内存中的一个存储区域[不同的变量、类型不同、占用的空间大小不同；比如：int 4个字节，double 8个字节]
 2. 该区域有自己的名称[变量名]和类型[数据类型]
@@ -450,9 +450,9 @@ if (Math.abs(num - num1)<0.0000001) {
 
 #### 字符类型（char）
 
-- 基本介绍
+##### 基本介绍
 
-  字符类型可以表示单个字符，字符类型是char，char是两个字节（可以存放汉字），多个字符我们用字符串String。
+字符类型可以表示单个字符，字符类型是char，char是两个字节（可以存放汉字），多个字符我们用字符串String。
 
 ```java
 public class Char01 {
@@ -472,7 +472,7 @@ public class Char01 {
 }
 ```
 
-- 字符类型使用细节
+##### 字符类型使用细节
 
 1. 字符常量是用单引号`''`括起来的单个字符。
 
@@ -505,7 +505,7 @@ public class CharDetail {
 
 ```
 
-- 字符类型本质探讨
+##### 字符类型本质探讨
 
 1. 字符型存储到计算机中，需要将字符对应的码值（整数）找出来，比如`'a'`
 
@@ -517,7 +517,7 @@ public class CharDetail {
 
 #### 布尔类型：boolean
 
-- 基本介绍
+##### 基本介绍
 
 1. 布尔类型也叫boolean类型，boolean类型数据只允许取值true和false，无null
 2. boolean类型占1个字节
@@ -541,7 +541,7 @@ public class Boolean {
 }
 ```
 
-- 使用细节说明
+##### 使用细节说明
 
 不可以用0或非0的整数代替false和true，这点和C语言不同
 
@@ -892,18 +892,348 @@ public class ArithmeticOperator {
 
 - --、+、-、*是一个道理，完全可以类推。
 
-#### 关系运算符
+```java
+//面试题
+/*
+1、
+public class ArithmeticOperatorExercise {
+    public static void main(String[] args) {
+        int i = 1;
+        i = i++;//规则使用临时变量：(1)temp=i;(2)i=i+1;(3)i=temp;
+        System.out.println(i);//1
+    }
+}
+问：结果是多少？
+//i=1
+2、
+int i = 1;
+i = ++i;//规则使用临时变量：(1)i=i+1;(2)temp=i;(3)i=temp;
+System.out.println(i);
+*/
+```
+
+```java
+public class ArithmeticOperatorExercise02 {
+    public static void main(String[] args) {
+        int i1 = 10;
+        int i2 = 20;
+        int i = i1++;
+        System.out.println("i=" + i);//10
+        System.out.println("i2=" + i2);//20
+        i = --i2;
+        System.out.println("i=" + i);//19
+        System.out.println("i2=" + i2);//19
+    }
+}
+```
+
+![image-20221125174130710](JavaGrammar.assets/image-20221125174130710.png)
+
+```java
+public class ArithmeticOperatorExercise03 {
+    public static void main(String[] args) {
+        /*
+         * 1、假如还有59天放假，问：合xx个星期零xx天
+         * 2、定义个变量保存华氏温度，华氏温度转换摄氏温度的公式为：5/9*（华氏温度-100），
+         * 请求出华氏温度对应的摄氏温度[234.5]*/
+        int days = 59;//保存总天数
+        System.out.println(days / 7 + "个星期零" + days % 7 + "天");//8个星期零3天
+        double a = 234.5;
+        System.out.println("转为摄氏度为：" + (5.0 / 9 * (a - 100)) + "摄氏度");//转为摄氏度为：74.72222222222223摄氏度
+
+    }
+}
+```
 
 #### 关系运算符
+
+1. 关系运算符的结果都是boolean型，也就是要么是true，要么是false
+2. 关系表达式经常用在if结构的条件中或循环结构的条件中
+
+| 运算符     | 运算               | 范例                   | 结果  |
+| ---------- | ------------------ | ---------------------- | ----- |
+| ==         | 相等于             | 8==7                   | false |
+| !=         | 不等于             | 8!=7                   | true  |
+| <          | 小于               | 8<7                    | false |
+| >          | 大于               | 8>7                    | true  |
+| <=         | 小于等于           | 8<=7                   | fa;se |
+| >=         | 大于等于           | 8>=7                   | true  |
+| instanceof | 检查是否是类的对象 | "fxy"instanceof String | true  |
+
+##### 案例演示
+
+案例演示关系运算符的使用(RelationalOperator)
+
+```java
+public class RelationalOperator {
+    public static void main(String[] args) {
+        //演示关系运算符的使用
+        int a = 9;//提示：开发中，不可以使用a,b,c之类的变量名
+        int b = 8;
+        System.out.println(a > b);//true
+        System.out.println(a >= b);//true
+        System.out.println(a <= b);//false
+        System.out.println(a < b);//false
+        System.out.println(a == b);//false
+        System.out.println(a != b);//true
+        boolean flag = a > b;
+        System.out.println(flag);//true
+    }
+}
+```
+
+##### 细节说明
+
+1. 关系运算符的结果都是boolean型，也就是要么true，要么是false
+2. 关系运算符组成的表达式，我们称**关系表达式**。a>b
+3. 比较运算符"=="不能误写成"="
 
 #### 逻辑运算符
 
+1. 短路与`&&`，短路或`||`，取反`!`
+2. 逻辑与`&`，逻辑或`|`，逻辑异或`^`
+
+| a     | b     | a&b   | a&&b  | a\|b  | a\|\|b | !a    | a^b   |
+| ----- | ----- | ----- | ----- | ----- | ------ | ----- | ----- |
+| true  | true  | true  | true  | true  | true   | false | false |
+| true  | false | false | false | true  | true   | false | true  |
+| false | true  | false | false | true  | true   | true  | true  |
+| false | false | false | false | false | false  | true  | false |
+
+##### 说明逻辑运算规则
+
+1. a&b：&叫逻辑与->当a和b同时为true，则结果为true，否则为false
+2. a&&b：&&叫短路与->当a和b同时为true，则结果过为true，否则为false
+3. a|b：|叫逻辑或->当a和b，有一个为true，则结果为true，否则为false
+4. a||b：||叫短路或->当a和b，有一个为true，则结果为true，否则为false
+5. !a：叫取反->当a为true，则结果为false，当a为false，结果为true
+6. a^b：叫逻辑异或->当a和b不同时，则结果为true，否则为false
+
+##### &&和&基本规则
+
+短路与&&：条件1&&条件2	两个条件都为true，结果为true，否则false
+
+逻辑与&：条件1&条件2	两个条件都为true，结果为true
+
+###### &&和&案例演示
+
+```java
+public class LogicOperator01 {
+    public static void main(String[] args) {
+        /*
+         * 演示逻辑运算符
+         * &&和&案例演示*/
+        int age = 20;
+        if (age > 20 && ++age < 90) {
+            System.out.println("ok1");
+        }
+        //&
+        if (age > 20 & ++age < 90) {
+            System.out.println("ok2");
+        }
+        System.out.println("age="+age);//age=21
+        //区别
+        int a = 4;
+        int b = 9;
+        //对于&&短路与而言，如果第一个条件为false，后面的条件不再判断
+        //对于&逻辑与而言，如果第一个条件为false，后面的条件仍然会判断
+        if (a < 1 & ++b < 50) {
+            System.out.println("ok3");
+        }
+        System.out.println("a=" + a + "b=" + b);//a=4b=10
+    }
+}
+```
+
+###### &&和&使用区别
+
+1. &&短路与：如果第一个条件为false，则第二个条件不会判断，最终及结果false，效率高。
+2. &逻辑与：不管第一个条件是否为false，第二条件都要判断，效率低。
+3. 开发中，我们使用的基本都是短路与&&，效率高。
+
+##### ||和|基本规则
+
+短路或||		条件1||条件2		两个条件只要有一个成立，结果true，否则为false
+
+|逻辑或			条件1|条件2		只要有一个条件成立，结果true，否则为false
+
+###### ||和|案例演示
+
+```java
+public class LogicOperator02 {
+    public static void main(String[] args) {
+        /*
+         * ||短路或
+         * |逻辑或
+         * */
+        int age = 50;
+        if (age > 20 || ++age < 30) {
+            System.out.println("age1="+age);//age1=50
+        }
+        if (age > 20 | ++age < 30) {
+            System.out.println("age2="+age);//age2=51
+        }
+    }
+}
+```
+
+###### ||和|使用区别
+
+1. ||短路或：如果第一个条件为true，则第二个条件不会判断，最终为true，效率高
+2. |逻辑或：不管第一个体哦阿健是否为true，第二个条件都要判断，效率低
+3. 开发中，我们基本使用||
+
+##### ！取反基本规则
+
+！非		！条件			如果条件本身成立，结果为false，否则为true
+
+###### ！案例
+
+```java
+public class InverseOperator {
+    public static void main(String[] args) {
+        //！取反，真变假，假变真
+        System.out.println(60 > 20);//T
+        System.out.println(!(60 > 20));//F
+        //a^b：叫逻辑异或，当a和b不同时，则结果为true，否则为false
+        boolean b = (10 > 1) ^ (3 < 5);
+        System.out.println("b=" + b);//F
+    }
+}
+```
+
+##### ^异或基本规则
+
+a^b：叫逻辑异或，当a和b不同时，则结果为true，否则为false
+
+##### 练习题
+
+```java
+public class Test01 {
+    public static void main(String[] args) {
+        int x = 5;
+        int y = 5;
+        if (x++ == 6 & ++y == 6) {
+            x = 11;
+        }
+        System.out.println("x=" + x + "y=" + y);//x=6y=6
+    }
+}
+```
+
+```java
+public class Test02 {
+    public static void main(String[] args) {
+        int x = 5;
+        int y = 5;
+        if (x++ == 6 && ++y == 6) {
+            x = 11;
+        }
+        System.out.println("x=" + x + "y=" + y);//x=6y=5
+    }
+}
+```
+
+```java
+public class Test03 {
+    public static void main(String[] args) {
+        int x = 5;
+        int y = 5;
+        if (x++ == 6 | ++y == 6) {
+            x = 11;
+        }
+        System.out.println("x=" + x + "y=" + y);//x=11y=6
+    }
+}
+```
+
+```java
+public class Test04 {
+    public static void main(String[] args) {
+        int x = 5;
+        int y = 5;
+        if (x++ == 6 || ++y == 6) {
+            x = 11;
+        }
+        System.out.println("x=" + x + "y=" + y);//x=11y=6
+    }
+}
+```
+
 #### 赋值运算符
+
+赋值运算符就是将某个运算后的值，赋给指定的变量。
+
+赋值运算符的分类
+
+1、基本赋值运算符=
+
+2、复合赋值运算符+=、-=、*=、/=、%-等。
+
+a+=b;=>a=a+b;
+
+##### 案例
+
+```java
+public class AssignOperator {
+    public static void main(String[] args) {
+        //1、赋值基本案例 int num1 = 10;
+        //2、+=的使用案例
+        int num1 = 10;
+        num1 += 4;//num1=num1+4;
+        System.out.println(num1);//14
+        num1 /= 3;
+        System.out.println(num1);//4
+    }
+}
+```
+
+##### 赋值运算符特点
+
+1. 运算顺序从右往左`int num = a+b+c;`
+
+2. 赋值运算符的左边只能是变量，右边可以是变量、表达式、常量值。
+
+   `int num =20;int num2 = 78*34-10;int num3 =a;`
+
+3. 复合赋值运算符等价于下面的效果。
+
+   `a+=3;等价于a=a+3;`
+
+4. 复合赋值运算符会进行类型转换。
+
+   `byte b=2;b+=3;b++;`
+
+```java
+byte b=3;
+b+=2;//b=(byte)(b+2);
+b++;//b=(byte)(b+1);
+System.out.println(b);
+```
+
+
 
 #### 三元运算符
 
+
+
+
+
 ### 运算符优先级
+
+
+
+
 
 ### 二进制
 
+
+
+
+
 ### 位运算
+
+
+
+
+
