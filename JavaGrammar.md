@@ -1462,15 +1462,138 @@ public class Test{
 
 byValue、cast、future、generic、inner、operator、outer、rest、var、goto、const
 
-### 二进制
 
 
+### 键盘输入语句
+
+在编程中，需要接受用户输入的数据，就可以使用键盘输入语句来获取。
+
+Input.java，需要一个扫描器（对象)，就是Scanner
+
+#### 步骤
+
+1. 导入该类的所在包，java.util.*
+2. 创建该类对象（声明变量）
+3. 调用里面的功能
+
+#### 案例
+
+```java
+//要求：可以从控制台接收用户信息，[姓名、年龄、薪水]
+public class Input {
+    public static void main(String[] args) {
+        //用户的输入
+        //Scanner类 表示 简单的文本扫描器,在java.util包
+        /*
+         * 步骤
+         * 1、引用Scanner类所在的包
+         * 2、创建Scanner对象,new 创建一个对象
+         * 3、接收用户的输入了，使用相关的方法*/
+        Scanner myScanner = new Scanner(System.in);
+        System.out.println("请输入名字：");
+        //当程序执行到 next()方法时，会等待用户输入~~~
+        String name = myScanner.next();//接受用户输入字符串
+        System.out.println("清输入年龄：");
+        int age = myScanner.nextInt();//接受用户输入int
+        System.out.println("清输入薪水：");
+        double sal = myScanner.nextDouble();
+        System.out.println("名字："+name+"\n年龄："+age+"\n薪水："+sal);
+    }
+}
+```
+
+### 进制
+
+对于整数，有四种表示方式：
+
+1. 二进制：0，1。满2进1，以ob/oB开头表示。
+2. 十进制：0~9。满10进1
+3. 八进制：0~7。满8进1，以数字0开头表示
+4. 十六进制：`0~9，A/a(10)~F/f(15)`。满16进1，以0x/0X开头表示。
+
+#### 进制的转换
 
 
 
 ### 位运算
 
+#### 二进制在运算中
 
+1. 二进制是逢2进位的进位制，0、1是基本算符。
+2. 现代的电子计算机技术全面采用的是二进制，因为它只使用0、1两个数字符号，非常简单方便，易于用电子方式实现。计算机内部处理的信息，都是采用二进制数来表示的。二进制（Binary）数用0、1两个数字机器组合来表示任何数。进位规则"逢二进一"，数字1在不用的位上代表不同的值，按从右至左的次序，这个值以二倍递增。
 
+#### 原码、反码、补码（重点、难点）
 
+1. 二进制的最高位是符号位：0表示正数，1表示负数（口诀：0->0,1->-)
+2. 正数的原码，反码，补码都一样（三码合一）
+3. 负数的反码=它的原码符号位不变，其它位取反（0->1,1->0)
+4. 负数的补码=它的反码+1，负数的反码=负数的补码-1
+5. 0的反码，补码都是0
+6. java没有无符号位，换言之，java中的数都是有符号的
+7. 在计算机运算的时候，都是以**补码的方式**来运算的
+8. 当我们看运算结果的时候，要看他的原码(!!!)
+
+#### 位运算符
+
+按位与&、按位或|、按位异或^、按位取反~
+
+| 运算符      | 说明                                       |
+| ----------- | ------------------------------------------ |
+| 按位与&     | 两位全为1，结果为1，否则为0                |
+| 按位或      | 两位有一个为1，结果为1，否则为0            |
+| 按位异或^   | 两位一个为0，一个为1，结果为1，否则为00    |
+| 按位取反~   | 0->1、1->0                                 |
+| 算数右移<<  | 低位溢出，符号位不变，并用符号位溢出的高位 |
+| 算数左移>>  | 符号位不变，地位补0                        |
+| >>>逻辑右移 | 低位溢出，高位补0                          |
+
+```java
+public class BitOperator02 {
+    public static void main(String[] args) {
+        int a = 1 >> 2;//1/2^2
+        int c = 1 << 2;//1/2^2
+        System.out.println(a);
+        System.out.println(c);
+    }
+}
+```
+
+### 本章作业
+
+1、计算下列表达式的结果
+
+`10/3=?;		10%5=?;		-10.5%3 = ?;`
+
+a%b当a是小数时，公式=a-(int)a/b*b
+
+-10.5%3=-10.5-(int)10.5/3*3=10.5+9=1.5
+
+注意：有小数运算，得到结果是近似值
+
+2、试说出下面代码的结果
+
+```java
+int i = 66;
+System.out.println(++i + i);//134
+```
+
+3、在java中，以下赋值语句正确的是
+
+```java
+A)int num1 =(int)"18";// 错误 应该 Intrger.parseInt("18")
+B)int num2=18.0;//错误 double ->int
+C)double num3=3d;//ok
+D)double num4=8;//ok
+E)int i=48;char ch = i+1;//no int->char
+F)byte b=19;short s = b+2//错误 int->short
+```
+
+4、试写出将String转换为double类型的语句，以及将char类型转换成String语句，举例说明
+
+```java
+String str ="18.8";
+double d1= Double.parseDouble(str);
+char c1 = '夏'
+String str2 = c1+ "";
+```
 
