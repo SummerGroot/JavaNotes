@@ -1605,7 +1605,7 @@ String str2 = c1+ "";
 
 在程序中，程序运行的流程控制决定程序是如何执行的，是我们必须掌握的，主要有三大流程控制语句
 
-#### 顺序控制
+### 顺序控制
 
 程序从上到下逐行地执行，中间没有任何判断和跳转。
 
@@ -1957,7 +1957,114 @@ switch(c){//错误
 4. default子句是可选的，当没有匹配的case时，执行default
 5. break语句用来在执行完一个case分支后使程序跳出switch语句块；如果没有写break，程序会顺序执行到switch结尾。
 
-### 循环控制（for、while、dowhile、多循环）
+switch练习
+
+```java
+/*
+1、使用switch把小写类型的char型转为大写（键盘输入）。只转换a，b，c，d，e其他的输出“other”
+2、对学生成绩大于60分的，输出“合格”。低于60分的，输出“不合格”。（注：输入的成绩不能大于100），提示 成绩/60
+3、根据用于指定月份，打印该月份所属的季节。3，4，5春季6，7，8夏季9，10，11秋季12，1，2冬季
+*/
+public class SwitchExercise {
+    public static void main(String[] args) {
+        //小写转换为大写
+        //输入字符
+        System.out.println("请出入字符：");
+        System.out.println("请输入成绩：");
+        Scanner scanner = new Scanner(System.in);
+        char c1 = scanner.next().charAt(0);
+        switch (c1) {
+            case 'a':
+                System.out.println((char)(c1-32));
+                break;
+            case 'b':
+                System.out.println((char)(c1-32));
+                break;
+            case 'c':
+                System.out.println((char)(c1-32));
+                break;
+            case 'd':
+                System.out.println((char)(c1-32));
+                break;
+            case 'e':
+                System.out.println((char)(c1-32));
+                break;
+            default:
+                System.out.println("other");
+        }
+    }
+}
+```
+
+switch和if的比较
+
+1. 如果判断的具体数值不多，而且复合byte，short，int，char，enum，String这6中类型。虽然两个语句都可以使用，建议使用switch语句
+2. 其他情况：对区间判断，对结果为boolean类型判断，使用if，if的使用范围更广
+
+### 循环控制
+
+#### for
+
+让代码可以循环的执行
+
+- 看一个实际需求
+
+```java
+//编写一个程序，可以打印10句“hello,world!!!"
+public class For01 {
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            System.out.println("hello,world!!!" + i);
+        }
+    }
+}
+```
+
+基本语法
+
+```java
+for(循环变量初始化;循环条件;循环变量迭代){
+    循环操作（可以多几条语句）;
+}
+```
+
+1. for关键字，表示循环控制
+2. for有四要素：
+   1. 循环变量初始化
+   2. 循环条件
+   3. 循环操作
+   4. 循环变量迭代
+3. 循环操作，这里可以有多条语句，也就是我们要循环执行的代码
+4. 如果循环操作（语句）只有一条语句，可以省略{}，建议不省略。
+
+![image-20221206215220434](JavaGrammar.assets/image-20221206215220434.png)
+
+- 注意事项和细节
+
+1. 循环条件是返回一个布尔值的表达式
+2. for(;循环判断条件;)中的初始化和变量迭代可以写到其他地方，但是两边的分号不能省略。
+3. 循环初始值可以有多条初始化语句，但要求类型一样，并且中间用逗号隔开。
+4. 使用内存分析法
+
+```java
+public class ForDetail {
+    public static void main(String[] args) {
+        int count = 3;
+        for (int i = 0, j = 0; i < count; i++, j += 2) {
+            System.out.println("i=" + i + "j=" + j);
+        }
+    }
+}
+```
+
+![image-20221206220824179](JavaGrammar.assets/image-20221206220824179.png)
+
+- for循环练习题
+
+```java
+```
+
+
 
 ### break
 
