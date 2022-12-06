@@ -1498,6 +1498,8 @@ public class Input {
         System.out.println("清输入薪水：");
         double sal = myScanner.nextDouble();
         System.out.println("名字："+name+"\n年龄："+age+"\n薪水："+sal);
+        char c1 = myScanner.next().charAt(0);//a//先接受一个字符串，再接受字符串的第一个字符
+        System.out.println(c1);//a
     }
 }
 ```
@@ -1597,3 +1599,368 @@ char c1 = '夏'
 String str2 = c1+ "";
 ```
 
+## 第5章	控制结构
+
+### 程序流程控制介绍
+
+在程序中，程序运行的流程控制决定程序是如何执行的，是我们必须掌握的，主要有三大流程控制语句
+
+#### 顺序控制
+
+程序从上到下逐行地执行，中间没有任何判断和跳转。
+
+```java
+//java中定义变量时采用合法的前向引用。
+public class Test{
+    int num1 =12;
+    int num2 =num1+2;
+}
+//错误形式
+public class Test{
+    int num2=num1+2;//错误
+    int num1 = 12;
+}
+```
+
+![image-20221205210253412](JavaGrammar.assets/image-20221205210253412.png)
+
+#### 分支控制（if-else）
+
+- 分支控制if-else介绍
+
+让程序有选择的执行，分支控制有三种
+
+##### 1、单分支
+
+基本语法
+
+```java
+if(条件表达式){
+    执行代码块;(可以有多条语句)
+}
+```
+
+说明：当条件表达式为true时，就会执行{}的代码。如果为false，就不执行。
+
+特别说明，如果{}中只有一条语句，则可以不用{}，建议写上{}
+
+```java
+package com.basic.www.conpter03;
+import java.util.Scanner;//导入//编写一个程序，可以输入人的年龄，如果该同志的年龄大于18岁，则输出"你的年龄大于18，要对自己的行为负责，送入监狱"
+public class If01 {
+    public static void main(String[] args) {
+        //编写一个程序，可以输入人的年龄，如果该同志的年龄大于18岁，
+        // 则输出"你的年龄大于18，要对自己的行为负责，送入监狱"
+        System.out.println("请输入你的年龄:");
+        //接受输入年龄，应该定义一个Scanner对象
+        Scanner scanner = new Scanner(System.in);
+        //把年龄保存到一个变量 int age
+        int age = scanner.nextInt();
+        if (age > 18) {
+            System.out.println("你年龄大于18，要对自己的行为负责，送入监狱");
+        }
+    }
+}
+```
+
+![image-20221205213300385](JavaGrammar.assets/image-20221205213300385.png)
+
+##### 2、双分支
+
+基本语法
+
+```java
+if(条件表达式){
+	执行代码块1;
+}
+else{
+    执行代码块2;
+}
+```
+
+说明：当条件表达式成立，即执行代码块1，否则执行代码块2。如果执行代码块只有一条语句，则{}可以省略，否则，不能省略。
+
+```java
+//编写一个程序，可以输入人的年龄，如果该同志的年龄大于18岁，则输出"你的年龄大于18，要对自己的行为负责，送入监狱"。否则，输出"你的年龄不大这次放过你"。
+public class If02 {
+    public static void main(String[] args) {
+        //编写一个程序，可以输入人的年龄，如果该同志的年龄大于18岁，
+        // 则输出"你的年龄大于18，要对自己的行为负责，送入监狱"。
+        // 否则，输出"你的年龄不大这次放过你"。
+        System.out.println("请出入你的年龄:");
+        Scanner scanner = new Scanner(System.in);
+        int age = scanner.nextInt();
+        if (age > 18) {
+            System.out.println("你年龄大于18，要对自己的行为负责，送入监狱");
+        } else {
+            System.out.println("你的年龄不大于这次放过你");
+        }
+    }
+}
+```
+
+![image-20221205214316805](JavaGrammar.assets/image-20221205214316805.png)
+
+##### 分支控制练习
+
+```java
+//1、对下列代码，若有输出，指出输出结果
+int x = 7;
+int y = 4;
+if(x>5){
+    if(y>5){
+        System.out.println(x+y);
+    }
+    System.out.println("夏源");  
+}else{
+    System.out.println("x is"+x);
+}
+//输出的内容是？夏源
+```
+
+```java
+//2、编写，声明2个double型变量并赋值。判断第一个数大于10.0，且第二个数小于20.0，打印两数之和。
+public class IfTest02 {
+    public static void main(String[] args) {
+        double d1 = 17.24;
+        double d2 = 3.2;
+        if (d1 > 10.0 && d2 < 20.0) {
+            System.out.println(d1 + d2);
+        }/*else {
+            System.out.println("这两个数不在10.0~20.0之间");
+        }*/
+    }
+}
+```
+
+```java
+//3、定义两个变量int，判断二者之和，是否能被3又能被5整除，打印提示信息
+public class IfTest03 {
+    public static void main(String[] args) {
+        int a = 10;
+        int b = 5;
+        int sum = a + b;
+        if (sum % 3 == 0 && sum % 5 == 0) {
+            System.out.println("ok");
+        }
+    }
+}
+
+```
+
+```java
+//4、判断一个年份是否是闰年，闰年的条件是符合下面二者之一：年份能被4整除，但不能被100整除；能被400整除
+public class IfTest04 {
+    public static void main(String[] args) {
+        System.out.println("请输入年份:");
+        Scanner scanner = new Scanner(System.in);
+        int year = scanner.nextInt();
+        if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+            System.out.println(year + "是闰年");
+        } else {
+            System.out.println(year + "不是闰年");
+        }
+    }
+}
+```
+
+##### 3、多分支
+
+基本语法
+
+```java
+if(条件表达式1){
+    执行代码块1;
+}else if(条件表达式2){
+    执行代码块2;
+}
+...
+    else{
+        执行代码块n;
+    }
+```
+
+说明：
+
+1、当条件表达式1成立时，即执行代码块1。
+
+2、当条件表达式1不成立时，才去判断表达式2是否成立。
+
+3、如果表达式2成立，就执行代码块2
+
+4、以此类推，如果所有的表达式都不成立
+
+5、则执行else的代码块，注意，只能由一个执行入口。
+
+![image-20221206114651882](JavaGrammar.assets/image-20221206114651882.png)
+
+```java
+public class If03 {
+    public static void main(String[] args) {
+        /*
+         *输入夏源的芝麻信用分
+         * 1、信用分为100时，输出信用极好；
+         * 2、信用分为(80,99]时，输出信用优秀
+         * 3、信用分为[60，80)时，输出信用一般
+         * 4、其他情况，输出信用不及格
+         * 5、请从键盘输入夏源的芝麻信用分，并加以判断*/
+        //输入夏源的信用分
+        System.out.println("请出入夏源的芝麻信用分:");
+        Scanner scan = new Scanner(System.in);
+        double d = scan.nextDouble();
+        if (d == 100) {
+            System.out.println("夏源信用极好");
+        } else if (d > 80 && d <= 99) {
+            System.out.println("夏源信用优秀");
+        } else if (d >= 60 && d <= 80) {
+            System.out.println("夏源信用一般");
+        } else if (d < 60) {
+            System.out.println("信用不及格");
+        }
+    }
+}
+```
+
+#### 嵌套分支
+
+在一个分支结构中又完整的嵌套了另一个完整的分支结构，里面的分支的结构称为内层分支外面的分支结构称为外层分支。规范：不要超过3曾（可读性不好）
+
+基本语法
+
+```java
+if(){
+    if(){
+        //if-else...
+    }else{
+        //if-else
+    }
+}
+```
+
+```java
+/*
+参加歌手比赛，如果初赛成绩大于8.0进入决赛，否则提示淘汰。并且根据性别提示进入男子组或女子组。输入成绩和性别，进行判断和输出信息
+*/
+//接受字符：char c = scanner.next().charAt(0);
+public class NestedIf {
+    public static void main(String[] args) {
+        //输入成绩和性别
+
+        Scanner scan = new Scanner(System.in);
+        System.out.println("请输入成绩:");
+        double score = scan.nextDouble();
+        System.out.println("请输入性别:");
+        char gender = scan.next().charAt(0);//先接受一个字符串，再接受字符串的第一个字符
+        if(score>8.0){
+            if(gender == '男'){
+                System.out.println("恭喜进入男子决赛");
+            }else if (gender == '女'){
+                System.out.println("恭喜进入女子决赛");
+            }
+        }else {
+            System.out.println("非常遗憾未进入决赛");
+        }
+    }
+} 
+```
+
+#### switch分支结构
+
+基本语法
+
+```java
+switch(表达式){
+    case 常量1://当...
+        语句块1;
+        break;
+    case 常量2:
+        语句块2;
+        break;
+        。。。
+     case 常量n:
+        语句块n;
+        break;
+    default:
+        default语句块;
+        break;
+         
+}
+```
+
+1. switch关键字，表示switch分支
+2. 表达式对应一个值
+3. case常量1：当表达式的值等于常量1，就执行语句块1
+4. break：表示推出switch
+5. 如果和case常量1匹配，就执行语句块1，如果没有匹配，就继续匹配case常量2
+6. 如果一个都没匹配上，执行default  
+
+![image-20221206152214067](JavaGrammar.assets/image-20221206152214067.png)
+
+```java
+/*
+1、请编写一个程序，该程序可以接受一个字符，比如：a，b，c，d，e
+2、a表示星期一，b表示星期二
+3、根据用户的输入显示相依的信息，要求使用switch语句完成
+*/
+public class Switch01 {
+    public static void main(String[] args) {
+        //输入一个字符
+        System.out.println("请输入:");
+        //接收一个字符
+        Scanner scanner = new Scanner(System.in);
+        //在java中，只要有值返回，就是一个表达式
+        char c = scanner.next().charAt(0);
+        switch (c) {
+            case 'a':
+                System.out.println("星期一");
+                break;
+            case 'b':
+                System.out.println("星期二");
+                break;
+            case 'c':
+                System.out.println("星期三");
+                break;
+            case 'd':
+                System.out.println("星期四");
+                break;
+            case 'e':
+                System.out.println("星期五");
+                break;
+            case 'f':
+                System.out.println("星期六");
+                break;
+            case 'g':
+                System.out.println("星期天");
+                break;
+            default:
+                System.out.println("输入有错，请重新输入！！！");
+        }
+    }
+}
+```
+
+switch细节
+
+1. 表达式数据类型，应和case后的常量类型一致，或者时可以自动转成可以相互比较的类型，比如输入的是字符，而常量是int
+2. switch(表达式)中表达式的返回值必须是：(byte,short,int,char,enum,String)
+
+```java
+double c =1.1;
+switch(c){//错误
+    case 1.1://错误
+        System.out.println("ok")
+            break;
+}
+```
+
+3. case子句中的值必须是常量，而不能是变量
+4. default子句是可选的，当没有匹配的case时，执行default
+5. break语句用来在执行完一个case分支后使程序跳出switch语句块；如果没有写break，程序会顺序执行到switch结尾。
+
+### 循环控制（for、while、dowhile、多循环）
+
+### break
+
+### continue
+
+### return
