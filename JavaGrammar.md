@@ -2062,7 +2062,215 @@ public class ForDetail {
 - for循环练习题
 
 ```java
+public class ForExercise01 {
+    public static void main(String[] args) {
+        //1、打印1~100之间所有是9的倍数的整数，统计个数 及总和
+        int count = 0;//统计总和
+        int number = 0;//统计个数
+        for (int i = 1; i <= 100; i++) {
+            if (i % 9 == 0) {
+                System.out.println("i=" + i);
+                number++;
+                count += i;//累计
+            }
+        }
+        System.out.println("9的倍数:" + number + "个" + "总计" + count);
+    }
+}
+//===========================================
+public class ForExercise02 {
+    public static void main(String[] args) {
+        /*
+        打印下面的表达式输出
+        * 0+5=5
+        * 1+4=5
+        * 2+3=5
+        * 3+2=5
+        * 4+1=5
+        * 5+0=5*/
+        for (int i = 0, j = 5; i <= 5; i++, j--) {
+            System.out.println(i + "+" + j + "=" + (i + j));
+        }
+    }
+}
 ```
+
+#### while
+
+- 基本语法
+
+```java
+while(循环条件){
+    循环体（语句）;
+    循环变量迭代;
+}
+```
+
+- 说明
+
+1. while循环也有四要素
+2. 只有四要素放的位置，不一样
+
+![image-20221207105251803](JavaGrammar.assets/image-20221207105251803.png)
+
+- 注意事项和细节
+
+1. 循环条件是返回一个布尔值的表达式
+2. while循环是先判断再执行语句
+
+- 练习
+
+```java
+public class WhileExercise01 {
+    public static void main(String[] args) {
+        //打印1-100之间所有能被3整除的数
+        int i = 1;
+        while (i <= 100) {
+            if (i % 3 == 0) {
+                System.out.println(i);
+            }
+            i++;
+        }
+    }
+}
+//=====================================
+public class WhileExercise02 {
+    public static void main(String[] args) {
+        //打印40-200之间所有的偶数
+        int i=40;
+        while (i < 200) {
+            if(i%2==0){
+                System.out.println(i);
+            }
+            i++;
+        }
+    }
+}
+```
+
+#### do...while
+
+- 基本语法
+
+```java
+循环变量初始化;
+do{
+    循环体;
+    循环变量迭代;
+}while(循环条件)
+```
+
+- 说明
+
+1. do...while是关键字
+2. 也有循环四要素，只是位置不一样
+3. 先执行，再判断，也就是说，一定会执行一次
+4. 最后有一个分号`;`
+5. while和do...while区别举例：要账
+
+![image-20221207110723685](JavaGrammar.assets/image-20221207110723685.png)
+
+- 注意事项和细节说明
+
+1. 循环条件是返回一个布尔值的表达式
+2. do...while循环是先执行，再判断，因此它至少执行一次
+
+- 练习
+
+```java
+public class DoWhileExercise01 {
+    public static void main(String[] args) {
+        //统计1-200之间能被5整除但不能被3整除的个数
+        int i = 1;
+        int num =0;
+        do {
+            if (i % 5 == 0 && i % 3 != 0) {
+                num++;
+                System.out.println(i+"\t"+num);
+            }
+            i++;
+        } while (i <= 200);
+        System.out.println(num);
+    }
+}
+//=============================================
+public class DoWhileExercise02 {
+    public static void main(String[] args) {
+        //如果李三不还钱，则一直使出五连鞭，直到李三还钱为止。
+        Scanner scanner = new Scanner(System.in);
+        char answer = ' ';
+        do {
+            System.out.println("小伙还钱码？y/n");
+            answer = scanner.next().charAt(0);
+            System.out.println("他的回答是：" + answer);
+        } while (answer != 'y');
+        System.out.println("他还钱了！！！");
+    }
+}
+```
+
+#### 多重循环控制（难点！重点！）
+
+1. 将一个循环放在另一个循环体内，就形成了嵌套循环。其中，for、while、do...while均可作为外层循环和内层循环。（建议一般使用两层，最多不要超过3曾，否则，代码的可读性很差）
+2. 实质上，嵌套循环就是把内层循环当成外层循环的循环体。当只有内层循环的循环条件为false时，才会完全跳出内层循环，才可结束外层的当次循环，开始下一次的循环。
+3. 设外层循环次数为m次，内层为n次，则内层循环体实际上需要执行m*n次。
+
+```java
+for(int i =0;i < 2;i++){
+    for(int j = 0;j < 3;j++){
+     	System.out.println("i="+i+"j="+j);   
+    }
+}
+```
+
+![image-20221207113743294](JavaGrammar.assets/image-20221207113743294.png)
+
+- 练习
+
+```java
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2071,3 +2279,22 @@ public class ForDetail {
 ### continue
 
 ### return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
