@@ -2286,7 +2286,8 @@ public class MulForExercise02 {
 使用for循环完成下面的案例
 
 ```java
-请编写一个程序，可以接受一个整数，表示层数（totalLevel），打印出金字塔。(Stars)[化繁为简，先死后活]
+//请编写一个程序，可以接受一个整数，表示层数（totalLevel），打印出金字塔。(Stars)[化繁为简，先死后活]
+
 ```
 
 
