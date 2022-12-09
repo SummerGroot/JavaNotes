@@ -2287,58 +2287,257 @@ public class MulForExercise02 {
 
 ```java
 //请编写一个程序，可以接受一个整数，表示层数（totalLevel），打印出金字塔。(Stars)[化繁为简，先死后活]
+public class Stars {
+    public static void main(String[] args) {
+        /*
+         *       *
+         *      * *
+         *     *   *
+         *    *******
+         *思路分析
+         *化繁为简
+         * 1、先打印矩形
+         * *****
+         * *****
+         * *****
+         * *****
+         * 2、打印半个金字塔
+         * *  //第一层
+         * **
+         * ***
+         * ****
+         * *****
+         *
+         * 3、打印整个金字塔
+              *         1  2*层数-1  4=（总层数-层数）个空格
+             ***        3
+            *****       5
+           *******      7
+          *********     9
+          4、打印空心的金字塔
+           *        //当前行的第一个位置是*，最后一个位置也是*
+          * *
+         *   *
+        *     *
+       *********   //最后一行全是*
+        先死后活
+        5  层数做成变量  int totalLevel =5
 
+
+          *
+          *
+          * */
+        int totalLevel = 10;
+        for (int i = 1; i <= totalLevel; i++) {//i表示层数
+            //在输出*之前，还要输出(总层数-层数)空格
+            for(int k=1;k<=totalLevel-i;k++){
+                System.out.print(" ");
+            }
+            //控制打印每层*的个数
+            for (int j = 1; j <= 2*i-1; j++) {
+                //当前行的第一个位置是*，最后一个位置也是*,最后一层全是*
+                if(j == 1 || j == 2*i-1 || i == totalLevel){
+                    System.out.print("*");
+                }else {//其他情况输出空格
+                    System.out.print(" ");
+                }
+
+            }
+            //每打印完一层*后，就换行 println本身会换行
+            System.out.print("\n");
+        }
+    }
+}
+```
+
+#### break
+
+- 基本语法
+
+break语句用于终止某个语句块的执行，一般使用在swtich或者循环中
+
+```java
+{
+    ....
+        break;
+    ....
+}
+```
+
+- 以while使用break为例，画出示意图
+
+![image-20221209141444182](JavaGrammar.assets/image-20221209141444182.png)
+
+- 看下面一个需求
+
+随机生成1-100的一个数，知道生成了97这个数，看看一共用了几次？
+
+`提示使用(int)(Math.random()*100)+1`
+
+```java
+//循环，但是循环的次数不知道，break，当某个条件满足时，终止循环通过该需求可以说明其它流程控制数据的必要性，比如break
+public class RandomTest {
+    public static void main(String[] args) {
+        for (int i = 0; i < 10; i++) {
+            System.out.println((int)(Math.random() * 100));
+            //Math.random(); 返回一个double值为正号，大于等于0.0 ，小于1.0 。 返回的值是从该范围（大约）均匀分布而伪随机选择的。
+        }
+    }
+}
+```
+
+```java
+for(int i =0;i<10;i++){
+    if(i==3){
+        break;
+    }
+    	System.out.println("ok"+i);
+}
+```
+
+- 注意事项和细节
+
+1. break语句出现出现在多层嵌套的语句块中时，可以通过标签指明要终止的是哪一层语句块
+2. 标签的基本使用
+
+```java
+lable1:{...
+       lable2:{...
+              lable3:{...
+                     break lable2;
+                      ...
+                     }
+              }
+       }
+```
+
+```java
+public class BreakDetail {
+    public static void main(String[] args) {
+        lable1:
+        for (int j = 0; j < 4; j++) {//外层for
+            lable2:
+            for (int i = 0; i < 10; i++) {//内层for
+                if (i == 2) {
+                    break lable1;
+                }
+                System.out.println("i=" + i);
+            }
+        }
+    }
+}
+```
+
+1、break语句可以指定退出哪层
+
+2、label1是标签，由程序员指定。
+
+3、break后指定到哪个label就退出到哪里
+
+4、在实际的开发中，尽量不要使用标签。
+
+5、如果没有指定break，默认退出最近的循环体
+
+- 练习
+
+```java
+//1-100内的数求和，求出当和第一次大于20的当前数（for+break）
+public class BreakExercise01 {
+    public static void main(String[] args) {
+        //1-100内的数求和，求出当和第一次大于20的当前数（for+break）
+        int sum = 0;
+        for (int i = 0; i <= 100; i++) {
+            sum+=i;
+            if(sum>20){
+                System.out.println("当前数为："+i);
+                break;//和第一次大于20就跳出当前循环
+            }
+        }
+    }
+}
+//==========================================================
+//实现登录验证，有3次机会，如果用户名为“summer”，密码“66”提示登陆成功，否则作者提示还有几次机会，请使用for+break完成。
+public class BreakExercise02 {
+    public static void main(String[] args) {
+//实现登录验证，有3次机会，如果用户名为“summer”，密码“666”提示登陆成功，
+// 否则作者提示还有几次机会，请使用for+break完成。
+        //创建Scanner对象接收用户输入
+        Scanner scanner = new Scanner(System.in);
+        //定义String name String passwd 接收用户名和密码
+        String name = "";
+        String passwd = "";
+        //定义 int chance记录还有几次登录机会  登录一次就少一次
+        int chance = 3;
+        for (int i = 1; i <= 3; i++) {
+            System.out.println("请输入名字：");
+            name = scanner.next();
+            System.out.println("请输入密码:");
+            passwd = scanner.next();
+            //比较输入的名字和密码是否正确
+            //补充说明字符串 的内容比较方法 equals-将此字符串与指定对象进行比较。
+            /*将此字符串与指定对象进行比较。
+             其结果是true当且仅当该参数不是null并且是String对象，
+            表示相同的字符序列作为该对象。
+            String name = "summer";
+            System.out.println(name.equals("Summer");
+            System.out.println("summer.equals(name);->推荐，可以避险空指针
+            */
+            if ("summer".equals(name) && "666".equals(passwd)) {
+                System.out.println("恭喜你，登录成功");
+                break;
+            }
+            //登录的机会就减少
+            chance--;
+            System.out.println("你还有" + chance + "次机会登录");
+        }
+    }
+}
+```
+
+#### continue
+
+- 基本介绍
+
+1. continue语句用于结束本次循环，继续执行下一次循环
+2. continue语句出现在多层嵌套的循环语句体中时，可以通过标签指明要跳过的是哪一层循环，这个和前面的标签使用的规则一样。
+
+- 基本语法
+
+```java
+{
+    ...
+        continue;
+    ...
+}
+```
+
+- 以while使用continue为例，画出示意图
+
+![image-20221209152833972](JavaGrammar.assets/image-20221209152833972.png)
+
+```java
+public class Continue01 {
+    public static void main(String[] args) {
+        int i = 1;
+        while (i <= 4) {
+            i++;
+            if (i == 2) {
+                continue;
+            }
+            System.out.println("i=" + i);
+        }
+    }
+}
+```
+
+- 细节分析和说明
+
+```java
 ```
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### break
-
-### continue
-
-### return
+#### return
 
 
 
