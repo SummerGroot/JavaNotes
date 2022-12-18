@@ -2533,13 +2533,200 @@ public class Continue01 {
 - 细节分析和说明
 
 ```java
+public class ContinueDetail {
+    public static void main(String[] args) {
+        label1:
+        for (int j = 0; j < 2; j++) {
+            label2:
+            for (int i = 0; i < 10; i++) {
+                if (i == 2) {
+                    //continue;//等价于continue label2
+                    //continue label2;
+                    continue label1;//跳转到外层的for循环
+                }
+                System.out.println("i=" + i);
+            }
+        }
+
+    }
+}
 ```
-
-
 
 #### return
 
+- 介绍
 
+return使用在方法，表示跳出所在的方法，在讲解方法的时候，会详细的介绍
+
+**注意**：如果return写在main方法，退出程序...
+
+```java
+public class Return01 {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            if (i == 3) {
+                System.out.println("SummerStudy" + i);
+                //return;
+                //continue;
+                break;
+            }
+            System.out.println("HelloWrold!!!");
+        }
+        System.out.println("go on...");
+    }
+}
+```
+
+![image-20221212103315434](JavaGrammar.assets/image-20221212103315434.png)
+
+### 章节练习
+
+```java
+/*
+1、编程实现如下功能
+某人有100，00元，每经过一次路口，需要缴费，规则如下：
+1.当现金>50000时，每次交5%
+2.当现金<=50000时，每次交1000
+计算该人可以经过多少次芦沟，要求：使用while break方式完成。
+*/
+public class HomeWork01 {
+    public static void main(String[] args) {
+        /*
+        某人有100，00元，每经过一次路口，需要缴费，规则如下：
+        1.当现金>50000时，每次交5%
+        2.当现金<=50000时，每次交1000
+        计算该人可以经过多少次芦沟，要求：使用while break方式完成。
+        分析：
+        1.定义double money保持100_000
+        2.money>50_000;money>=1000&&<=50_000;money<1000
+        3.多分支
+        4.while+break,count记录通过次数
+        */
+        double money = 100_000;
+        int count = 0;//累计通过次数
+        while (true) {//无限循环
+            if (money > 50_000) {//过路口
+                //money=money-money*0.05;
+                money *= 0.95;//过了这个路口后还有这么多钱
+                count++;
+            } else if (money >= 1000) {
+                money -= 1000;
+                count++;
+            } else {
+                //钱不够1000
+                break;
+            }
+        }
+        System.out.println(money + "可以过" + count);
+    }
+}
+```
+
+```java
+//2、实现判断一个整数，属于哪个范围：大于0；小于0；等于0
+public class HomeWork02 {
+    public static void main(String[] args) {
+        //2、实现判断一个整数，属于哪个范围：大于0；小于0；等于0
+        Scanner scanner = new Scanner(System.in);
+        //输入一个整数
+        System.out.println("请输入整数:");
+        //接收整数
+        int i = scanner.nextInt();
+        //判断
+        if(i<0){
+            System.out.println(i+"该整数小于0");
+        } else if (i==0) {
+            System.out.println(i+"该整数等于0");
+        }else {
+            System.out.println(i+"该整数大于0");
+        }
+    }
+}
+```
+
+```java
+//3、判断一个整数是否是水仙花数，所谓水仙花数是指一个3位数，其各个位上数字立方和等于其本身。例如：153=1*1*1+3*3*3+5*5*5
+public class HomeWork03 {
+    public static void main(String[] args) {
+        //水仙花数
+        //判断一个整数是否是水仙花数，所谓水仙花数是指一个3位数，
+        //其各个位上数字立方和等于其本身。
+        //例如：153=1*1*1+3*3*3+5*5*5
+        /*
+        * 分析
+        * 分别得到百位，十位，个位
+        * 百位：i/100
+        * 十位：i%100/10
+        * 个位：i%10*/
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("请输入一个三位数：");
+        int i = scanner.nextInt();
+        if(i==(i/100)*(i/100)*(i/100)+
+                (i%100/10)*(i%100/10)*(i%100/10)+
+                (i%10)*(i%10)*(i%10)){
+            System.out.println(i+"该数是水仙花数");
+        }else {
+            System.out.println(i+"该数不是水仙花数");
+        }
+    }
+}
+```
+
+```java
+//4、看看下面代码输出什么？
+class Demo{
+    public static void main(String[] args){
+        int m=0,n=3;
+        if(m>0){
+            if(n>2){
+                Ststem.out.println("ok1");
+            }else{
+                System.out.println("ok2");
+            }
+        }
+    }
+}
+```
+
+![image-20221216105420128](JavaGrammar.assets/image-20221216105420128.png)
+
+```java
+//5、输出1-100之间的不能被5整除的数，每5个一行
+public class HomeWork04 {
+    public static void main(String[] args) {
+        //5、输出1-100之间的不能被5整除的数，每5个一行
+        /*
+         * 思路分析：
+         * 1、先输出1-100的所有数
+         * 2、然后过滤输出，不能被5整除的数 i%5!=0
+         * 3、每5个一行，使用 int count 统计输出的个数 当count%5=0
+         * 就说明输出了5个，这时，我们输出一个换行即可控制*/
+        int count = 0;//统计输出的个数
+        for (int i = 1; i <= 100; i++) {
+            if (i % 5 != 0) {
+                count++;
+                System.out.print(i + "\t");
+                //判断，每满5个，就输出一个换行符
+                if (count % 5 == 0) {
+                    System.out.println();
+                }
+            }
+        }
+    }
+}
+```
+
+```java
+//6、输出小写的a-z以及大写的A-Z
+```
+
+```java
+//7、求出1-1/2+1/3-1/4...1/100的和
+```
+
+```java
+//8、求1+(1+2)+(1+2+3)+(1+2+3+4)+...+(1+2+3+4+...+100)的结果
+```
 
 
 
