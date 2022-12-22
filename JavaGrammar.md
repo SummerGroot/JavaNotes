@@ -482,7 +482,7 @@ public class Char01 {
 
    `char c3 = '\n';//'\n'表示换行符`
 
-3. 在Java中，char的本质是一个整数，在输出时，是unucode码对应的字符。
+3. 在Java中，char的本质是一个整数，在输出时，是unicode码对应的字符。
 
 4. 可以直接给char赋一个整数，然后输出时，会按照对应的unicode字符输出[97]
 
@@ -2718,19 +2718,323 @@ public class HomeWork04 {
 
 ```java
 //6、输出小写的a-z以及大写的A-Z
+public class HomeWork05 {
+    public static void main(String[] args) {
+        //6、输出小写的a-z以及大写的A-Z
+        for (char c1 = 'a'; c1 <= 'z'; c1++) {
+            System.out.print(c1 + "\t");
+        }
+        System.out.println("====================");
+        for (char c2 = 'A'; c2 <= 'Z'; c2++) {
+            System.out.print(c2 + "\t");
+        }
+    }
+}
+
 ```
 
 ```java
 //7、求出1-1/2+1/3-1/4...1/100的和
+public class HomeWork06 {
+    public static void main(String[] args) {
+        //7、求出1-1/2+1/3-1/4...1/100的和
+        /*
+         * 1、(1/1)-(1/2)+(1/3)-(1/4)...(1/100)
+         * 2、从上面的分析我们可以看出
+         * a、一共有100数，分子为1，分母从1-100
+         * b、分母为奇数时，前面是+，分母是偶数时，前面是-
+         * 3、for+判断
+         * 4、把结果存放在double sum
+         * */
+        double sum = 0;
+        for (int i = 1; i <= 100; i++) {
+            //判断是奇数还是偶数
+            if (i % 2 != 0) {//分母奇数
+                sum = sum + (1 / i);
+            } else {//分母偶数
+                sum = sum - (1 / i);
+            }
+        }
+        System.out.println("sum=" + sum);
+    }
+}
 ```
 
 ```java
 //8、求1+(1+2)+(1+2+3)+(1+2+3+4)+...+(1+2+3+4+...+100)的结果
 ```
 
+## 第6章 数组、排序和查找
+
+### 数组
+
+#### 数组介绍
+
+数组可以存放多个**同一类型**的数据。数组也是一种数据结构，是引用类型。
+
+即：数组就是一组数据
+
+#### 数组的使用
+
+- 使用方式1-动态初始化
+
+```java
+//数组的定义
+//数据类型 数组名[]=new 数据类型[大小];==数据类型[] 数组名=new 数据类型[大小];
+int a[]= new int[];//创建了一个数组，名字a，存放5个int
+//说明：这是定义数组的一种方法。
+//数组的引用（使用）
+//数组名[下标/索引]比如：你要使用a数组的第3个数 a[2],下标从0开始
+```
+
+```java
+public class Array02 {
+    public static void main(String[] args) {
+        //循环输入5个成绩，保持到double数组，并输出
+        Scanner scanner = new Scanner(System.in);
+        //定义一个接收成绩的数组
+        double[] score = new double[5];
+
+        for (int i = 0; i < score.length; i++) {
+            System.out.println("请输入第" + (i+1) + "个成绩:");
+            double d = scanner.nextDouble();
+            score[i] = d;
+        }
+        for (int i = 0; i < score.length; i++) {
+            System.out.println("成绩分别为：" + score[i]);
+
+        }
+
+
+    }
+}
+```
+
+- 使用方式2-动态初始化
+
+```java
+//先声明数组
+//语法：数据类型 数组名[];
+//数据类型[] 数组名;
+int a[];
+int[] a;
+//创建数组
+//语法：
+//数组名=new 数据类型[大小];
+a=new int[10];
+//=====================================
+public class Array03 {
+    public static void main(String[] args) {
+        //方式2
+        //先声明
+        double a[];
+        //创建数组
+        a = new double[4];//分配了内存空间，可以存放数据
+        Scanner scanner = new Scanner(System.in);
+        for (int i = 0; i < a.length; i++) {
+            System.out.println("请输入第" + (i+1) + "个成绩:");
+            double d = scanner.nextDouble();
+            a[i] = d;
+        }
+        for (int i = 0; i < a.length; i++) {
+            System.out.println("成绩分别为：" + a[i]);
+
+        }
+    }
+}
+```
+
+- 使用方式3-静态初始化
+
+```java
+//初始化数组
+//语法：数据类型 名字名[]={元素值，元素值...};
+int a[]={2,3,4,5,6,7,87};
+//如果知道数组有多少元素，具体值上面的用法相当于：
+int a[]=new int[9];
+a[0]=2;
+a[1]=3;
+a[3]=4;
+a[4]=5;
+a[5]=6;
+a[6]=7;
+a[7]=87;
+//==========================================
+public class Array04 {
+    public static void main(String[] args) {
+        int[] a={1,2};
+        for (int i = 0; i < a.length; i++) {
+            System.out.print(a[i]);
+        }
+    }
+}
+```
+
+#### 数组使用注意事项和细节
+
+1. 数组是多个相同类型数据的组合，实现对这些数据的统一管理
+
+2. 数组中的元素可以是任何数据类型，包括基本类型和引用类型，但是不能混用。
+
+3. 数组创建后，如果没有赋值，有默认值
+
+   | int   | 0    | double  | 0.0    |
+   | ----- | ---- | ------- | ------ |
+   | short | 0    | char    | \u0000 |
+   | byte  | 0    | boolean | false  |
+   | long  | 0    | String  | null   |
+   | float | 0.0  |         |        |
+
+4. 使用数组的步骤1、声明数组并开辟空间2、给数字组各个元素赋值3、使用数组
+
+5. 数组的下标是从0开始的。
+
+6. 数组下标必须在指定范围内使用，否则报：下标越界异常，比如
+
+   ```java
+   int[]arr=new int[5];
+   //则有效下标为0-4
+   ```
+
+7. 数组属于引用类型，数组型数据是对象（object）
+
+
+```java
+public class ArrayDetail {
+    public static void main(String[] args) {
+        //数组是多个相同类型数据的组合，实现对这些数据的统一管理
+        int[] arr1 = {1, 2, 3, 60};
+        //int[] arr2 = {1, 2, 3, 60.1.1};//double->int
+        //数组中的元素可以是任何数据类型，包括基本类型和引用类型，但是不能混用。
+        String[] arr3={"成都","summer","avenger"};
+        //数组创建后，如果没有赋值，有默认值
+        short[] arr4=new short[3];
+        System.out.println("=====数组arr4======");
+        for (int i = 0; i < arr4.length; i++) {
+            System.out.println(arr4[i]);
+        }
+        //数组下标必须在指定范围内使用，否则报：下标越界异常
+        int[] arr5 = new int[5];
+        //System.out.println(arr5[5]);
+        //Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 5
+        //	at com.basic.www.conpter04.ArrayDetail.main(ArrayDetail.java:24)
+        //数组的下标 最小=0，最大=数组长度-1(4)
+    }
+}
+```
+
+#### 数组应用案例
+
+```java
+//1、创建一个char类型的26个元素的数组，分别放置'A'-'Z'。使用for循环访问所有元素并打印出来。
+public class ArrayExercise01 {
+    public static void main(String[] args) {
+        char[] arr1=new char[26];
+        char c='A';
+        for (int i = 0; i <arr1.length; i++){
+            arr1[i]=c;
+            c++;
+        }
+        for (int i = 0; i < arr1.length; i++) {
+            System.out.print(arr1[i]);
+        }
+    }
+}
+//========================================
+//2、请求出一个和数组int[]的最大值{4,-1,9,10,23}，并得到对应的下标
+public class ArrayExercise02 {
+    public static void main(String[] args) {
+        //定义一个数组
+        int[] arr = {4, -1, 9, 10, 23};
+        //临时存放变量
+        int max = arr[0];
+        int maxIndex = 0;
+        for (int i = 1; i < arr.length; i++) {//遍历
+            if (max < arr[i]) {//如果max<当前元素
+                max = arr[i];//把max设置成当前元素
+                maxIndex = i;
+            }
+        }
+        System.out.println("最大值为：" + max + "最大值的下标为：" + maxIndex);
+    }
+}
+//=========================================
+//3、请求出一个数组的和，和平均值
+public class ArrayExercise03 {
+    public static void main(String[] args) {
+        //3、请求出一个数组的和，和平均值
+        int[] arr1 = {2, 4, 6, 8, 10, 12};
+        //累加
+        int sum = 0;
+        for (int i = 0; i < arr1.length; i++) {
+            sum += arr1[i];
+        }
+        System.out.println("最大值为：" + sum + "平均值为：" + (sum / arr1.length));
+    }
+}
+```
+
+#### 数组赋值机制
+
+1. 基本数据类型赋值，这个值就是具体的数据，而且相互不影响。
+
+   ```java
+   int n1=2;
+   int n2= n1;
+   ```
+
+2. 数组在默认情况下是引用传递，赋的值是地址。
+
+   ```java
+   int[] arr1={1,2,3};
+   int[] arr2=arr1;
+   ```
+
+![image-20221222162215364](JavaGrammar.assets/image-20221222162215364.png)
+
+#### 数组拷贝
+
+```java
+//实现数组拷贝（内容复制）
+//将int[] arr1={10,20,30};拷贝到arr2数组，要求空间独立
+public class ArrayCopy {
+    public static void main(String[] args) {
+        int[] arr1={10,20,30};
+        //创建一个新的数组arr2，开辟新的数据空间
+        int[] arr2=new int[arr1.length];
+        //遍历arr1，把每个元素拷贝到对应的位置
+        for (int i = 0; i < arr1.length; i++) {
+            arr2[i]=arr1[i];
+        }
+        arr2[0]=100;
+        System.out.println("=====arr2======");
+        for (int i = 0; i < arr2.length; i++) {
+            System.out.println(arr2[i]);
+        }
+        System.out.println("=====arr1======");
+        for (int i = 0; i < arr1.length; i++) {
+            System.out.println(arr1[i]);
+        }
+    }
+}
+```
+
+![image-20221222163355733](JavaGrammar.assets/image-20221222163355733.png)
+
+#### 数组反转
+
+```java
+//要求：把数组的元素内容反转。
+//arr{11,22,33,44,55,66}->{66,55,44}
+```
 
 
 
+### 排序
+
+### 查找
+
+### 多维数组
 
 
 
