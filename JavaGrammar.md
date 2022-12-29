@@ -3025,20 +3025,314 @@ public class ArrayCopy {
 
 ```java
 //要求：把数组的元素内容反转。
-//arr{11,22,33,44,55,66}->{66,55,44}
+//arr{11,22,33,44,55,66}->{66,55,44,33,22,11}
+public class ArrayReverse01 {
+    public static void main(String[] args) {
+        //定义一个数组
+        int[] arr = {11, 22, 33, 44, 55, 66};
+        /*
+        * 1、把arr[0]和arr[5]交换{66,22,33,44,55,11}
+        * 2、把arr[1]和arr[4]交换{66,55,33,44,22,11}
+        * 3、把arr[1]和arr[4]交换{66,55,44,33,22,11}
+        * 4、一共交换3次  =arr.length/2
+          5、每次交换时，对应的下标是arr[i]和arr[arr.length-1-i]
+         */
+        int temp = 0;
+        int len = arr.length;//计算数组的长度
+        for (int i = 0; i < len / 2; i++) {
+            temp = arr[len - 1 - i];//保存
+            arr[len - 1 - i] = arr[i];
+            arr[i] = temp;
+        }
+        System.out.println("=====反转后的数组=======");
+        for (int i = 0; i < len; i++) {
+            System.out.print(arr[i]+"\t");//66	55	44	33	22	11
+        }
+    }
+}
+//=======================================
+public class ArrayReverse02 {
+    public static void main(String[] args) {
+        //定义一个数组
+        int[] arr = {11, 22, 33, 44, 55, 66};
+        /*
+         * 1、先创建一个新的数组arr2,大小arr.length
+         * 2、逆序遍历arr ，将每个元素拷贝到arr2中
+         * 3、增加一个循环变量
+         */
+        int[] arr2 = new int[arr.length];
+        //逆序遍历arr
+        for (int i = arr.length - 1, j = 0; i >= 0; i--, j++) {
+            arr2[j] = arr[i];
+        }
+        //for循环结束，arr2就是一个逆序的数组
+        //让arr指向arr2数据空间，此时arr原来的数据空间就没有变量引用，会被当作垃圾，销毁
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr2[i] + "\t");//66	55	44	33	22	11
+        }
+    }
+}
 ```
 
+#### 数组添加
 
+```java
+/*
+要求：实现动态的给数组添加元素效果，实现对数组扩容
+1、原始数组使用静态分配int[] arr={1,2,3}
+2、增加的元素，直接放在数组的最后arr={1,2,3,4}
+arrNew={1,2,3,4}
+3、用户可以通过如下方法来决定是否继续添加，添加成功，是否继续？y/n
+*/
+public class ArrayAdd02 {
+    public static void main(String[] args) {
+        /*
+         * 1、在ArrayAdd01的基础上
+         * 2、用户可以通过如下方法来决定是否继续添加，添加成功，是否继续？y/n*/
+        //创建一个Scanner接收用户输入
+        Scanner scanner = new Scanner(System.in);
+        //定义一个数组。有效下标0~2
+        int[] arr = {1, 2, 3};
+        do {
+            //定义一个新的数组
+            int[] arrNew = new int[arr.length + 1];
+            //遍历arr数组，依次将arr的元素拷贝到arrNew数组
+            for (int i = 0; i < arr.length; i++) {
+                arrNew[i] = arr[i];
+            }
+            System.out.print("请输入要添加的元素：");
+            int addNum = scanner.nextInt();
+            //将4赋值给arrNew[arrNew.lenght-1]
+            arrNew[arrNew.length - 1] = addNum;
+            //让arr指向arrNew，那么原来的arr数组就被销毁
+            arr = arrNew;
+            System.out.println("===arr扩容后=====");
+            for (int i = 0; i < arr.length; i++) {
+                System.out.print(arr[i] + "\t");
+            }
+            //问用户是否继续
+            System.out.print("是否继续添加y/n");
+            char key = scanner.next().charAt(0);
+            if (key == 'n') {//如果是n就退出
+                break;
+            }
+        } while (true);
+        //用户什么时候退出，不确定，使用do-while+break控制
+        System.out.println("你退出了添加！！！");
+    }
+}
+
+
+
+//===========================================
+/*
+有一个数组{1，2，3，4，5}，可以将该数组进行缩减，提示用户是否继续缩减，每次缩减最后那个元素。当只剩下最后一个元素，提示，不能再缩减。
+*/
+```
 
 ### 排序
 
+排序是将多个数据，依指定的顺序进行排列的过程。
+
+排序的分类：
+
+1. 内部排序：
+
+   指将需要处理的所有数据都加载到内部存储器中进行排序。包括（交换式排序法、选择式排序法和插入式排序法）
+
+2. 外部排序：
+
+   数据量过大，无法全部加载到内存中，需要借助外部存储进行排序。包括（合并排序法和直接合并排序法）
+
+#### 冒泡排序法
+
+冒泡排序法（Bubble Sorting）的基本思想是：通过对排序序列从后向前（从下标较大的元素开始），依次比较相邻元素的值，若发现逆序则交换，使值较大的元素逐渐从前移向后部，就像水底下的气泡一样逐渐向上冒。
+
+```java
+//我们将5个无序：24，69，80，57，13使用冒泡排序法将其排成一个从小到大的有序数列。
+/*
+总计冒泡排序特点：
+1、一共有5个元素
+2、一共进行了4轮排序，可以看成外层循环
+3、每一轮排序可以确定一个数的位置，比如第1轮排序确定最大数，第2轮，确定第2大的数位置，以此类推
+4、当进行比较时，如果前面的数大于后面的数，就交换
+5、每轮比较在减少4->3->2->1
+*/
+public class BubbleSort {
+    public static void main(String[] args) {
+        //24，69，80，57，13冒泡排序
+        int[] arr = {24, 69, 80, 57, 13,110,120,119,12305,-1};
+        int temp = 0;
+        //将多轮排序使用外层循环括起来
+        for (int i = 0; i < arr.length - 1; i++) {
+            
+            for (int j = 0; j < arr.length - 1 - i; j++) {//(arr.length - 1)次比较
+                //如果前面的数>后面的数，就交换
+                if (arr[j] > arr[j + 1]) {
+                    temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+            System.out.println("\n==第" + (i + 1) + "轮==");
+            for (int j = 0; j < arr.length; j++) {
+                System.out.print(arr[j] + "\t");
+            }
+        }
+        /*for (int j = 0; j < 3; j++) {//3次比较
+            //如果前面的数>后面的数，就交换
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+        System.out.println("\n==第2轮==");
+        for (int j = 0; j < arr.length; j++) {
+            System.out.print(arr[j] + "\t");
+        }
+        for (int j = 0; j < 2; j++) {//2次比较
+            //如果前面的数>后面的数，就交换
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+        System.out.println("\n==第3轮==");
+        for (int j = 0; j < arr.length; j++) {
+            System.out.print(arr[j] + "\t");
+        }
+        for (int j = 0; j < 1; j++) {//1次比较
+            //如果前面的数>后面的数，就交换
+            if (arr[j] > arr[j + 1]) {
+                temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+        System.out.println("\n==第4轮==");
+        for (int j = 0; j < arr.length; j++) {
+            System.out.print(arr[j] + "\t");
+        }*/
+    }
+}
+```
+
 ### 查找
 
-### 多维数组
+1. 顺序查找
+2. 二分查找[二分法]
 
+```java
+//1、有一个数列：白眉鹰王、金毛狮王、紫衫龙王、青翼蝠王猜数游戏：从键盘中任意输入一个名称，判断数列中是否包含此名字[顺序查找]要求：如果找到了，就提示找到了，并给出下标值
 
+//===============================
+//2、请对一个有序数组进行二分查找{1,8,10,89,1000,1234}，输入一个数看看该数组是否存在次数，并且求出下标，如果没有就提示"没有这个数"。
 
+```
 
+### 多维数组-----二维数组
+
+```java
+//请用二位数组输出如下图形
+/*
+0 0 0 0 0 0
+0 0 1 0 0 0
+0 2 0 3 0 0
+0 0 0 0 0 0
+*/
+public class TwoDimensionalArray01 {
+    public static void main(String[] args) {
+        /*
+         * 1、从定义形式上看int[][]
+         * 2、原来的一维数组的每个元素是一维数组，就构成了二维数组*/
+        int[][] arr = {{0, 0, 0, 0, 0, 0},
+                {0, 0, 1, 0, 0, 0},
+                {0, 2, 0, 3, 0, 0},
+                {0, 0, 0, 0, 0, 0}};
+
+        //关于二维数组的关键概念
+        System.out.println("二维数组的元素个数：" + arr.length);
+        //二维数组的每个元素是一维数组，所以需要得到每个一维数组的值，需要再次遍历
+        //如果访问第(i+1)个一维数组第(j+1)个值 arr[i][j];
+        
+        //输出二维图形
+        for (int i = 0; i < arr.length; i++) {//遍历二维数组的每个元素
+            //遍历二维数组的每个元素（数组）
+            /*
+            arr[i]表示：二维数组的第i+1个元素 比如arr[0]：二维数组的第一个元素
+            * 1、arr[i].length得到对应的 每个一维数组的长度*/
+            for (int j = 0; j < arr[i].length; j++) {
+                System.out.print(arr[i][j] + "\t");
+                //输出了一维数组
+            }
+            System.out.println();//换行
+        }
+    }
+}
+```
+
+#### 使用方式1：动态初始化0
+
+```java
+/*
+语法：类型[][] 数组名=new 类型[大小][大小];
+int a[][]=new int[2][3];
+二维数组在内存的存在形式
+*/
+public class TwoDimensionalArray01 {
+    public static void main(String[] args) {
+        /*
+         * 1、从定义形式上看int[][]
+         * 2、原来的一维数组的每个元素是一维数组，就构成了二维数组*/
+        int[][] arr = {{0, 0, 0, 0, 0, 0},
+                {0, 0, 1, 0, 0, 0},
+                {0, 2, 0, 3, 0, 0},
+                {0, 0, 0, 0, 0, 0}};
+
+        //关于二维数组的关键概念
+        System.out.println("二维数组的元素个数：" + arr.length);
+        //二维数组的每个元素是一维数组，所以需要得到每个一维数组的值，需要再次遍历
+        //如果访问第(i+1)个一维数组第(j+1)个值 arr[i][j];
+
+        //输出二维图形
+        for (int i = 0; i < arr.length; i++) {//遍历二维数组的每个元素
+            //遍历二维数组的每个元素（数组）
+            /*
+            arr[i]表示：二维数组的第i+1个元素 比如arr[0]：二维数组的第一个元素
+            * 1、arr[i].length得到对应的 每个一维数组的长度*/
+            for (int j = 0; j < arr[i].length; j++) {
+                System.out.print(arr[i][j] + "\t");
+                //输出了一维数组
+            }
+            System.out.println();//换行
+        }
+    }
+}
+```
+
+![image-20221228124846969](JavaGrammar.assets/image-20221228124846969.png)
+
+#### 使用方式2：动态初始化
+
+1. 先声明：`类型 数组名[][];`
+2. 再定义（开辟空间）`数组名=new 类型[大小][大小];`
+3. 赋值（有默认值，比如int 类型的就是0）
+
+```java
+
+```
+
+#### 使用方式3：动态初始化----列数不确定
+
+1. 看一个需求：动态创建下面二维数组，并输出
+
+   ![image-20221228125321663](JavaGrammar.assets/image-20221228125321663.png)
+
+2. 完成该案例
+
+3. 画出执行分析示意图
 
 
 
