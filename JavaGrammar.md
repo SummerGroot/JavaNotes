@@ -3321,7 +3321,20 @@ public class TwoDimensionalArray01 {
 3. 赋值（有默认值，比如int 类型的就是0）
 
 ```java
-
+public class TwoDimensionalArray02 {
+    public static void main(String[] args) {
+        //动态初始化
+        int[][] arr = new int[2][3];
+        arr[1][1]=8;
+        //遍历arr数组
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                System.out.print(arr[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+}
 ```
 
 #### 使用方式3：动态初始化----列数不确定
@@ -3333,6 +3346,43 @@ public class TwoDimensionalArray01 {
 2. 完成该案例
 
 3. 画出执行分析示意图
+
+
+```java
+public class TwoDimensionalArray03 {
+    public static void main(String[] args) {
+        /* i=0:1
+         * i=1:2 2
+         * i=2:3 3 3
+         * */
+        //一个有三个一维数组，每一个数组的元素是不一样的
+        int[][] arr = new int[3][];//创建 二维数组，但是只是确定一维数组的个数
+        for (int i = 0; i < arr.length; i++) {//遍历arr每个一维数组
+            //给每个一维数组开空间new
+            //如果没有给一维数组new，那么arr[i]就是null
+            arr[i] = new int[i + 1];
+
+            //遍历一维数组，并给一维数组的每个元素赋值。
+            for (int j = 0; j < arr[i].length; j++) {
+                arr[i][j] = i + 1;//赋值
+            }
+        }
+
+        System.out.println("=====arr的元素情况=======");
+
+        //遍历arr输出
+        for (int i = 0; i < arr.length; i++) {
+            //输出arr的每个一维数组
+            for (int j = 0; j < arr[i].length; j++) {
+                System.out.print(arr[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
+
 
 
 
