@@ -3655,7 +3655,7 @@ cat.age=12;
 cat.color="白色";
 ```
 
-![image-20230130153644881](JavaGrammar.assets/image-20230130153644881.png)
+![image-20230130152105872](JavaGrammar.assets/image-20230130152105872.png)
 
 #### 属性、成员变量
 
