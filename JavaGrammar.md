@@ -3404,15 +3404,384 @@ int[][] arr = {{1,1,1},{8,8,9},{100}}
 
 ```java
 //int arr[][]={{4,6},{1,4,5,7},{-2}};遍历该二维数组，并得到和
+public class TwoDimensionalArray04 {
+    public static void main(String[] args) {
+        //int arr[][]={{4,6},{1,4,5,7},{-2}};
+        // 遍历该二维数组，并得到和
+        int arr[][]={{4,6},{1,4,5,7},{-2}};
+        int sum=0;
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                System.out.print(arr[i][j]);
+                sum += arr[i][j];//累加和
+            }
+            System.out.println();
+        }
+        System.out.println(sum);
+    }
+}
 ```
 
+```java
+//1、使用二维数组打印一个10行杨辉三角
+public class YangHui {
+    public static void main(String[] args) {
+    /*
+    1
+    1 1
+    1 2 1
+    1 3 3 1
+    1 4 6 4 1
+    1 5 10 10 5 1
+    说明:
+    1、第一行有1个元素，第n行有n个元素
+    2、每一行的第一个元素和最后一个元素都是1
+    3、从第3行开始，对于非第一个元素和最后一个元素的元素的值。arr[i][j]
+    arr[i][j] = arr[i-1][j]+arr[i-1][j-1];
+    */
+        int[][] yangHui = new int[10][];
+        for (int i = 0; i < yangHui.length; i++) {//遍历yanghui的每个元素
+            //给每个一维数组（行）开空间
+            yangHui[i] = new int[i + 1];
+            //给每个一维数组赋值
+            for (int j = 0; j < yangHui[i].length; j++) {
+                if (j == 0 || j == yangHui[i].length - 1) {
+                    yangHui[i][j] = 1;
+                } else {
+                    yangHui[i][j] = yangHui[i - 1][j] + yangHui[i - 1][j - 1];
+                }
+            }
+        }
+        //输出杨辉三角
+        for (int i = 0; i < yangHui.length; i++) {
+            for (int j = 0; j < yangHui[i].length; j++) {//遍历输出该行
+                System.out.print(yangHui[i][j]+"\t");
+            }
+            System.out.println();//换行
+        }
+    }
+}
+```
 
+#### 二维数组使用细节和注意事项
 
+1、一维数组的声明方式有：
 
+```java
+int[] x;
+int x[];
+```
 
+2、二维数组的声明方式有：
 
+```java
+int[][] y;
+int[] y[];
+int y[][];
+```
 
+3、二维数组实际上是由多个一维数组组成的，它的各个一维数组的长度可以相同，也可以不相同。比如：`map[][]`是一个二维数组
 
+```java
+map[][]={{1,2},{3,4,5}};
+```
 
+由map[0]是一个含有两个元素的一维数组，map[1]是一个含有三个元素的一维数组构成，我们也称为列数不等的二维数组。
 
+#### 二维数组课堂练习
 
+```java
+//声明：int[]x,y[];一下选项可允许通过遍历的是?
+a) x[0] = y;//x int[][] ->int
+b) y[0] = x;//y int[]->int[]
+c) y[0][0] = x;//x int[]->int
+d) x[0][0] = y;//x
+e) y[0][0] = x[0];//y int->int
+f) x = y;//x int[][]->int[]
+/*
+x是int类型的一维数组，y是int类型的二维数组
+*/
+```
+
+### 习题
+
+```java
+String foo = "blue";
+boolean[] bar = new boolean[2];//bar[0]默认false
+if(bar[0]){
+    foo="green";
+}
+Ststem.out.println(foo);
+```
+
+```java
+//已知有升序的数组，要求插入一个元素，该数组顺序依然是升序，比如：[10,12,45,90],添加23后，数组为[10,12,23,45,90]
+public class HomeWork01 {
+    public static void main(String[] args) {
+        //思路：数组扩容+定位
+        //先定义原数组
+        int[] arr = {10, 12, 45, 90};
+        int insertNum = 23;
+        int index = -1;//inde就是要插入的位置
+        //遍历arr数组，如果发现insertNum<=arr[i]，说明i就是要插入的位置
+        //使用index保留index = i;
+        //如果遍历完后，没有发现insertNum<=arr[i]，说明index=arr.length
+        for (int i = 0; i < arr.length; i++) {
+            if (insertNum <= arr[i]) {
+                index = i;
+                break;//找到位置就退出
+            }
+        }
+        //判断index的值
+        if (index == -1) {//说明没有找到位置
+            index = arr.length;
+        }
+        //System.out.println("index=" + index);
+        //扩容
+        int[] arrNew = new int[arr.length + 1];
+        //arr的元素拷贝到arrNew，并且要跳过index位置
+        //i
+        for (int i = 0, j = 0; i < arrNew.length; i++) {
+            if (i != index) {//说明可以把arr的元素拷贝到arrNew
+                arrNew[i] = arr[j];
+                j++;
+            } else {//i这个位置就是要插入的数
+                arrNew[i] = insertNum;
+            }
+        }
+        //让arr指向arrNew，原来的数组，就成为垃圾
+        arr = arrNew;
+        //插入后数组的情况
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + "\t");
+        }
+    }
+}
+```
+
+## 第7章 面向对象编程(基础部分)
+
+###  类与对象
+
+```java
+public class Object01 {
+    public static void main(String[] args) {
+        /*张老太养了两只猫猫:一只名字叫小白,今年 3 岁,白色。
+        还有一只叫小花,今年 100 岁,花色。
+        请编写一个程序，当用户输入小猫的名字时，
+        就显示该猫的名字，年龄，颜色。如果用户输入的小猫名错误，
+        则显示张老太没有这只猫猫。*/
+        //单独变量来解决=>不利于数据的管理
+        //第一只猫
+        String cat1Name = "小白";
+        int cat1Age = 3;
+        String cat1Color = "白色";
+
+        //第二只猫
+        String cat2Name = "小花";
+        int cat2Age = 100;
+        String cat2Color = "花色";
+
+        //数组=>数据类型无法体现
+        //只能通过下标获取信息，造成变量名和内容的对应关系不明确
+        //无法体现猫的行为
+        String[] cat1 = {"小白", "3", "白色"};
+        String[] cat2 = {"小花", "100", "花色"};
+
+        //使用OOP面向对象解决
+        //实例化一只猫（创建一只猫对象）
+        /*
+        * 1、new Cat() 创建一只猫
+        * 2、Cat cat01 = new Cat();把创建的猫赋给cat1
+        * 3、cat01就是一个对象*/
+        Cat cat01 = new Cat();
+        cat01.name="小白";
+        cat01.age=3;
+        cat01.color="白色";
+        //cat02也是一个对象
+        Cat cat02 = new Cat();
+        cat02.name="小花";
+        cat02.age=100;
+        cat02.color="花色";
+
+        //怎么访问对象的属性呢
+        System.out.println("第一只猫信息"+"\t"
+                +cat01.name+"\t"
+                +cat01.age+"\t"
+                +cat01.color);
+        System.out.println("第一只猫信息"+"\t"
+                +cat02.name+"\t"
+                +cat02.age+"\t"
+                +cat02.color);
+    }
+}
+//使用面向对象的方式来解决养猫问题
+//定义一个猫类Cat->自定义的数据类型
+class Cat {
+    //属性
+    String name;//名字
+    int age;//年龄
+    String color;//颜色
+    //行为
+}
+```
+
+#### 类与对象的关系示意图
+
+![image-20230130144745638](JavaGrammar.assets/image-20230130144745638.png)
+
+![image-20230130144956241](JavaGrammar.assets/image-20230130144956241.png)
+
+注意：从猫类（人类，狗类，鱼类）到对象，目前有集中说法：
+
+1、创建一个对象
+
+2、实例化一个对象
+
+3、把类实例化...
+
+#### 类与对象的区别和联系
+
+1. 类是抽象的，概念的，代表一类事物，比如人类，猫类...，即它是数据类型。
+2. 对象是具体的，实际的，代表一个具体事务，即 是实例。
+3. 类是对象的模板，对象是类的一个个体，对应一个实例。
+
+#### 对象在内存中存在形式（重要的）
+
+```java
+Cat cat=new Cat();
+cat.name="小白";
+cat.age=12;
+cat.color="白色";
+```
+
+![image-20230130153644881](JavaGrammar.assets/image-20230130153644881.png)
+
+#### 属性、成员变量
+
+1. 从概念或叫法上看：成员变量=属性=field（字段）（即 成员变量是用来表示属性的）
+
+2. 属性是类的一个组成部分，一般是基本数据类型，也可以是应用类型（对象、数组）。
+
+   比如前面定义猫类的int age就是属性
+
+##### 注意事项和细节说明
+
+1. 属性的定义语法同变量，示例：访问修饰符 属性类型 属性名;
+
+   访问修饰符：控制属性的访问范围
+
+   有四种访问修饰符：public protected 默认 private
+
+2. 属性的定义类型可以是为任意类型，包含基本类型或引用类型
+
+   `int 0，short 0, byte 0, long 0, float 0.0,double 0.0，char \u0000，boolean false，String null`
+
+3. 属性如果不赋值，有默认值，规则和数组一致。
+
+```java
+public class PropertiesDetail {
+    public static void main(String[] args) {
+        //创建Person对象
+        //p1是对象名（对象引用）
+        //new Person() 创建的对象空间（数据）才是真正的对象
+        Person p1 = new Person();
+        //对象的属性默认值，遵守数组规则
+        System.out.println("当前人的信息:");
+        System.out.println("age="+p1.age+" name="+p1.name
+                +" sal="+p1.sal+" isPass="+p1.isPass);
+    }
+}
+class Person{
+    //四个属性
+    int age;
+    String name;
+    double sal;
+    boolean isPass;
+}
+//当前人的信息:
+//age=0 name=null sal=0.0 isPass=false
+```
+
+#### 如何创建对象
+
+1. 先声明再创建
+
+   ```java
+   Cat cat;//声明对象cat
+   cat = new Cat();//创建
+   ```
+
+2. 直接创建
+
+   ```java
+   Cat cat = new Cat();
+   ```
+
+#### 类和对象内存分配机制（重要）
+
+```java
+public class Object03 {
+    public static void main(String[] args) {
+        //定义一个人类（Person）（包括：名称、年龄）
+        Person01 p1=new Person01();
+        p1.age=10;
+        p1.name="summer";
+        Person01 p2 = p1;
+        System.out.println(p2.age);//10
+    }
+}
+class Person01{
+    String name;
+    int age;
+}
+```
+
+![image-20230130173712213](JavaGrammar.assets/image-20230130173712213.png)
+
+##### Java内存的结构分析
+
+1. 栈：一般存放基本数据类型（局部变量）
+2. 堆：存放对象（Cat cat，数组等）
+3. 方法区：常量池（常量，比如字符串），类加载信息
+
+##### Java创建对象的流程简单分析
+
+```java
+Person p=new Person();
+p.name="jack";
+p.age=10;
+```
+
+1. 先加载Person类信息（属性和方法信息，只会加载一次）
+2. 再堆中分配空间，进行默认初始化。
+3. 把堆中的地址赋给p，p就指向对象
+4. 进行指定初始化，比如p1.name="jack"  p1.age=10;
+
+```java
+Person a=new Person();
+a.age=10;
+a.name="summer";
+Person b;
+b=a;
+System.out.println(b.name);//summer
+b.age=200;
+b=null;//b指向的地址为空
+System.out.println(a.age);
+System.out.println(b.age);//出现异常
+```
+
+### 成员方法
+
+#### 基本介绍
+
+在某些情况下，我们需要定义成员方法（简称方法）。比如人类：除了有一些属性外（年龄、姓名...），我们人类还有一些行为比如：可以说话、跑步...，通过学习，还可以做算术。这时就要用成员方法才能完成。
+
+#### 成员方法快速入门
+
+1. 添加speak成员方法，输出：我是一个好人
+2. 添加cal01成员方法，可以计算从1+...+1000的结果
+3. 添加cal02成员方法，该方法可以接收一个数n，计算从1+...+n的结果
+4. 添加getSum成员方法，可以计算两个数的和
+
+#### 方法的调用机制原理（重要！）
