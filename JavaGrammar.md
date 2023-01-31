@@ -3861,3 +3861,295 @@ class Person {
 3. 返回到调用方法的地方
 4. 返回后，继续执行方法后面的代码
 5. 当main方法（栈）执行完毕，整个程序退出
+
+#### 成员方法的好处
+
+提高代码的复用性
+
+可以将实现的细节封装起来，然后供其他用户来调用即可。
+
+```java
+public class Method02 {
+    public static void main(String[] args) {
+        //遍历一个数组，输出数组的各个元素
+        int[][] map = {{0, 0, 1}, {1, 1, 1}, {1, 1, 3}};
+        //使用方法完成输出,创建MyTools对象
+        MyTools tool = new MyTools();
+        tool.printArr(map);
+        //new MyTools().printArr(map);
+
+
+        //============================
+        //遍历map数组
+        //传统解决方式直接遍历
+        /*for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                System.out.print(map[i][j] + "\t");
+            }
+            System.out.println();
+        }*/
+        //要求再次遍历map数组
+
+    }
+}
+
+//把输出的功能，写到一个类的方法中，调用该方法
+class MyTools {
+    //方法。接收一个二维数组
+    public void printArr(int[][] map) {
+        //对传入的map数组遍历
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                System.out.print(map[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
+#### 成员方法的定义
+
+```java
+public 返回数据类型 方法名(形参列表...){
+    //方法体
+    语句;
+    return 返回值;
+}
+```
+
+1. 形参列表：表示成员方法输入cal(int n)
+2. 返回数据类型（返回类型）：表示成员方法输出，void表示没有返回值
+3. 方法主体：表示为了实现某一功能代码块
+4. return语句不是必须的
+
+#### 方法的注意事项和细节
+
+##### 修饰符（作用是控制方法使用的范围）
+
+如果不写默认访问。（有四种：public protected 默认 private）
+
+##### 返回类型
+
+1. 一个方法最多有一个返回值(如果返回多个结果，返回数组)
+2. 返回类型可以是为任意类型，包含基本类型或引用类型（数组，对象）
+3. 如果方法要求有返回数据类型，则方法体中最后的执行语句必须为return 值;而且要求返回值类型必须和return的值类型一致或兼容。
+4. 如果方法是void，则方法体中可以没有return语句，或者只写return;
+
+```java
+public class MethodDetail01 {
+    public static void main(String[] args) {
+        AA a = new AA();
+        //int[] res = a.getSumAndSub(1, 4);
+        //System.out.println(res[0]);
+        //System.out.println(res[1]);
+        byte a1=1;
+        byte b=4;
+        int[] res=a.getSumAndSub(a1,b);
+        System.out.println(res[1]);
+    }
+}
+
+class AA {
+    public int[] getSumAndSub(int a, int b) {
+        int[] resArr = new int[2];//创建数组
+        resArr[0] = a + b;
+        resArr[1] = a - b;
+        return resArr;
+    }
+
+    public double f1() {
+        double d1 = 1.1 * 3;
+        int n = 100;
+        return n;
+        //int--->double
+    }
+    public void f2(){
+        System.out.println("hello1");
+        System.out.println("hello1");
+        System.out.println("hello1");
+        System.out.println("hello1");
+        return;
+    }
+}
+```
+
+##### 方法名
+
+遵循驼峰命名法，最好见名知意，表达出该功能的意思即可。
+
+##### 形参列表
+
+1. 一个方法可以有0个参数，也可以有多个参数，中间用逗号隔开。
+2. 参数类型可以为任意类型，包含基本类型或应用类型。
+3. 调用带参数的方法时，一定对应着参数列表传入相同类型或兼容类型的参数！！！
+4. 方法定义时的参数称为形式参数，简称形参；方法调用时的参数称为实际参数，简称实参，实参和形参的类型要一致或兼容、个数、顺序必须一致！！！
+
+##### 方法体
+
+里面写完功能的具体的语句，可以为输入、输出、变量、运算、分支、循环、方法调用，但里面不能再定义方法！！！即：方法里不能嵌套定义。
+
+#### 方法调用细节说明
+
+1. 同一个类中的方法调用：直接调用即可。比如print(参数);
+2. 跨类中的方法A类调用B类方法：需要通过对象名调用。比如：对象名.方法名(参数);
+3. 特别说明：跨类的方法调用和方法的访问修饰符相关。
+
+```java
+public class MethodDetail02 {
+    public static void main(String[] args) {
+        A a = new A();
+        //a.sayOk();
+        a.m1();
+    }
+}
+class A {
+    //同一个类中的方法调用：直接调用即可
+    public void print(int n) {
+        System.out.println("print()方法被调用 n=" + n);
+    }
+
+    public void sayOk() {
+        print(10);
+        System.out.println("继续执行sayOk()");
+    }
+
+    public void m1() {
+        //创建B的对象,然后再调用方法
+        System.out.println("m1()方法被调用");
+        B b = new B();
+        b.hi();
+        System.out.println("m1()方法继续执行");
+    }
+}
+//跨类调用方法
+class B {
+    public void hi() {
+        System.out.println("B类中的hi()被执行");
+    }
+}
+```
+
+```java
+package com.basic.www.conpter07;
+
+/**
+ * @version: java version 1.8
+ * @Author: Summer Johnny
+ * @description:
+ * @date: 2023-01-31 11:07
+ */
+public class MethodExercise01 {
+    public static void main(String[] args) {
+        AA1 a = new AA1();
+        if(a.isOdd(1)){
+            System.out.println("是奇数");
+        }else {
+            System.out.println("是偶数");
+        }
+        AA2 a2 = new AA2();
+        a2.print(30,30,'*');
+    }
+}
+
+
+class AA1 {
+    //编写类Aa,有一个方法：判断一个数是奇数odd还是偶数，返回boolean
+    /*
+    * 1、方法的返回类型boolean
+    * 2、方法的名字isOdd
+    * 3、方法的形参(int num)
+    * 4、方法体，判断*/
+    public boolean isOdd(int num) {
+        /*if (num % 2 != 0) {
+            System.out.println(num + "是奇数");
+            //return true;
+        } else {
+            System.out.println(num + "是偶数");
+            //return false;
+        }*/
+        //return num % 2 != 0 ? true : false;
+        return num % 2 != 0;
+    }
+}
+class AA2{
+    //根据行、列、字符打印 对应行数和列数的字符，
+    //比如：行：4，列：4，字符#，则打印相应的效果
+    /*
+    * ####
+    * ####
+    * ####
+    * */
+    /*
+     * 1、方法的返回类型void
+     * 2、方法的名字print
+     * 3、方法的形参(int row,int col,char c)
+     * 4、方法体，循环*/
+    public void print(int row,int col,char c){
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                System.out.print(c);
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
+#### 成员方法传参机制！！！·
+
+##### 基本数据类型传参机制
+
+方法的传参机制是**非常重要**，一定要搞清楚。
+
+![image-20230131115201519](JavaGrammar.assets/image-20230131115201519.png)
+
+基本数据结构，传递的是值（值拷贝），形参的任何改变不影响实参！！！
+
+##### 引用数据类型传参机制
+
+```java
+public class MethodParameter02 {
+    public static void main(String[] args) {
+        AAA aaa = new AAA();
+        int[] arr = {1, 2, 3, 4, 5};
+        aaa.test100(arr);//调用方法
+        //遍历数组
+        System.out.println("这是main的arr数组");
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + "\t");
+        }
+        Person03 p03 = new Person03();
+        p03.name="summer";
+        p03.age=10;
+        aaa.test200(p03);
+        System.out.println("main的p.age="+p03.age);//1000
+    }
+}
+class Person03{
+    String name;
+    int age;
+}
+class AAA {
+    //编写一个方法test100,可以接收一个数组，在方法中修改数组，
+    // 看看原数组是否变化？
+    public void test100(int[] arr) {
+        arr[0] = 200;//修改元素
+        //遍历数组
+        System.out.println("是test100的arr数组");
+        for (int i = 0; i < arr.length; i++) {
+            System.out.print(arr[i] + "\t");
+        }
+        System.out.println();
+    }
+    //编写一个方法test200，可以接收一个Person(age.sal)对象
+    //在方法中修改对象属性，看看原来的对象是否改变？
+    public void test200(Person03 p03){
+        p03.age=10000;//修改
+    }
+}
+```
+
+![image-20230131165254563](JavaGrammar.assets/image-20230131165254563.png)
+
+引用类型传递的是地址（传递也是值，但是值是地址），可以通过形参影响实参！
