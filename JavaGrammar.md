@@ -4153,3 +4153,124 @@ class AAA {
 ![image-20230131165254563](JavaGrammar.assets/image-20230131165254563.png)
 
 引用类型传递的是地址（传递也是值，但是值是地址），可以通过形参影响实参！
+
+#### 方法的递归调用
+
+- 基本介绍
+
+简单的说：递归就是方法自己调用自己，每次调用时传入不同的变量。递归有助于编程者解决复杂问题，同时可以让代码变得简洁。
+
+- 递归能解决什么问题？
+
+1. 各种数学问题：8皇后，汉诺塔，阶乘，迷宫，球和蓝子的问题
+2. 各种算法中也会使用到递归，比如快排，归并排序，二分查找，分治算法等。
+3. 将用栈解决的问题--->递归代码比较简洁
+
+- 递归举例
+
+```java
+public class Recursion01 {
+    public static void main(String[] args) {
+        T t1 = new T();
+        //t1.test(4);
+        int res = t1.factorial(5);
+        System.out.println("res="+res);
+    }
+}
+
+class T {
+    public void test(int n) {
+        //打印问题
+        if (n > 2) {
+            test(n - 1);
+        } else {
+            System.out.println("n=" + n);
+        }
+        //System.out.println("n=" + n);
+    }
+
+    public int factorial(int n) {
+        //阶乘问题
+        if (n == 1) {
+            return 1;
+        } else {
+            return factorial(n - 1) * n;
+        }
+    }
+}
+```
+
+![image-20230201110237645](JavaGrammar.assets/image-20230201110237645.png)
+
+![image-20230201110254221](JavaGrammar.assets/image-20230201110254221.png)
+
+##### 递归重要规则
+
+1. 执行一个方法时，就创建一个新的受保护的独立空间（栈空间）。
+2. 方法的局部变量是独立的，不会相互影响，比如n变量。
+3. 如果方法中使用的是引用类型变量（比如数组、对象），就会共享该引用类型的数据。
+4. 递归必须向退出递归的条件逼近，否则就是无限递归，出现StackOverflowError，死鬼了）
+5. 当一个方法执行完毕，或者遇到return，就会返回，遵守谁调用，就将结果返回给谁，同时当方法执行完毕或者返回时，该方法也就执行完毕。
+
+##### 递归练习
+
+```java
+public class RecursionExercise01 {
+    public static void main(String[] args) {
+        T01 t01 = new T01();
+        //System.out.println("当n=7 对应的斐波那契数=" + t01.fibonacci(7));
+        int day = 1;
+        int peachNum = t01.peach(day);
+        if (peachNum != -1) {
+            System.out.println("第" + day + "天有" + peachNum + "个桃子");
+        }
+    }
+}
+
+class T01 {
+    //1、请使用递归的方式求出斐波那契数
+    //1,1,2,3,5,8,13...给你一个整数n，求出它的值是多少
+    /*
+     * 分析
+     * 1、当n=1 斐波那契数 是1
+     * 2、当n=2 斐波那契数 是1
+     * 3、当n>=3 斐波那契数 是前两个数的和
+     * 4、这里就是一个递归的思想
+     * */
+    public int fibonacci(int n) {
+        if (n >= 1) {
+            if (n == 1 || n == 2) {
+                return 1;
+            } else {
+                return fibonacci(n - 1) + fibonacci(n - 2);
+            }
+        } else {
+            System.out.println("要求输入的n>=1的整数");
+        }
+        return -1;
+    }
+
+    //2、猴子吃桃问题：有一堆桃子，猴子第一天吃了其中的一半，
+    //并再多吃了一个！以后每天后都吃其中的一半，然后再多吃一个。
+    //当到第10天时，想再吃时（即还没吃），发现只有一个桃子了。
+    //问题：最初共有多少个桃子？
+    /*
+     * 1、day=10时，有1个桃子
+     * 2、day=9时，有（day10+1）*2=4
+     * 3、规律：（后一天桃子+1）*2=前一天*/
+    public int peach(int day) {
+        if (day == 10) {//第10天只有1个桃子
+            return 1;
+        } else if (day >= 1 && day <= 9) {
+            return (peach(day + 1) + 1) * 2;
+        } else {
+            System.out.println("day在1-10");
+            return -1;
+        }
+    }
+}
+
+```
+
+
+
