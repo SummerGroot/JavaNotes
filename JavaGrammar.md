@@ -4096,7 +4096,7 @@ class AA2{
 }
 ```
 
-#### 成员方法传参机制！！！·
+#### 成员方法传参机制！！！
 
 ##### 基本数据类型传参机制
 
@@ -4269,8 +4269,330 @@ class T01 {
         }
     }
 }
+```
+
+###### 迷宫问题
+
+![image-20230202093935478](JavaGrammar.assets/image-20230202093935478.png)
+
+```java
+public class MiGong {
+    public static void main(String[] args) {
+        //1、先创建迷宫，用二维数组表示
+        int[][] map = new int[8][7];
+        //先规定map数组的元素值：0表示可以走，1表示障碍物
+        //将最上行最下行全部为1
+        for (int i = 0; i < 7; i++) {
+            map[0][i] = 1;
+            map[7][i] = 1;
+        }
+        //将第1列和最后一列全部为1
+        for (int i = 1; i < 8; i++) {
+            map[i][0] = 1;
+            map[i][6] = 1;
+        }
+        map[3][1] = 1;
+        map[3][2] = 1;
+        //map[2][2] = 1;
+        //输出当前迷宫
+        //System.out.println("=======当前地图情况=======");
+        /*for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
+                System.out.print(map[i][j] + "\t");
+            }
+            System.out.println();
+        }*/
+        //使用findWay找路
+        T02 t02 = new T02();
+        t02.findWay(map, 1, 1);
+        System.out.println("=====找路的情况如下=====");
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[0].length; j++) {
+                System.out.print(map[i][j] + "\t");
+            }
+            System.out.println();
+        }
+    }
+}
+
+class T02 {
+    //使用递归回溯的思想来解决老鼠出迷宫
+    /*
+     * 1、findWay方法是专门来找出迷宫的路径
+     * 2、如果找到就返回true，否则返回false
+     * 3、map就是二维数组，即表示迷宫
+     * 4、i,j就是老鼠的位置，初始化的位置为(1,1)
+     * 5、因为是递归的找路，所以先规定map数组的各个值的含义
+     *   0表示可以走，1表示障碍物，2表示可以走的路，3表示走过，但是走不通
+     * 6、当map(6,5)=2说明找到通路，否则就继续找。
+     * 7、先确定老鼠找路的策略：下->右->上->左*/
+    public boolean findWay(int[][] map, int i, int j) {
+        if (map[6][5] == 2) {//说明已经找到
+            return true;
+        } else {
+            if (map[i][j] == 0) {//当前这个位置0，说明可以走
+                //假定可以走通
+                map[i][j] = 2;
+                //使用找路的策略，来确定该位置是否真的可以走通
+                //下->右->上->左
+                if (findWay(map, i + 1, j)) {//走下
+                    return true;
+                } else if (findWay(map, i, j + 1)) {//右
+                    return true;
+                } else if (findWay(map, i - 1, j)) {//上
+                    return true;
+                } else if (findWay(map, i, j - 1)) {//左
+                    return true;
+                } else {
+                    map[i][j] = 3;
+                    return false;
+                }
+
+            } else {//map[i][j]=1,2,3
+                return false;
+            }
+        }
+    }
+}
+```
+
+#### 方法的重载（OverLoad）
+
+##### 基本介绍
+
+java中允许同一个类中，多个同名方法的存在，但要求形参列表不一致！
+
+比如：System.out.println();out是printStream类型
+
+##### 重载的好处
+
+1. 减轻了起名的麻烦
+2. 减轻了记名的麻烦
+
+##### 快速入门案例
+
+```java
+public class OverLoad01 {
+    public static void main(String[] args) {
+        MyCalculator mc = new MyCalculator();
+        System.out.println(mc.calculate(1,2));
+        System.out.println(mc.calculate(1.1,3));
+        System.out.println(mc.calculate(3,5.3));
+        System.out.println(mc.calculate(2,3,4));
+    }
+}
+
+class MyCalculator {
+    //下面的四个，calculate方法构成了重载
+    //两个整数的和
+    public int calculate(int n1, int n2) {
+        return n1 + n2;
+    }
+    //一个整数，一个double的和
+    public double calculate(int n1, double n2) {
+        return n1 + n2;
+    }
+    //一个double，一个整数的和
+    public double calculate(double n1, int n2) {
+        return n1 + n2;
+    }
+    //3个int的和
+    public int calculate(int n1, int n2, int n3) {
+        return n1 + n2 + n3;
+    }
+}
+```
+
+##### 注意事项和细节
+
+1. 方法名：必须相同
+2. 形参列表：必须不同（形参类型或个数或顺序，至少有一样不同，参数名无要求）
+3. 返回类型：无要求
+
+```java
+public class OverLoadExercise01 {
+    public static void main(String[] args) {
+        Methods mt = new Methods();
+        mt.m(2);
+        mt.m(4, 90);
+        mt.m("summer");
+        System.out.println("最大值为：" + mt.max(4, 5, 6));
+    }
+}
+
+
+class Methods {
+    /*
+     * 编写程序，类Methods中定义三个重载方法并调用。方法名为m。
+     * 三个方法分别接收一个int参数、两个int参数，一个字符串阐述。
+     * 分别执行平方运算并输出结果，相乘并输出结果，输出字符串信息。
+     * 在主类main（）方法中分别用参数区别调用三个方法。*/
+    public void m(int n) {
+        System.out.println(n + "的平方=" + (n * n));
+    }
+
+    public void m(int n1, int n2) {
+        System.out.println(n1 + "x" + n2 + "的结果=" + (n1 * n2));
+    }
+
+    public void m(String str) {
+        System.out.println("传入的字符串为：" + str);
+    }
+
+    /*
+     * 在Mthods类，定义三个重载方法max（）。
+     * 第一个方法，返回两个int值中的最大值
+     * 第二个方法，返回两个double值中的最大值。
+     * 第三个方法，返回三个double值中的最大值，并分别调用三个方法
+     * */
+    public int max(int a, int b) {
+        /*if (a < b) {
+            return a;
+        }else {
+            return b;
+        }*/
+        return a > b ? a : b;
+    }
+
+    public double max(double a, double b) {
+        /*if (a < b) {
+            return a;
+        }else {
+            return b;
+        }*/
+        return a > b ? a : b;
+    }
+
+    public double max(double a, double b, double c) {
+        double max = a > b ? a : b;
+        return max > c ? max : c;
+    }
+}
+```
+
+#### 可变参数
+
+##### 基本概念
+
+java允许将同一个类中**多个同名同功能**但**参数不同**的方法，封装成一个方法。
+
+##### 基本语法
+
+```java
+访问修饰符 返回类型 方法名(数据类型...形参名){
+    
+}
+```
+
+##### 案例
+
+```java
+public class VarParameter01 {
+    public static void main(String[] args) {
+        HepMethod hm = new HepMethod();
+        System.out.println(hm.sum(1,2,3,4,5));
+    }
+}
+
+//看一个案例 类 HspMethod，
+// 方法 sum 【可以计算 2 个数的和，3 个数的和 ， 4. 5，。。】
+class HepMethod {
+    //int...表示接收的是可变参数，类型是int，即可以接收多个int(0-多)
+    //使用可变参数时，可以当作数组来使用 即nums可以当作数组
+    //遍历nums求和
+    public int sum(int... nums) {
+        System.out.println("接收的参数个数=" + nums.length);
+        int res = 0;
+        for (int i = 0; i < nums.length; i++) {
+            res += nums[i];
+        }
+        return res;
+    }
+}
+```
+
+##### 注意事项和细节
+
+1. 可变参数的实参可以为0个或任意多个。
+2. 可变参数的实参可以为数组
+3. 可变参数的本质就是数组
+4. 可变参数可以和普通类型的参数一起放在形参列表，但必须保证可变参数在最后
+5. 一个形参列表中只能出现一个可变参数
+
+```java
+public class VarParameterDetail {
+    public static void main(String[] args) {
+        //可变参数的实参可以时数组
+        int[] arr = {1,2,3};
+        D d = new D();
+        d.f1(arr);
+        d.f2("summer",1.1,2.2,3.3);
+    }
+}
+class D{
+    public void f1(int... nums){
+        System.out.println(nums.length);
+    }
+    //可变参数可以和普通类型的参数一起放在形参列表，但必须保证可变参数在最后
+    public void f2(String str,double... nums){}
+}
 
 ```
 
+##### 练习
 
+```java
+public class VarParameterExercise {
+    public static void main(String[] args) {
+        HepMethod01 hm = new HepMethod01();
+        System.out.println(hm.showScore("summer" ,98.7,95.2));
+    }
+}
 
+/*
+ * 有三个方法：
+ * 分别实现返回姓名和两门课成绩（总分），
+ * 返回姓名和三门课成绩（总分）
+ * 返回姓名和五门课成绩（总分）。封装成一个可变参数的方法*/
+class HepMethod01 {
+    //方法名：showScore，形参（String，double...）,返回String
+    public String showScore(String name, double... score) {
+        double totalScore = 0;
+        for (int i = 0; i < score.length; i++) {
+            totalScore += score[i];
+        }
+        return name + "的总分为：" + totalScore;
+    }
+
+   /* public void showScore() {
+
+    }
+
+    public void showScore() {
+
+    }*/
+}
+
+```
+
+#### 作用域
+
+##### 基本使用
+
+1. 在java编程中，主要的变量就是属性（成员变量）和局部变量。
+
+2. 局部变量一般是指在成员方法中定义的变量
+
+3. java中作用域的分类
+
+   全局变量：也就是属性，作用域为整个类体Cat类：cay eat等方法使用属性
+
+   局部变量：也就是除了属性之外的其他变量，作用域定义它的代码块中！
+
+4. 全局变量（属性）可以不赋值，直接使用，因为有默认值，局部变量必须赋值后，才能使用，因为没有默认值
+
+##### 注意事项和细节
+
+1. 属性和局部变量可以重名，访问时遵循就近原则。
+2. 在同一个作用域中，比如在同一个成员方法中，两个局部比哪里，不能重名
+3. 属性生命周期较长，伴随着对象的创建而创建，伴随着对象死亡而死亡。局部变量，生命周期较短，伴随着它的代码块的执行创建，伴随着代码块的结束而死亡/即在一次方法调用过程中。
