@@ -4591,8 +4591,298 @@ class HepMethod01 {
 
 4. 全局变量（属性）可以不赋值，直接使用，因为有默认值，局部变量必须赋值后，才能使用，因为没有默认值
 
+```java
+public class VarScope {
+    public static void main(String[] args) {
+        VarScopeCat vsc = new VarScopeCat();
+        System.out.println(vsc.weight);
+    }
+}
+
+class VarScopeCat {
+    //全局变量：也就是属性，作用域为整个类体
+    int age = 10;
+    double weight;//默认值是0.0
+    //属性在定义是，可以直接赋值
+    {
+        int num = 10;
+    }
+
+    public void sat() {
+        //局部变量一般是指在成员方法中定义的变量
+        int n = 10;
+        //局部变量
+        String name = "summer";
+        //n name的作用域在car方法中
+        System.out.println("在cry中使用属性：" + age);
+    }
+
+    public void eat() {
+        System.out.println("在eat中使用属性：" + age);
+
+    }
+}
+```
+
+
+
 ##### 注意事项和细节
 
 1. 属性和局部变量可以重名，访问时遵循就近原则。
 2. 在同一个作用域中，比如在同一个成员方法中，两个局部比哪里，不能重名
-3. 属性生命周期较长，伴随着对象的创建而创建，伴随着对象死亡而死亡。局部变量，生命周期较短，伴随着它的代码块的执行创建，伴随着代码块的结束而死亡/即在一次方法调用过程中。
+3. **属性生命周期较长**，伴随着对象的创建而创建，伴随着对象销毁而销毁。局部变量，**生命周期较短**，伴随着它的代码块的执行创建，伴随着代码块的结束而销毁/即在一次方法调用过程中。
+
+4. 作用域范围不同
+   1. 全局变量/属性：可以被本类使用，或其他类使用（通过对象调用）
+   2. 局部变量：只能在本类对应的方法中使用
+5. 修饰符不同
+   1. 全局变量/属性可以加修饰符
+   2. 局部变量不可以加修饰符
+
+```java
+public class VarScopeDetail {
+    public static void main(String[] args) {
+        PersonVar pv = new PersonVar();
+        /*
+         * 属性生命周期较长，伴随着对象的创建而创建，伴随着对象销毁而销毁。
+         * 局部变量，生命周期较短，伴随着它的代码块的执行创建，
+         * 伴随着代码块的结束而销毁/即在一次方法调用过程中。*/
+        //pv.say();
+        //当执行say（）方法时，say方法的局部变量比如name，会创建，
+        //当say执行完毕后name局部变量就销毁，但是属性（全局变量）任然可以使用
+        T03 t03 = new T03();
+        t03.test01();//summer
+        //第1种跨类访问属性的方式
+        t03.test02(pv);//summer
+        //第2种跨类访问属性的方式
+    }
+}
+
+class T03 {
+    //全局变量/属性：可以被本类使用，或其他类使用（通过对象调用）
+    public void test01() {
+        PersonVar pv = new PersonVar();
+        System.out.println(pv.name);
+    }
+
+    public void test02(PersonVar p) {
+        System.out.println(p.name);
+    }
+}
+
+
+class PersonVar {
+    String name = "summer";
+    //属性可以加修饰符（public private protected...）
+    public int age = 24;
+
+    public void say() {
+        //细节  属性和局部变量可以重名，访问时遵循就近原则
+        String name = "king";
+        System.out.println("say()name=" + name);
+    }
+
+    public void hi() {
+        String address = "成都";
+        String name = "xy";//可以
+    }
+}
+```
+
+#### 构造器/构造方法
+
+##### 基本语法
+
+```java
+[修饰符] 方法名(形参列表){
+    方法体;
+}
+/*
+说明
+1、构造器的修饰符可以默认，也可以是public private protected
+2、构造器没有返回值
+3、方法名和类名必须一致
+4、参数列表和成员方法一样的规则
+5、构造器的调用系统完成
+*/
+```
+
+##### 基本介绍
+
+构造方法又叫构造器（constructor)，是类的一种特殊的方法，它的主要作用是完成对**新对象的初始化**。
+
+1. 方法名和类目相同。
+2. 没有返回值。
+3. 在创建对象时，系统会自动的调用该类的构造器完成对象的初始化。
+
+```java
+public class Constructor01 {
+    public static void main(String[] args) {
+        //当我们new一个对象时，直接通过构造器名称和年龄
+        PersonConstructor01 p1 = new PersonConstructor01("summer", 100);
+        System.out.println("p1的信息");
+        System.out.println("p1对象name=" + p1.name);//summer
+        System.out.println("p1对象age=" + p1.age);//100
+    }
+}
+
+//在创建人类对象时，就直接指定这个对象的年龄和姓名
+class PersonConstructor01 {
+    String name;
+    int age;
+
+    //构造器
+    public PersonConstructor01(String pName, int pAge) {
+        System.out.println("构造器被调用，完成对象属性的初始化！！");
+        name = pName;
+        age = pAge;
+        /*
+         * 1、构造器没有返回值，也不能写void
+         * 2、构造器的名称和类名PersonConstructor01必须一致
+         * 3、(String pName, int pAge)是构造器形参列表，规则和成员方法一样*/
+    }
+}
+```
+
+##### 注意事项和细节
+
+1. 一个类可以定义多个不同的构造器，即构造器重载
+
+   比如：我们可以再给PersonConstructor类定义一个构造器，用来创建对象的时候，只指定人名，不需要指定年龄。
+
+2. 构造器名和类名一致
+
+3. 构造器没有返回值
+
+4. 构造器是完成对象的初始化，并不是创建对象
+
+5. 在创建对象时，系统自动的调用该类的构造方法
+
+6. 如果没有定义构造方法，系统会自动给类生成一个默认无参构造器（也叫默认构造方法），比如Dog(){}，使用**javap**指定反编译查看。`javap Dog.class`
+
+7. 一旦定义了自己的构造器，默认的构造器就覆盖了，就不能再使用默认的无参构造器，除非显式的定义一下。
+
+```java
+public class ConstructorDetail {
+    public static void main(String[] args) {
+        PersonConstructorDetail p1 = new PersonConstructorDetail("summer", 50);
+        //第1个构造器
+        PersonConstructorDetail p2 = new PersonConstructorDetail("james");
+        //第2个构造器
+        System.out.println(p2.name);
+        //使用默认无参构造器
+        Dog dog01 = new Dog();
+
+    }
+}
+
+class PersonConstructorDetail {
+    String name;
+    int age;//默认0
+
+    //第1个构造器
+    public PersonConstructorDetail(String pName, int pAge) {
+        name = pName;
+        age = pAge;
+    }
+
+    //第2个构造器,只指定人名，不需要指定年龄
+    public PersonConstructorDetail(String pName) {
+        name = pName;
+    }
+}
+
+class Dog {
+    //如果没有定义构造方法，
+    //系统会自动给类生成一个默认无参构造器（也叫默认构造方法）
+    //使用javap反编译
+    /*
+     * 默认构造器
+     * Dog(){
+     *
+     * }
+     * */
+    //一旦定义了自己的构造器，默认的构造器就覆盖了，
+    // 就不能再使用默认的无参构造器，除非显式的定义一下
+    Dog(String dName) {
+        //.....
+    }
+
+    //显示定义无参构造
+    Dog() {
+
+    }
+}
+```
+
+##### 练习
+
+```java
+public class ConstructorExercice {
+    public static void main(String[] args) {
+        PersonExercise p1 = new PersonExercise();//无参构造器
+        System.out.println("p1的信息 name=" + p1.name +
+                "\tp1的信息 age=" + p1.age);
+        //p1的信息 name=null	p1的信息 age=18
+        PersonExercise p2 = new PersonExercise("summer", 25);
+        System.out.println("p2的信息 name=" + p2.name +
+                "\tp2的信息 age=" + p2.age);
+        //p2的信息 name=summer	p2的信息 age=25
+    }
+}
+
+//第1个无参构造器：利用构造器设置所有人的age属性初始值都为18.
+//第2个带pName和pAge两个参数的构造器：
+//使用每次创建PersonExercise对象的同时初始化对象的age属性值和name的属性值。
+//分别使用不同的构造器，创建对象。
+class PersonExercise {
+    String name;
+    int age;
+
+    //第1个无参构造器：利用构造器设置所有人的age属性初始值都为18.
+    public PersonExercise() {
+        age = 18;
+    }
+
+    //第2个带pName和pAge两个参数的构造器
+    public PersonExercise(String pName, int pAge) {
+        name = pName;
+        age = pAge;
+    }
+}
+```
+
+#### 对象创建的流程分析
+
+```java
+class Person{
+    int age=90;
+    String name;
+    Person(String n,int a){
+        name=n;
+        age=a;
+    }
+}
+Person p=new Person("夏源",25);
+```
+
+1. 加载Person类信息（Person.class），只会加载一次
+2. 在堆中分配空间（地址）
+3. 完成对象属性初始化
+   1. 默认初始化age=0,name=null
+   2. 显示初始化age90,name=null
+   3. 构造器的初始化age=20,name=夏源
+4. 对象在堆中的地址，返回给p（p是对象名，也可以理解成对象的引用）
+
+![image-20230206171413250](JavaGrammar.assets/image-20230206171413250.png)
+
+#### this关键字
+
+```java
+```
+
+##### 什么是this
+
+java虚拟机会给每个对象分配this，代表当前对象。坦白的讲，要明白this不是件容易事情。
+
+##### 使用this解决变量命名问题
