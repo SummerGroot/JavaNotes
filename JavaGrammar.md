@@ -5473,3 +5473,479 @@ class Account {
 }
 ```
 
+#### 继承
+
+##### 继承基本介绍和示意图
+
+继承可以解决代码复用，让我们的编程更加靠近人类思想。当多个类存在相同的属性（变量）和方法时，可以从这些类中抽象出父类，在父类中定义这些相同的属性和方法，所有的子类不需要重新定义这些属性和方法，只需要通过extends来声明继承父类即可。
+
+![image-20230208105045692](JavaGrammar.assets/image-20230208105045692.png)
+
+##### 继承的基本语法
+
+```java
+class 子类 extends 父类{
+    
+}
+```
+
+1. 子类就会自动拥有父类定义的属性和方法。
+2. 父类又叫超类，基类。
+3. 子类又叫派生类。
+
+##### 快速入门
+
+```java
+public class Extend01 {
+    public static void main(String[] args) {
+        com.basic.www.conpter08.extend_.Pupil p1 = new Pupil();
+        p1.name = "james";
+        p1.age = 11;
+        p1.testing();
+        p1.setScore(70);
+        p1.showInfo();
+        System.out.println("===========");
+        com.basic.www.conpter08.extend_.Graduate g1 = new Graduate();
+        g1.name = "summer";
+        g1.age=24;
+        g1.testing();
+        g1.setScore(67);
+        g1.showInfo();
+    }
+}
+//父类，是pupil和Graduate的父类
+public class Student {
+    //共有的属性
+    public String name;
+    public int age;
+    private double score;//成绩
+
+    //共有方法
+    public void setScore(double score) {
+        this.score = score;
+    }
+    public void showInfo() {
+        System.out.println("学生姓名 " + name + " 年龄 " + age + " 成绩 " + score);
+    }
+}
+//让Pupil继承Student
+public class Pupil extends Student {
+    public void testing() {
+        System.out.println("小学生" + name + "正在考试");
+    }
+}
+//让Graduate继承Student
+public class Graduate extends Student{
+    public void testing() {
+        System.out.println("大学生 " + name + "正在考试");
+    }
+}
+```
+
+##### 继承给编程带来的遍历
+
+1. 代码的复用性提高了
+2. 代码的扩展性和维护性提高了
+
+##### 继承的细节
+
+1. 子类继承了所有的属性和方法，非私有的属性和方法可以在子类直接访问，但是私有属性和方法不能在子类直接访问，要通过父类提供公共的方法去访问。
+
+2. 子类没有继承父类的构造器，但必须调用父类的构造器，完成父类的初始化。
+
+3. 当创建子类对象时，不管使用子类的哪个构造器，默认情况下总会去调用父类的无参构造器，如果父类没有提供无参构造器，则必须在子类的构造器中用super去指定使用父类的哪个构造器完成对父类的初始化工作，否则，编译不会通过。
+
+4. 如果希望指定去调用父类的某个构造器，则显示的调用一下。`super(参数列表)`
+
+5. `super`在使用时，必须放在构造器第一行。（super只能在构造器中使用）
+
+6. `super()`和`this()`都只能放在构造器第一行，因此这两个方法不能共存在一个构造器。
+
+7. java所有类都是Object类的子类，Object是所有类的基类。
+
+8. 父类构造器的调用不限于直接父类！将一直往上追溯直到Object类（顶级父类）。
+
+9. 子类最多只能继承一个父类（指直接继承），即java中是**单继承机制**。
+
+   如何让A类继承B类和C类？
+
+10. 不能滥用继承，子类和父类之间必须满足is-a的逻辑关系。
+
+```java
+public class ExtendsDetail {
+    public static void main(String[] args) {
+       /* System.out.println("第1个对象");
+        Sub sub = new Sub();//创建子类对象sub
+        System.out.println("第2个对象");
+        Sub sub2 = new Sub("summer");//创建子类对象sub2*/
+        System.out.println("第3个对象");
+        Sub sub3 = new Sub("summer",24);//创建子类对象sub3
+        //sub.sayOk();
+    }
+}
+public class Base extends TopBase {//父类
+    //4个属性
+    public int n1 = 100;
+    protected int n2 = 200;
+    int n3 = 300;
+    private int n4 = 400;
+
+    public Base() {//无参构造器
+        System.out.println("父类Base()构造器被调用");
+    }
+
+    public Base(String name, int age) {//带参构造器
+        //默认super()构造器
+        System.out.println("父类的Base(String name,int age)带参构造器被调用");
+    }
+
+    public Base(String name) {//带参构造器
+        System.out.println("父类的Base(String name)带参构造器被调用");
+    }
+
+    //父类提供一个public方法
+    public int getN4() {
+        return n4;
+    }
+
+    public void test100() {
+        System.out.println("test100");
+    }
+
+    protected void test200() {
+        System.out.println("test200");
+    }
+
+    void test300() {
+        System.out.println("test300");
+    }
+
+    private void test400() {
+        System.out.println("test400");
+    }
+
+    public void callTest400() {
+        test400();
+    }
+}
+public class TopBase {//父类是Objeact
+    TopBase() {
+        //super();
+        //Object无参构造器
+        System.out.println("TopBase构造器被调用");
+    }
+}
+//Sub继承Base
+    //ctrl+h查看类的继承关系
+public class Sub extends Base {//子类
+
+    public Sub(String name, int age) {
+        //1、想调用父类的无参构造器
+        //super();//父类的无参构造器器；或者不写，默认调用super（）
+        //2、想调用父类的Base(String name)构造器
+        //super("fxy");
+        //3、想调用父类的Base(String name, int age)构造器
+        super("fxy",25);
+
+        System.out.println("子类Sub(String name, int age) 构造器被调用");
+    }
+
+    public Sub() {//无参构造器
+        //默认调用父类的无参构造器
+        //super();
+        super("james", 24);
+        System.out.println("子类Sub()构造器被调用");
+    }
+
+    //当创建子类对象时，不管使用子类的哪个构造器，默认情况下总会去调用父类的无参构造器
+    public Sub(String name) {
+        super("tom", 25);
+        //do nothing
+        System.out.println("子类的带参构造器被调用");
+
+    }
+
+    public void sayOk() {//方法
+        //非私有的属性和方法可以在子类直接访问
+        //但是私有属性和方法不能在子类直接访问
+        System.out.println(n1 + " " + n2 + " " + n3);
+        test100();
+        test200();
+        test300();
+        //test400();//错误
+        //通过父类提供公共的方法去访问
+        System.out.println("n4=" + getN4());
+        callTest400();
+    }
+}
+```
+
+##### 继承的本质分析（重要）
+
+当子类对象创建好后，建立查找关系。
+
+```java
+public class ExtendsTheory {
+    public static void main(String[] args) {
+        Son s = new Son();
+        //内存的布局
+        System.out.println(s.name);//大头儿子
+        //要按照查找关系来返回信息！！！
+        /*
+        * 1、首先看子类是否有该属性
+        * 2、如果子类有这个属性，并可以访问，则返回信息
+        * 3、如果子类没有这个属性，就看父类有没有（如果有并可以访问，就返回信息）
+        * 4、如果父类没有就按照3的规则，找上级父类，直到Object*/
+        System.out.println(s.getAge());//37
+        //System.out.println(s.age);
+        //java: age 在 com.basic.www.conpter08.extend_.Father 中是 private 访问控制
+        System.out.println(s.hobby);//玩耍
+    }
+}
+
+class GrandPa {//爷类
+    String name = "大头爷爷";
+    String hobby = "玩耍";
+    int age =98;
+}
+
+
+class Father extends GrandPa {//父类
+    String name = "大头爸爸";
+    private int age = 37;
+    public int getAge(){
+        return age;
+    }
+}
+
+class Son extends Father {//子类
+    String name = "大头儿子";
+}
+```
+
+![image-20230208150401346](JavaGrammar.assets/image-20230208150401346.png)
+
+##### 练习
+
+```java
+public class ExtendsExercise01 {
+    public static void main(String[] args) {
+        B b = new B();
+        /*
+        a
+        b name
+        b
+        */
+    }
+}
+
+class A {
+    A() {
+        System.out.println("a");
+    }
+
+    A(String name) {
+        System.out.println("a name");
+    }
+}
+
+class B extends A {
+    B() {
+        this("abc");
+        System.out.println("b");
+    }
+
+    B(String name) {
+        //super();默认调用
+        System.out.println("b name");
+    }
+}
+```
+
+```java
+public class ExtendsExercise02 {
+    public static void main(String[] args) {
+        C02 c02 = new C02();
+    }
+}
+
+class A02 {
+    public A02() {
+        System.out.println("我是A类");
+    }
+}
+
+class B02 extends A02 {
+    public B02() {
+        System.out.println("我是B类无参构造器");
+    }
+
+    public B02(String name) {
+        System.out.println(name + "我是B类有参构造器");
+    }
+}
+
+class C02 extends B02 {
+    public C02() {
+        this("hello");
+        System.out.println("我是C类无参构造器");
+    }
+
+    public C02(String name) {
+        super("summer");
+        System.out.println("我是C类的带参构造器");
+    }
+}
+```
+
+```java
+```
+
+#### super关键字
+
+##### 基本介绍
+
+super代表父类的引用，用于访问父类的属性，方法，构造器
+
+##### 基本语法
+
+```java
+public class super01 {
+    public static void main(String[] args) {
+        B b = new B();
+        //b.sum();
+        b.test();
+    }
+}
+
+class A extends Base {//父类是Base
+    //4个属性
+    public int n1 = 100;
+    protected int n2 = 200;
+    int n3 = 300;
+    private int n4 = 400;
+
+    public A() {
+
+    }
+
+    public A(String name) {
+
+    }
+
+    public A(String name, int age) {
+
+    }
+
+    public void test100() {
+    }
+
+    protected void test200() {
+    }
+
+    void test300() {
+    }
+
+    private void test400() {
+    }
+
+    public void cal() {
+        System.out.println("A类的cal（）方法...");
+    }
+
+
+}
+
+class B extends A {
+
+    public int n1 = 999;
+
+    //访问父类的属性，但不能访问父类的private属性
+    public void hai() {
+        System.out.println(super.n1 + " " + super.n2 + " " + super.n3);
+    }
+
+    //访问父类的方法，不能访问父类private方法
+    public void ok() {
+        super.test100();
+        super.test200();
+        super.test300();
+        //super.test400();
+    }
+
+    //访问父类的构造器
+    public B() {
+        //super();
+        //super("summer");
+        super("summer", 24);
+    }
+
+    public void sum() {
+        System.out.println("B类的sum（）方法");
+        //希望调用父类A的cal（）方法
+        //这时，因为子类B没有cal（）方法，可以使用下面三种方式
+        //cal();
+        /*
+         * 找cal方法时，顺序是，先找本类，如果有，并且可以调用，则调用
+         * 如果没有，则找父类（如果有，并可以调用，则调用）
+         * 如果父类没有，则继续找父类的父类。直到Object类
+         * 提示：如果查找方法的过程种，找到了，但是不能访问，则报错
+         *       如果查找方法的过程中，没有招法哦，则提示方法不存在*/
+        //this.cal();
+        //等价cal（）；
+        super.cal();
+        //找cal方法的顺序是直接查找父类，其他规则一样
+        //显示访问属性
+        System.out.println(n1);
+        System.out.println(this.n1);
+        System.out.println(super.n1);
+    }
+
+    public void cal() {
+        System.out.println("B类的cal方法");
+    }
+    public void test() {
+        System.out.println("super.n1=" + super.n1);
+        super.cal();
+    }
+}
+
+class Base {//父类是Object
+    public int n1 = 888;
+    public int age = 111;
+
+    public void cal() {
+        System.out.println("Base类的cal（）方法");
+    }
+
+    public void eat() {
+        System.out.println("Base类的eat（）方法");
+    }
+}
+```
+
+1. 访问父类的属性，但不能访问父类的private属性
+
+   `super.属性名;`
+
+2. 访问父类的方法，不能访问父类private方法
+
+   `super.方法名(参数列表);`
+
+3. 访问父类的构造器
+
+   `super(参数列表);`只能放在构造器的第一句，只能出现一句！！！
+
+##### super使用的细节
+
+1. 调用父类的构造器的好排除（分工明确，父类属性由父类初始化，子类的属性由子类初始化）。
+2. 当子类中有和父类中的成员（属性和方法）重名时，为了访问父类的成员，必须通过super。如果没有重名，使用super、this、直接访问是一样的效果！
+3. super的访问不限于直接父类，如果爷爷类和本类中有同名的成员，也可也使用super去访问爷爷类的成员；如果多个基类（上级类）中都有同名的成员，使用super访问遵循就近原则。`A->B->C`，当然也需要遵守访问权限的相关规则。
+
+|      | 区别点     | this                                                 | super                                    |
+| ---- | ---------- | ---------------------------------------------------- | ---------------------------------------- |
+| 1    | 访问属性   | 访问本类中属性，如果本类没有此属性则从父类中继续查找 | 从父类开始查找属性                       |
+| 2    | 调用方法   | 访问本类中的方法，如果本类没有此方法则从父类继续查找 | 从父类开始查找方法                       |
+| 3    | 调用构造器 | 调用本类构造器，必须放在构造器的首行                 | 调用父类构造器，必须放在子类构造器的首行 |
+| 4    | 特殊       | 表示当前对象                                         | 子类中访问父类对象                       |
+
