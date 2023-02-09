@@ -5949,3 +5949,323 @@ class Base {//父类是Object
 | 3    | 调用构造器 | 调用本类构造器，必须放在构造器的首行                 | 调用父类构造器，必须放在子类构造器的首行 |
 | 4    | 特殊       | 表示当前对象                                         | 子类中访问父类对象                       |
 
+#### 多态
+
+##### 多态基本介绍
+
+方法或对象具有多种形态。多态建立在封装和继承之上。
+
+##### 多态的具体体现
+
+1. 方法多态:重写和重载就体现多态
+
+```java
+public class PolyMethod {
+    public static void main(String[] args) {
+        //方法重载体现多态
+        A a = new A();
+        //这里我们传入不同的参数，就对调用不同的sum方法
+        System.out.println(a.sum(10, 20));
+        System.out.println(a.sum(10, 20, 30));
+
+        //方法的重写体现多态
+        B b = new B();
+        a.say();
+        b.say();
+    }
+}
+
+class B {//父类
+
+    public void say() {
+        System.out.println("B say()方法被调用");
+    }
+}
+
+class A extends B {//子类
+
+    public int sum(int n1, int n2) {//和下面的sum重载
+        return n1 + n2;
+    }
+
+    public int sum(int n1, int n2, int n3) {
+        return n1 + n2 + n3;
+    }
+
+    public void say() {
+        System.out.println("A say()方法被调用");
+    }
+}
+```
+
+##### 对象的多态
+
+2. 对象的多态（核心）
+
+   1. **一个对象的编译类型和运行类型可以不一致**
+
+      `Animal animal = new Dog();`（animal编译类型是Animal，运行类型Dog）
+
+      父类的引用指向子类的对象
+
+      `animal = new Cat();`（animal的运行类型变成了Cat，编译类型仍然是Animal）
+
+   2. **编译类型在定义对象时，就确定了，不能改变**
+
+   3. **运行类型时可以变化的**
+
+   4. **编译类型看定义时 `=` 号的左边，运行类型看`=`号的右边**
+
+```java
+public class PolyObject {
+    public static void main(String[] args) {
+        //对象多态特点
+
+        //animal编译类型就是Animal，运行类型就Dog
+        Animal animal = new Dog();
+        //运行时，这时就执行到该行是，animal运行类型是Dog，所以cry就是Dog的cry
+        animal.cry();//Dog cry()汪汪汪。。。
+        //animal 编译类型 Animal ，运行类型是Cat
+        animal = new Cat();
+        animal.cry();//Cat cry（）喵喵喵。。。
+    }
+}
+public class Animal {
+    public void cry(){
+        System.out.println("Animal cry（）动物在交换");
+    }
+}
+public class Cat extends Animal {
+    @Override
+    public void cry() {
+        System.out.println("Cat cry（）喵喵喵。。。");
+    }
+}
+public class Dog extends Animal {
+    @Override
+    public void cry() {
+        System.out.println("Dog cry()汪汪汪。。。");
+    }
+}
+```
+
+##### 多态入门
+
+使用多态的机制解决主人喂食问题。
+
+```java
+public class Poly01 {
+    public static void main(String[] args) {
+        Master tom = new Master("summer");
+        Dog dog01 = new Dog("火锅~");
+        Bone bone = new Bone("大棒骨~");
+        tom.feed(dog01, bone);
+
+        Cat tom01 = new Cat("tom~");
+        Fish fish01 = new Fish("小黄鱼~");
+        tom.feed(tom01, fish01);
+        //添加 给小猪喂米饭
+        Pig pig01 = new Pig("小花猪");
+        Rice rice = new Rice("剩饭");
+        tom.feed(pig01,rice);
+    }
+}
+public class Master {
+    private String name;
+
+    public Master(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /*//主人给小狗喂食-骨头
+    public void feed(Dog dog, Bone bone) {
+        System.out.println("主人：" + name + " 给 " + dog.getName() +
+                " 吃 " + bone.getName());
+    }
+
+    //主人给猫喂鱼
+    public void feed(Cat cat, Fish fish) {
+        System.out.println("主人：" + name + " 给 " + cat.getName() +
+                " 吃 " + fish.getName());
+    }*/
+
+    //如果动物很多，食物很多，不利于维护和管理
+    //使用多态机制，统一管理主人喂食的问题
+    //animal编译类型是Animal，可以指向（接收）Animal子类的对象
+    //food编译类型是Food，可以指向（接收）Food子类的对象
+    public void feed(Animal animal, Food food) {
+        System.out.println("主人：" + name + " 给 " + animal.getName() +
+                " 吃 " + food.getName());
+    }
+}
+public class Rice extends Food {
+    public Rice(String name) {
+        super(name);
+    }
+}
+public class Pig extends Animal {
+    public Pig(String name) {
+        super(name);
+    }
+}
+```
+
+##### 多态的注意事项和细节
+
+多态的前提是：两个对象（类）存在继承关系。
+
+多态的向上转型。
+
+1. 本质：父类的引用指向了子类的对象
+2. 语法：`父类类型 引用名 =  new 子类类型();`
+3. 特点：编译类型看左边，运行类型看右边。可以调用父类中的所有成员（遵守访问权限）不能调用子类中特有成员。最终运行效果看子类（运行类型）的具体实现，调用方法时，从子类开始查找方法！！！
+
+多态的向上转型
+
+1. 语法：`子类类型 引用名 = （子类类型）父类引用;`
+2. 只能强转父类的引用，不能墙砖父类的对象。
+3. 要求父类的引用必须指向的是当前目标类型的对象。
+4. 可以调用子类类型中所有的成员。
+
+### 方法重写/覆盖（override）
+
+#### 基本介绍
+
+简单的说：方法覆盖（重写）就是子类有一个方法，和父类的某个方法的名称、返回类型、参数一样，那么我们就说子类的这个方法覆盖了父类的那个方法。
+
+#### 快速入门
+
+```java
+public class Override01 {
+    public static void main(String[] args) {
+        //演示方法重写的情况
+        Dog dog = new Dog();
+        dog.cry();
+    }
+}
+
+class Animal {
+    public void cry() {
+        System.out.println("动物叫唤。。。");
+    }
+}
+
+class Dog extends Animal {
+    //Dog是Animal的子类
+    //Dog的cry方法和Animal的cry定义形式一样（名称、返回参数、参数）
+    //这时就说Dog的cry方法重写了Animal的cry方法
+    public void cry() {
+        System.out.println("小狗汪汪叫。。。");
+    }
+}
+```
+
+#### 注意事项和使用细节
+
+方法重写也叫方法覆盖，需要满足下面的条件。
+
+1. 子类的方法的**形参列表**，**方法名称**，要和父类方法的**形参列表**，**方法名称**完全一致。
+
+2. 子类方法的返回类型和父类方法返回类型一致，或者是父类返回子类的子类。
+
+   比如：父类返回类型是Object，子类方法返回类型是String
+
+   `public Object getInfo(){}`
+
+   `public String getInfo(){}`
+
+3. 子类方法不能缩小父类方法的访问权限
+
+   `void sayOk(){}`
+
+   `public void sayOk(){}`
+
+#### 重写和重载的比较
+
+| 名称             | 发生范围 | 方法名   | 形参列表                     | 返回类型                                                   | 修饰符                             |
+| ---------------- | -------- | -------- | ---------------------------- | ---------------------------------------------------------- | ---------------------------------- |
+| 重载（overload） | 本类     | 必须一样 | 类型，个数，顺序至少一个不同 | 无要求                                                     | 无要求                             |
+| 重写（override） | 父子类   | 必须一样 | 必须相同                     | 子类重写的方法，返回的类型和父类返回的类型一致，或者是子类 | 子类方法不能缩小父类方法的访问范围 |
+
+```java
+public class OverrideExercise {
+    public static void main(String[] args) {
+        /*
+        * 分别创建Person和Student对象，调用say方法输出自我介绍*/
+        Person summer = new Person("summer",24);
+        System.out.println(summer.say());
+        Student student = new Student("summer",25,123,98);
+        System.out.println(student.say());
+    }
+}
+public class Person {
+    //包括属性private（name、age），构造器、方法say（返回自我介绍的字符串）
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String say() {
+        return "名字=" + name + " 年龄" + age;
+    }
+}
+public class Student extends Person {
+    private int id;
+    private int score;
+
+    public Student(String name, int age, int id, int score) {
+        super(name, age);//自动调用父类构造器
+        this.id = id;
+        this.score = score;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    //say方法
+    public String say() {//体现super的好处
+        return super.say() + " id=" + id + " score=" + score;
+    }
+}
+```
+
