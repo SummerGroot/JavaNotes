@@ -6128,12 +6128,339 @@ public class Pig extends Animal {
 2. 语法：`父类类型 引用名 =  new 子类类型();`
 3. 特点：编译类型看左边，运行类型看右边。可以调用父类中的所有成员（遵守访问权限）不能调用子类中特有成员。最终运行效果看子类（运行类型）的具体实现，调用方法时，从子类开始查找方法！！！
 
-多态的向上转型
+多态的向下转型
 
 1. 语法：`子类类型 引用名 = （子类类型）父类引用;`
 2. 只能强转父类的引用，不能墙砖父类的对象。
 3. 要求父类的引用必须指向的是当前目标类型的对象。
-4. 可以调用子类类型中所有的成员。
+4. 当向下转型后，就可以调用子类类型中所有的成员。
+
+```java
+public class PolyDetail {
+    public static void main(String[] args) {
+
+        // 向上转型：父类的引用指向了子类的对象
+        // 语法：父类类型 引用名 =  new 子类类型();
+        Animal animal = new Cat();
+
+        // Object obj = new Animal();????
+        Object obj = new Animal();
+
+        // 可以调用父类中的所有成员（遵守访问权限）
+        // 不能调用子类中特有成员
+        // 因为在编译阶段，能调用哪些成员是由编译类型来决定的。
+        // 最终运行效果看子类的具体实现,调用方法时，从子类开始查找方法
+        animal.eat();//猫吃鱼
+        animal.show();//你好!!!
+        animal.sleep();//睡觉
+        animal.run();//跑
+
+        //可以调用Cat的 catchMouse
+        //多态的向下转型
+        //子类类型 引用名 = （子类类型）父类引用;
+        Cat cat = (Cat) animal;
+        //cat的编译类型是Cat，运行类型是Cat
+        cat.catchMouse();//猫抓老鼠
+        //要求父类的引用必须指向的是当前目标类型的对象。
+        //Dog dog = (Dog) animal;
+        //ClassCastException
+        //错误
+    }
+}
+public class Animal {
+    String name = "动物";
+    int age = 10;
+
+    public void sleep() {
+        System.out.println("睡觉");
+    }
+
+    public void run() {
+        System.out.println("跑");
+    }
+
+    public void eat() {
+        System.out.println("吃饭");
+    }
+
+    public void show() {
+        System.out.println("你好!!!");
+    }
+}
+public class Cat extends Animal {
+    @Override
+    public void eat() {
+        System.out.println("猫吃鱼");
+    }
+
+    public void catchMouse() {//猫特有方法
+        System.out.println("猫抓老鼠");
+    }
+}
+public class Dog extends Animal {//Dog是Animal子类
+}
+```
+
+属性没有重写之说！！属性的值看编译类型
+
+```java
+public class PolyDetail02 {
+    public static void main(String[] args) {
+        Base base = new Sub();//向上转型
+        System.out.println(base.count);//10  直接看编译类型
+        Sub sub = new Sub();
+        System.out.println(sub.count);//20
+    }
+}
+
+class Base {//父类
+    int count = 10;//属性
+}
+
+class Sub extends Base {//子类
+    int count = 20;//属性
+}
+```
+
+`instanceOf`比较操作符，用于判断**对象的运行类型**是否为XX类型或XX类型的子类型。
+
+```java
+public class PolyDetail03 {
+    public static void main(String[] args) {
+        BB bb = new BB();
+        System.out.println(bb instanceof BB);//true
+        System.out.println(bb instanceof AA);//true
+
+        //aa的编译类型是AA，运行类型是BB
+        AA aa = new BB();
+        System.out.println(aa instanceof AA);//true
+        System.out.println(aa instanceof BB);//true
+
+        Object obj = new Object();
+        System.out.println(obj instanceof AA);//false
+        String str = "hello";
+        System.out.println(str instanceof Object);//true
+    }
+}
+
+class AA {
+}//父类
+
+class BB extends AA {
+}//子类
+```
+
+##### 练习
+
+```java
+public class PolyExercise01 {
+    public static void main(String[] args) {
+        double d = 13.4;
+        long l=(long)d;
+        System.out.println(l);//13
+        int in =5;
+        //boolean b = (boolean)in;//X,boolean->int
+        Object obj = "hello";//向上转型
+        String objStr = (String)obj;//向下转型
+        System.out.println(objStr);//hello
+
+        Object objPri = new Integer(5);//向上转型
+        //String str = (String)objPri;//X 指向Integer的父类引用转成String
+        //ClasscaseException
+        Integer str1 = (Integer)objPri;//向下转型
+    }
+}
+```
+
+##### Java动态绑定机制（非常重要）
+
+1. 当调用对象方法的时候，**该方法会和该对象的内存地址/运行类型绑定**
+2. 当调用对象属性时，**没有动态绑定机制**，哪里声明，哪里使用。
+
+```java
+public class DynamicBinding {
+    public static void main(String[] args) {
+        //a的编译类型A，运行类型B
+        A a = new B();//向上转型
+        System.out.println(a.sum());
+        //40 从B类开始查找sum方法
+        //注销子类的sum
+        //30
+        System.out.println(a.sum1());
+        //30 从B类开始查找sum方法
+        //注销子类sum1
+        //20
+    }
+}
+
+class A {//父类
+    public int i = 10;
+
+    /*
+     *动态绑定机制
+     * 1、当调用对象方法的时候，该方法会和该对象的内存地址/运行类型绑定
+     * 2、当调用对象属性时，没有动态绑定机制，哪里声明，哪里使用。
+     * */
+    public int sum() {
+        return geti() + 10;//20+10
+    }
+
+    public int sum1() {//父类sum1
+        return i + 10;
+    }
+
+    public int geti() {//父类geti
+        return i;
+    }
+}
+
+class B extends A {//子类
+    public int i = 20;
+
+    /*@Override
+    public int sum() {
+        return i + 20;
+    }*/
+    @Override
+    public int geti() {//子类geti
+        return i;
+    }
+
+    /*@Override
+    public int sum1() {
+        return i + 10;
+    }*/
+}
+```
+
+##### 多态的应用
+
+1. 多态数组
+
+数组的定义类型为父类类型，里面保持的实际元素类型为子类类型
+
+```java
+public class PolyArray {
+    public static void main(String[] args) {
+        /*
+         * 应用实例：现有一个继承结构如下：要求创建1个Person对象，
+         * 2个Student对象和2个Teacher对象，统一放在数组中，并调用say方法。
+         * */
+        Person[] persons = new Person[5];
+        persons[0] = new Person("summer", 20);
+        persons[1] = new Student("lisi", 18, 100);
+        persons[2] = new Student("james", 20, 98);
+        persons[3] = new Teacher("吉泽明步", 30, 8000);
+        persons[4] = new Teacher("king", 45, 80000);
+
+        //循环遍历多态数组 调用say方法
+        for (int i = 0; i < persons.length; i++) {
+            //提示：persons[i] 编译类型时Person，
+            //运行类型是根据实际情况由JVM来判断
+            System.out.println(persons[i].say());//动态绑定机制
+            //类型判断+向下转型
+            if (persons[i] instanceof Student) {
+                //判断persons[i]是不是Student
+                Student student = (Student) persons[i];//向下转型
+                student.say();
+                //((Student) persons[i]).study();
+            } else if (persons[i] instanceof Teacher) {
+                Teacher teacher = (Teacher) persons[i];//向下转型
+                teacher.teach();
+            } else if (persons[i] instanceof Person) {
+
+            } else {
+                System.out.println("你的类型有误，请自己检查");
+            }
+        }
+    }
+}
+public class Person {//父类
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String say() {
+        //返回名字+年龄
+        return name + "\t" + age;
+    }
+}
+public class Student extends Person {
+    private double score;
+
+    public Student(String name, int age, double score) {
+        super(name, age);
+        this.score = score;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    //重写父类say方法
+    @Override
+    public String say() {
+        return super.say() + " score=" + score;
+    }
+
+    public void study() {
+        System.out.println("学生：" + getName() + "正在学java");
+    }
+}
+public class Teacher extends Person {
+    private double salary;
+
+    public Teacher(String name, int age, double salary) {
+        super(name, age);
+        this.salary = salary;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    @Override
+    //从写父类say方法
+    public String say() {
+        return super.say() + " salary=" + salary;
+    }
+
+    //特有的方法
+    public void teach() {
+        System.out.println("老师：" + super.getName() + "正在授课");
+    }
+}
+```
+
+ 
 
 ### 方法重写/覆盖（override）
 
@@ -6164,6 +6491,38 @@ class Dog extends Animal {
     //这时就说Dog的cry方法重写了Animal的cry方法
     public void cry() {
         System.out.println("小狗汪汪叫。。。");
+    }
+}
+
+
+
+public class PolyExercise02 {
+    public static void main(String[] args) {
+        Sub s = new Sub();
+        System.out.println(s.count);//20
+        s.display();//20
+        Base b = s;
+        System.out.println(b == s);//true
+        System.out.println(b.count);//20
+        b.display();//20
+
+    }
+}
+
+class Base {//父类
+    int count = 10;
+
+    public void display() {
+        System.out.println(this.count);
+    }
+}
+
+class Sub extends Base {//子类
+    int count = 20;
+
+    @Override
+    public void display() {
+        System.out.println(this.count);
     }
 }
 ```
