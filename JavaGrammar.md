@@ -6460,7 +6460,110 @@ public class Teacher extends Person {
 }
 ```
 
- 
+2. 多态参数
+
+方法定义的形参类型为父类类型，实参类型允许为子类类型。
+
+```java
+public class Polyparameter {
+    public static void main(String[] args) {
+        Worker tom = new Worker("tom", 6125.2);
+        Manager jack = new Manager("jack", 10000, 20000);
+        Polyparameter polyparameter = new Polyparameter();
+        polyparameter.showEmpAnnual(tom);
+        polyparameter.showEmpAnnual(jack);
+
+        polyparameter.testWork(tom);//普通员工：tom正在工作
+        polyparameter.testWork(jack);//经理：jack正在管理
+    }
+
+    //实现获取任何员工对象的年工资，并在main方法中调用该方法
+    public void showEmpAnnual(Employee e) {
+        System.out.println(e.getAnnual());
+    }
+
+    public void testWork(Employee e) {
+        if (e instanceof Worker) {
+            ((Worker) e).work(); //向下转型操作
+        } else if (e instanceof Manager) {
+            ((Manager) e).manage();//向下转型操作
+        } else {
+            System.out.println(("不支持的类型"));
+        }
+    }
+}
+public class Employee {
+    private String name;
+    private double salary;
+
+    public Employee(String name, double salary) {
+        this.name = name;
+        this.salary = salary;
+    }
+
+    //得到年工资的方法
+    public double getAnnual() {
+        return salary * 12;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+}
+public class Worker extends Employee {
+    public Worker(String name, double salary) {
+        super(name, salary);
+    }
+
+    public void work() {
+        System.out.println("普通员工：" + getName() + "正在工作");
+    }
+
+    @Override
+    public double getAnnual() {
+        //因为普通员工没有其他收入，直接调用父类的方法
+        return super.getAnnual();
+    }
+}
+public class Manager extends Employee {
+    private double bonus;
+
+    public Manager(String name, double salary, double bonus) {
+        super(name, salary);
+        this.bonus = bonus;
+    }
+
+    public void manage() {
+        System.out.println("经理：" + getName() + "正在管理");
+    }
+
+    @Override
+    //重写获取年薪的方法
+    public double getAnnual() {
+        return super.getAnnual() + bonus;
+    }
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
+}
+```
 
 ### 方法重写/覆盖（override）
 
@@ -6626,5 +6729,449 @@ public class Student extends Person {
         return super.say() + " id=" + id + " score=" + score;
     }
 }
+```
+
+### Object类详解
+
+#### `==`和equals对比
+
+`==`是比较运算符
+
+1. `==`：即可以判断基本类型，又可以判断引用类型
+
+2. `==`：如果判断基本类型，判断的是值是否相等。
+
+   `int i =10; double b= 10.0;`
+
+3. `==`：如果判断引用类型，判断的是地址是否相等，即判定是不是同一个对象。
+
+equals方法
+
+1. equals：是Object类中的方法，只能判断引用类型。
+
+   1. 如何看jdk源码?
+
+      ![image-20230213142343678](JavaGrammar.assets/image-20230213142343678.png)
+
+      ![image-20230213142417448](JavaGrammar.assets/image-20230213142417448.png)
+
+      需要看某个方法源码，将光标放在该方法，输入ctrl+b。
+
+      或者在方法上右键->go to->Delaration or Usages
+
+2. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：Integer,String
+
+```java
+public class Equals01 {
+    public static void main(String[] args) {
+        A a = new A();
+        A b = a;
+        A c = b;
+        System.out.println(a == c);//?true
+        System.out.println(b == c);//?true
+        B bObj = a;
+        System.out.println(bObj == c);//?true
+        int num1 = 10;
+        double num2 = 10.0;
+        System.out.println(num1 == num2);//基本数据类型
+
+        //equals方法，源码怎么查看
+        //"hello".equals("123");
+        /*
+        JDK String类的equals方法 源码
+        把Object的equals方法重写了，变成了比较两个字符串的值是否相等
+        public boolean equals(Object anObject) {
+        if (this == anObject) {//如果是同一个对象
+            return true;//返回true
+        }
+        if (anObject instanceof String) {//判断类型
+            String anotherString = (String)anObject;//向下转型
+            int n = value.length;
+            if (n == anotherString.value.length) {//如果长度相同
+                char v1[] = value;
+                char v2[] = anotherString.value;
+                int i = 0;
+                while (n-- != 0) {//一个一个比较字符
+                    if (v1[i] != v2[i])
+                        return false;
+                    i++;
+                }
+                return true;//如果两个字符串都相等，则返回true
+            }
+        }
+        return false;
+        }*/
+        //Object类的equals方法
+        /*
+        默认比较对象地址是否相同
+        也就是判断两个对象的是不是同一个对象
+        public boolean equals(Object obj) {
+            return (this == obj);
+        }
+        */
+        /*
+        Integer 也重写了equals方法，判断两个值是否相等
+        public boolean equals(Object obj) {
+            if (obj instanceof Integer) {
+                return value == ((Integer)obj).intValue();
+            }
+            return false;
+        }
+        */
+        Integer i1 = new Integer(5);
+        Integer i2 = new Integer(5);
+        System.out.println((i1 == i2));//false
+        System.out.println(i1.equals(i2));//true 
+    }
+}
+class B {
+}
+class A extends B {
+}
+```
+
+##### 如何重写equals方法
+
+```java
+public class EqualsExercise01 {
+    public static void main(String[] args) {
+        //判断两个Person对象的内容是否相等，
+        //如果两个Person对象的各个属性值都一样，
+        //则返回true，否则false
+        Person p1 = new Person("james", 37, '男');
+        Person p2 = new Person("kobe", 37, '男');
+        System.out.println(p1.equals(p2));//false
+    }
+}
+
+class Person {  //extends Object
+    private String name;
+    private int age;
+    private char gender;
+
+    //重写Object 的 equals 方法
+    public boolean equals(Object obj) {
+        //如果比较的两个对象是同一个对象，则直接返回true
+        if (this == obj) {
+            return true;
+        }
+        //类型判断
+        if (obj instanceof Person) {
+            //是Person，我们才比较
+            //进行向下转型,需要得到obj的 各个属性
+            Person p = (Person) obj;
+            return this.name.equals(p.name) && this.age == p.age && this.gender == p.gender;
+        }
+        //如果不是Person，则直接返回false
+        return false;
+    }
+
+    public Person(String name, int age, char gender) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public char getGender() {
+        return gender;
+    }
+
+    public void setGender(char gender) {
+        this.gender = gender;
+    }
+
+}
+```
+
+```java
+public class EqualsExercise02 {
+    public static void main(String[] args) {
+        Person02 p1 = new Person02();
+        p1.name = "zhangsan";
+        Person02 p2 = new Person02();
+        p2.name = "zhangsan";
+        System.out.println(p1 == p2);//false
+        System.out.println(p1.name.equals(p2.name));//true
+        System.out.println(p1.equals(p2));//false
+
+        String str1 = new String("asdf");
+        String str2 = new String("asdf");
+        System.out.println(str1.equals(str2));//true
+        System.out.println(str1 == str2);//false
+    }
+}
+class Person02 {
+    public String name;
+}
+```
+
+#### hashCode方法
+
+1. 提高具有哈希结构的容器的效率！
+
+2. 两个引用，如果指向的是同一个对象，则哈希值肯定是一样的！
+
+3. 两个引用，如果指向的是不同对象，则哈希值不一样。
+
+4. 哈希值最主要根据地址号来的！不能完全将哈希值等价于地址。
+
+5. `A obj1 = new A();      A obj2 = new A();       A obj3 = obj1;`
+
+   ```java
+   public class HashCode_ {
+       public static void main(String[] args) {
+           AA aa1 = new AA();
+           AA aa2 = new AA();
+           AA aa3 = aa1;
+           System.out.println("aa1.hashCode()" + aa1.hashCode());
+           //aa1.hashCode()460141958
+           System.out.println("aa2.hashCode()" + aa2.hashCode());
+           //aa2.hashCode()1163157884
+           System.out.println("aa3.hashCode()" + aa3.hashCode());
+           //aa3.hashCode()460141958
+       }
+   }
+   class AA {
+   }
+   ```
+
+6. hashCo的如果需要，会重写。
+
+#### toString方法
+
+##### 基本介绍
+
+默认返回：全类名（包名+类名）+@+哈希值的十六进制；子类往往重写 toString 方法，用于返回对象的属性信息
+
+重写 toString 方法，打印对象或拼接对象时，都会自动调用该对象的 toString 形式。
+
+当直接输出一个对象时，toString 方法会被默认的调用
+
+`System.out.println(monster)`默认调用monster.toString();
+
+```java
+public class ToString_ {
+    public static void main(String[] args) {
+
+        /*
+        Object 的 toString() 方法返回一个字符串，该字符串包含了该对象的类的全限定名，
+        getClass().getName() 类的全类名(包名+类名）
+        Integer.toHexString(hashCode()将对象的hashCode值转成16进制字符串
+        public String toString() {
+            return getClass().getName() + "@" + Integer.toHexString(hashCode());
+        }
+        */
+
+        Monster monster = new Monster("小妖怪", "巡山", 3000);
+        System.out.println(monster.toString() + "monster.hashCode()：" + monster.hashCode());
+        //com.basic.www.conpter08.object_.Monster@1b6d3586
+        System.out.println(monster);
+        //等价monster.toString()
+        //Monster{name='小妖怪', job='巡山', salary=3000.0}
+    }
+}
+
+class Monster {
+    private String name;
+    private String job;
+    private double salary;
+
+    public Monster(String name, String job, double salary) {
+        this.name = name;
+        this.job = job;
+        this.salary = salary;
+    }
+    //重写toString()方法，输出对象的属性
+
+    @Override
+    public String toString() {
+        //重写后，一般把对象的属性输出，可以自己定制。
+        return "Monster{" +
+                "name='" + name + '\'' +
+                ", job='" + job + '\'' +
+                ", salary=" + salary +
+                '}';
+    }
+}
+```
+
+#### finalize方法
+
+1. 当对象被回收时，系统自动调用该对象的finalize方法。子类可以重写该方法，做一些**释放资源**的操作。
+2. 什么时候被回收：当某个对象没有任何引用时，则jvm就认为这个对象是一个垃圾对象，就会使用垃圾回收机制来销毁该对象，在销毁该对象时，会先调用finalize方法。
+3. 垃圾回收机制的调用，是由系统来决定的(即由自己的GC算法)，也可以通过`System.gc()`主动出发垃圾回收机制。
+
+```java
+//演示finalize使用
+public class Finalize_ {
+    public static void main(String[] args) {
+        Car bmw = new Car("宝马");
+        bmw = null;
+        //car对象就是一个垃圾，垃圾回收器就会回收（销毁）。
+        //在销毁对象前，会调用该对象的finalize()方法
+        //可以在finalize写业务逻辑代码（比如释放资源：数据库连接，打开文件。。。）
+        //如果不重写finalize方法，那么就会调用Object类的finalize()方法。即默认处理
+        //如果重写了finalize方法，就可以实现自己的逻辑
+        System.gc();
+        //主动调用垃圾回收器
+        System.out.println("程序退出了.....");
+    }
+}
+
+class Car {
+    private String name;
+
+    public Car(String name) {
+        this.name = name;
+    }
+
+    @Override
+    //重写finalize
+    protected void finalize() throws Throwable {
+        System.out.println("我们销毁汽车" + name);
+        System.out.println("释放了某些资源");
+    }
+}
+```
+
+### 断点调试（debug）
+
+断点调试快捷键：
+
+F7(跳入)：跳入方法内
+
+F8(跳过)：逐行执行代码
+
+shift+F8(跳出)：跳出方法
+
+F9(resume，执行到下一个断点)
+
+### 项目-零钱通
+
+#### 项目需求
+
+使用java开发零钱通项目，可以完成收益入账，消费，查看明细，退出系统等功能。
+
+#### 项目页面
+
+![image-20230213165531617](JavaGrammar.assets/image-20230213165531617.png)
+
+#### 项目代码实现
+
+```java
+package com.basic.www.conpter08.smallchange;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+/**
+ * @version: java version 1.8
+ * @Author: Summer Johnny
+ * @description:
+ * @date: 2023-02-13 16:58
+ */
+public class SmallChangeSys {
+    public static void main(String[] args) {
+        //化繁为简
+        //1、先完成显示菜单，并可以选择,给出对应提示
+        //定义相关变量
+        boolean loop = true;
+        //定义输入
+        Scanner scanner = new Scanner(System.in);
+        String key = "";
+        //2、完成零钱通明细
+        /*
+         * 1、可以把收入和消费，保持到数组
+         * 2、可以使用对象
+         * 3、使用String拼接*/
+        String details = "--------零钱通明细--------";
+        //3、完成收益入账
+        /*
+         * 1、定义新的变量*/
+        double money = 0;
+        double balance = 0;
+        Date date = null;//date是java.util.Date类型,表示日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //可以用于日期格式花的
+        //4、消费
+        /*
+         * 1、定义新变量，保持消费的原因
+         **/
+        String note = "";
+        do {
+            System.out.println("--------零钱通菜单--------");
+            System.out.println("\t\t\t\t1、零钱通明细");
+            System.out.println("\t\t\t\t2、收益入账");
+            System.out.println("\t\t\t\t3、消费");
+            System.out.println("\t\t\t\t4、退\t出");
+
+            System.out.print("请选择(1-4):");
+            key = scanner.next();
+            //使用switch分支控制
+            switch (key) {
+                case "1":
+                    System.out.println(details);
+                    break;
+                case "2":
+                    System.out.print("收益入账金额：");
+                    money = scanner.nextDouble();
+                    //money 的值范围应该校验
+                    balance += money;
+                    //拼接收益入账信息到details
+                    date = new Date();//获取当前的日期
+                    //System.out.println(sdf.format(date));
+                    details += "\n收益入账金额\t："
+                            + money + "\t"
+                            + sdf.format(date)
+                            + "\t" + "余额：" + balance;
+
+                    break;
+                case "3":
+                    System.out.print("消费金额:");
+                    money = scanner.nextDouble();
+                    //money 的值范围应该校验
+                    System.out.print("消费说明：");
+                    note = scanner.next();
+                    balance -= money;
+                    date = new Date();//获取当前时间
+                    //拼接收益入账信息到details
+                    details += "\n" + note + "\t：" +
+                            "-" + money + "\t" +
+                            sdf.format(date) + "\t" +
+                            "余额：" + balance;
+                    break;
+                case "4":
+                    System.out.println("\t\t\t\t4、退\t出");
+                    loop = false;
+                    break;
+                default:
+                    System.out.println("选择有误！！！，请重现选择");
+            }
+        } while (loop);
+        System.out.println("--------退出了零钱通项目--------");
+    }
+}
+```
+
+#### 项目改进
+
+```java
 ```
 
