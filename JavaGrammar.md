@@ -1,16 +1,14 @@
-# JAVA基础
+# 第1章	基础知识
 
-## 第1章	基础知识
+# 第2章	JAVA概述
 
-## 第2章	JAVA概述
-
-### Java运行机制
+## Java运行机制
 
 ![image-20221116223314998](JavaGrammar.assets/image-20221116223314998.png)
 
-- 什么是编译
+### 什么是编译
 
-  java Hello.java
+java Hello.java
 
 - 有了java源文件，通过编译器将其编译成JVM可以识别的字节码文件。
 
@@ -53,17 +51,17 @@ class test{
 //java test-Hello test!!
 ```
 
-- 什么是运行
+### 什么是运行
 
-  1、有了可执行的java程序（Hello.class字节码文件)
+1、有了可执行的java程序（Hello.class字节码文件)
 
-  2、通过运行工具java.exe对字节码文件进行执行，本质就是.class装载到jvm机执行。
+2、通过运行工具java.exe对字节码文件进行执行，本质就是.class装载到jvm机执行。
 
 - java程序开发注意事项
 
   对修改后的Hello.java源文件需要重新编译，生成新的class文件后，再进行执行，才能生效。
 
-环境变量path配置
+### 环境变量path配置
 
 1、环境变量的作用是为了在dos的任意目录，可以去使用java和javac命令
 
@@ -71,7 +69,7 @@ class test{
 
 3、编辑path环境变量，增加%JAVA_HOME%\bin
 
-#### Java开发注意事项和细节说明
+## Java开发注意事项和细节说明
 
 1. Java源文件以`.java`为扩展名。源文件的基本组成部分是类（class），如本类中的Hello类。
 
@@ -91,36 +89,36 @@ class test{
 
 8. 一个源文件中最多只能有一个public类。其他类的个数不限，也可以将main方法写在非public类中，然后指定运行非public类，这样入口方法就是非public的main方法。
 
-### 转义字符
+## 转义字符
 
-- Java常用的转义字符
+### Java常用的转义字符
 
-  | 符号 | 说明                                         |
-  | ---- | -------------------------------------------- |
-  | `\t` | 一个制表位，实现对齐的功能                   |
-  | `\n` | 换行符                                       |
-  | `\\` | 一个\                                        |
-  | `\"` | 一个"                                        |
-  | `\'` | 一个'                                        |
-  | `\r` | 一个回车`System.out.println("hello\rjava");` |
+| 符号 | 说明                                         |
+| ---- | -------------------------------------------- |
+| `\t` | 一个制表位，实现对齐的功能                   |
+| `\n` | 换行符                                       |
+| `\\` | 一个\                                        |
+| `\"` | 一个"                                        |
+| `\'` | 一个'                                        |
+| `\r` | 一个回车`System.out.println("hello\rjava");` |
 
-  ```java
-  //转移字符
-  public class ChangeChar{
-  	public static void main(String[] args){
-  		System.out.println("四川\t成都\t双流");
-  		System.out.println("四川\n成都\n双流");
-  		System.out.println("四川\\成都\\双流");
-  		System.out.println("四川\"成都\"双流");
-  		System.out.println("四川\'成都\'双流");
-          //输出：四川你好
-          //\r表示回车
-  		System.out.println("四川你好\r成都");
-  	}
-  }
-  ```
+```java
+//转移字符
+public class ChangeChar{
+	public static void main(String[] args){
+		System.out.println("四川\t成都\t双流");
+		System.out.println("四川\n成都\n双流");
+		System.out.println("四川\\成都\\双流");
+		System.out.println("四川\"成都\"双流");
+		System.out.println("四川\'成都\'双流");
+        //输出：四川你好
+        //\r表示回车
+		System.out.println("四川你好\r成都");
+	}
+}
+```
 
-  ![image-20221117111543434](JavaGrammar.assets/image-20221117111543434.png)
+![image-20221117111543434](JavaGrammar.assets/image-20221117111543434.png)
 
 ![image-20221117111553773](JavaGrammar.assets/image-20221117111553773.png)
 
@@ -138,67 +136,67 @@ public class ChangeChar{
 }
 ```
 
-### 注释（comment）
+## 注释（comment）
 
-- 介绍
+### 介绍
 
-  用于注解说明解释程序的文字就是注释，注释提高了代码的阅读性（可读性）；注释是**一个程序员必须具有的良好编程习惯**。将自己的思想通过注释先整理出来，再用代码去体现。
+用于注解说明解释程序的文字就是注释，注释提高了代码的阅读性（可读性）；注释是**一个程序员必须具有的良好编程习惯**。将自己的思想通过注释先整理出来，再用代码去体现。
 
-- Java中的注释类型
+### Java中的注释类型
 
-  1、单行注释
+1、单行注释
 
-  格式：`//注释文字`
+格式：`//注释文字`
 
-  2、多行注释
+2、多行注释
 
-  格式：`/*注释文字*/`
+格式：`/*注释文字*/`
 
-  使用细节
+### 使用细节
 
-  ​	1、被注释的文字，不会被JVM（java虚拟机）解释执行
+​	1、被注释的文字，不会被JVM（java虚拟机）解释执行
 
-  ​	2、多行注释里面不允许有多行注释嵌套
+​	2、多行注释里面不允许有多行注释嵌套
 
-  3、文档注释
+​	3、文档注释
 
-  注释内容可以被JDK提供的工具javadoc所解析，生成一套以网页文件形式体现的该程序的说明文档，一般写在类
+注释内容可以被JDK提供的工具javadoc所解析，生成一套以网页文件形式体现的该程序的说明文档，一般写在类
 
-  基本格式
+### 基本格式
 
-  如何生成对应的文档注释
+如何生成对应的文档注释
 
-  应用实例
+应用实例
 
-  ```java
-  javadoc -d 文件夹名 -xx -yy Demo03.java
-  ```
+```java
+javadoc -d 文件夹名 -xx -yy Demo03.java
+```
 
-  `javadoc标签`
+`javadoc标签`
 
-  | 标签          | 描述                                                   | 示例                                                         |
-  | ------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
-  | @author       | 标识一个类的作者，一般用于类注释                       | @author description                                          |
-  | @deprecated   | 指名一个过期的类或成员，表明该类或方法不建议使用       | @deprecated description                                      |
-  | {@docRoot}    | 指明当前文档根目录的路径                               | Directory Path                                               |
-  | @exception    | 可能抛出异常的说明，一般用于方法注释                   | @exception exception-name explanation                        |
-  | {@inheritDoc} | 从直接父类继承的注释                                   | Inherits a comment from the immediate surperclass.           |
-  | {@link}       | 插入一个到另一个主题的链接                             | {@link name text}                                            |
-  | {@linkplain}  | 插入一个到另一个主题的链接，但是该链接显示纯文本字体   | Inserts an in-line link to another topic.                    |
-  | @param        | 说明一个方法的参数，一般用于方法注释                   | @param parameter-name explanation                            |
-  | @return       | 说明返回值类型，一般用于方法注释，不能出现再构造方法中 | @return explanation                                          |
-  | @see          | 指定一个到另一个主题的链接                             | @see anchor                                                  |
-  | @serial       | 说明一个序列化属性                                     | @serial description                                          |
-  | @serialData   | 说明通过 writeObject() 和 writeExternal() 方法写的数据 | @serialData description                                      |
-  | @serialField  | 说明一个 ObjectStreamField 组件                        | @serialField name type description                           |
-  | @since        | 说明从哪个版本起开始有了这个函数                       | @since release                                               |
-  | @throws       | 和 @exception 标签一样.                                | The @throws tag has the same meaning as the @exception tag.  |
-  | {@value}      | 显示常量的值，该常量必须是 static 属性。               | Displays the value of a constant, which must be a static field. |
-  | @version      | 指定类的版本，一般用于类注释                           | @version info                                                |
+| 标签          | 描述                                                   | 示例                                                         |
+| ------------- | ------------------------------------------------------ | ------------------------------------------------------------ |
+| @author       | 标识一个类的作者，一般用于类注释                       | @author description                                          |
+| @deprecated   | 指名一个过期的类或成员，表明该类或方法不建议使用       | @deprecated description                                      |
+| {@docRoot}    | 指明当前文档根目录的路径                               | Directory Path                                               |
+| @exception    | 可能抛出异常的说明，一般用于方法注释                   | @exception exception-name explanation                        |
+| {@inheritDoc} | 从直接父类继承的注释                                   | Inherits a comment from the immediate surperclass.           |
+| {@link}       | 插入一个到另一个主题的链接                             | {@link name text}                                            |
+| {@linkplain}  | 插入一个到另一个主题的链接，但是该链接显示纯文本字体   | Inserts an in-line link to another topic.                    |
+| @param        | 说明一个方法的参数，一般用于方法注释                   | @param parameter-name explanation                            |
+| @return       | 说明返回值类型，一般用于方法注释，不能出现再构造方法中 | @return explanation                                          |
+| @see          | 指定一个到另一个主题的链接                             | @see anchor                                                  |
+| @serial       | 说明一个序列化属性                                     | @serial description                                          |
+| @serialData   | 说明通过 writeObject() 和 writeExternal() 方法写的数据 | @serialData description                                      |
+| @serialField  | 说明一个 ObjectStreamField 组件                        | @serialField name type description                           |
+| @since        | 说明从哪个版本起开始有了这个函数                       | @since release                                               |
+| @throws       | 和 @exception 标签一样.                                | The @throws tag has the same meaning as the @exception tag.  |
+| {@value}      | 显示常量的值，该常量必须是 static 属性。               | Displays the value of a constant, which must be a static field. |
+| @version      | 指定类的版本，一般用于类注释                           | @version info                                                |
 
 ![image-20221117224336502](JavaGrammar.assets/image-20221117224336502.png)
 
-### 代码规范
+## 代码规范
 
 1. 类、方法的注释，要以javadoc的方式来写
 2. 非Java Doc的注释，往往是给代码的维护者看的，着重告诉读者为什么这样写，如何修改，注意什么问题等
@@ -208,66 +206,66 @@ public class ChangeChar{
 6. 行宽度不要超过80个字符
 7. 代码编写次行风格和行尾风格
 
-### DOS命令
+## DOS命令
 
-- DOS介绍
+### DOS介绍
 
-  Dos：Disk Operation System磁盘操作系统。
+Dos：Disk Operation System磁盘操作系统。
 
-- 相关的知识补充：相对路径，绝对路径
+### 相关的知识补充：相对路径，绝对路径
 
-  - 相对路径：从当前目录开始定位，形成的一个路径
-  - 绝对路径：从顶级目录D开始定位，形成的路径
+- 相对路径：从当前目录开始定位，形成的一个路径
+- 绝对路径：从顶级目录D开始定位，形成的路径
 
-  ![image-20221118112359822](JavaGrammar.assets/image-20221118112359822.png)
+![image-20221118112359822](JavaGrammar.assets/image-20221118112359822.png)
 
-- 常用dos命令
+### 常用dos命令
 
-  - 查看当前目录有什么
+- 查看当前目录有什么
 
-    `dir `       `dir d:\abc2\test`
+  `dir `       `dir d:\abc2\test`
 
-    ![image-20221117230308897](JavaGrammar.assets/image-20221117230308897.png)
+  ![image-20221117230308897](JavaGrammar.assets/image-20221117230308897.png)
 
-  - 切换到其他盘下：盘符号 cd   change directory
+- 切换到其他盘下：盘符号 cd   change directory
 
-    切换到C盘：cd /D c:
+  切换到C盘：cd /D c:
 
-    ![image-20221118112821898](JavaGrammar.assets/image-20221118112821898.png)
+  ![image-20221118112821898](JavaGrammar.assets/image-20221118112821898.png)
 
-  - 切换到当前盘的其他目录下
+- 切换到当前盘的其他目录下
 
-    cd d:\abc2test cd..\..\abc2\test
+  cd d:\abc2test cd..\..\abc2\test
 
-    
+  
 
-  - 切换到上一级
+- 切换到上一级
 
-    cd ..
+  cd ..
 
-    
+  
 
-  - 切换到根目录：cd \
+- 切换到根目录：cd \
 
-    cd \
+  cd \
 
-  - 查看指定的目录下所有的子级目录
+- 查看指定的目录下所有的子级目录
 
-    tree D:
+  tree D:
 
-  - 清屏
+- 清屏
 
-    cls[苍老师]
+  cls[苍老师]
 
-  - 退出DOS
+- 退出DOS
 
-    exit
+  exit
 
-  - 说明：(md、rd、copy、del、echo、type、move)
+- 说明：(md、rd、copy、del、echo、type、move)
 
-## 第3章	变量
+# 第3章	变量
 
-### 变量介绍
+## 变量介绍
 
 - 变量是程序的基本组成单位
 
@@ -295,7 +293,7 @@ public class ChangeChar{
 
 - 变量使用的基本步骤
 
-  - 声明变量
+  - 声明变量（先指定变量的类型，然后是变量名）
 
     int a;
 
@@ -316,19 +314,141 @@ char gender = '男';
 String name = "johnny";
 ```
 
-#### 变量使用注意事项
+### 变量使用注意事项
 
-1. 变量表示内存中的一个存储区域[不同的变量、类型不同、占用的空间大小不同；比如：int 4个字节，double 8个字节]
+1. 变量表示**内存中**的一个**存储区域**[不同的变量、类型不同、占用的空间大小不同；比如：int 4个字节，double 8个字节]
 2. 该区域有自己的名称[变量名]和类型[数据类型]
 3. 变量必须先声明，后使用，既有顺序
-4. 该区域的数据可以在同一类型范围内不断变化。
+4. 该区域的数据可以在**同一类型范**围内不断变化。
 5. 变量在同一个作用域内不能重名
-6. 变量=变量名+值+数据类型；变量三要素
+6. 变量=变量名（字母开头+字母/数字组成）+值+数据类型；变量**三要素**
 
-### +号的使用
+## final关键字
 
-1. 当左右两边都是数值型时，则做加法运算
-2. 当左右两边有一方为字符串，则做拼接运算
+final（最终的，最后的）可以修饰类、属性、方法和局部变量。
+
+1. 当不希望类被继承时，可以用final修饰。
+2. 当不希望父类的某个方法被子类覆盖/重写(override)时，可以用final关键字修饰。
+3. 当不希望类的某个属性的值被修改，可以使用final修饰。
+4. 当不希望某个局部变量被修改，可以使用final修饰
+
+### final注意事项和细节
+
+1. final修饰的属性又叫常量，一般用全大写命名。
+2. final修饰的属性在定义时，必须赋初值，并且以后不能再修改，赋值可以再如下位置之一。
+   1. 定义时：如public final double TAX_RATE=0.08;
+   2. 在构造器中。
+   3. 在代码块中。
+3. 如果final修饰的属性是静态的，则初始化的位置只能是
+   1. 定义时
+   2. 在静态代码块，不能再构造器中赋值
+4. final类不能继承，但是可以实例化对象
+5. 如果类不是final类，但是含有final方法，则该方法虽然不能重写，但是可以被继承。
+
+```java
+public class FinalDetail_ {
+    public static void main(String[] args) {
+        CC cc = new CC();
+        new EE().cal();
+    }
+}
+
+class AA {
+    public final double TAX_RATE = 0.08;//定义时
+    public final double TAX_RATE02;
+    public final double TAX_RATE03;
+
+    public AA() {
+        TAX_RATE02 = 1.1;//构造器
+    }
+
+    {
+        TAX_RATE03 = 9.9;//代码块
+    }
+}
+
+class BB {
+    public static final double B = 9.99;//定义时
+    public static final double BBBB;
+
+    static {
+        BBBB = 9.98;//静态代码块中
+    }
+}
+//final类不能继承，但是可以实例化对象
+final class CC{
+
+}
+class DD {
+    public final void cal(){
+        System.out.println("cal方法");
+    }
+}
+class EE extends DD{
+
+}
+```
+
+6. 一般来说，如果一个类已经是final类了，就没必要再将方法修饰成final方法。
+7. final不能修饰构造方法（即构造器）
+8. final和static往往搭配使用，效率更高，不会导致类加载。底层编译器做了优化处理。
+9. 包装类（Integer、Double、Float、Boolean等都是final），String也是final类。
+
+```java
+public class FinalDetail02 {
+    public static void main(String[] args) {
+        System.out.println(BBBB.num);
+        //包装类，String是final类，不能被继承
+
+    }
+}
+//final和static往往搭配使用，效率更高，不会导致类加载。底层编译器做了优化处理。
+class BBBB{
+    public final static int num =10000;
+    static{
+        System.out.println("BBB静态代码块被执行");
+    }
+}
+final class AAA{
+    public void cry(){}
+}
+```
+
+### 例题
+
+```java
+public class FinalExercise01 {
+    public static void main(String[] args) {
+        //能够求圆形的面积。要求圆周率为3.14,赋值的位置3个方式都写
+        Circle circle = new Circle(5.0);
+        System.out.println(circle.getArea());
+    }
+}
+
+class Circle {
+    private double radius;
+    private final double PI = 3.14;
+
+    //构造器
+    public Circle(double radius) {
+        this.radius = radius;
+        //PI = 3.14;
+    }
+
+    {
+        //PI = 3.14;
+    }
+
+    public double getArea() {
+        return PI * radius * radius;
+    }
+}
+```
+
+## +号的使用
+
+1. 当左右两边**都是数值型**时，则做**加法运算**
+2. 当左右两边**有一方为字符串**，则做**拼接运算**
 3. 运算顺序，从左往右
 
 ```java
@@ -342,7 +462,7 @@ public class Plus {
 }
 ```
 
-### 数据类型
+## 数据类型
 
 每一种数据都定义了明确的数据类型，在内存中分配了不同大小的内存空间（字节）
 
@@ -366,7 +486,7 @@ Java数据类型
   - 接口（interface）
   - 数组[]
 
-#### 整数类型
+### 整数类型
 
 | 类型          | 占用存储空间 | 范围           |
 | ------------- | ------------ | -------------- |
@@ -375,15 +495,13 @@ Java数据类型
 | int[整型]     | 4字节        | `-2^31~2^31-1` |
 | long[长整型]  | 8字节        | `-2^63~2^64-1` |
 
-- 整型的细节
+#### 整型的细节
 
-  1、Java各整数类型有固定的范围和字段长度，不受具体OS（操作系统）的影响，以保证java程序的可移植性。
-
-  2、Java的整型常量默认为int型，声明long型常量须后加`'l'`或`'L'`
-
-  3、Java程序中变量常声明为int型，除非不足以表示大数，才用long
-
-  4、bit：计算机中最小存储单位。byte：计算机中基本存储单元，1byte=8bit。
+1. Java各整数类型有**固定**的**范围**和字段长度，**不受具体OS（操作系统）的影响**，以保证java程序的可移植性。
+2. Java的整型常量默认为int型，声明long型常量须后加`'l'`或`'L'`。
+3. Java程序中变量常声明为int型，除非不足以表示大数，才用long。
+4. bit：计算机中最小存储单位。byte：计算机中基本存储单元，1byte=8bit。
+5. java7开始，还可以为数字加下划线：`1_000_000`表示100万（0b/0B表示二进制）。
 
 思考：long类型，有多少个bit
 
@@ -391,32 +509,31 @@ Java数据类型
 
 long n =3;//内存中0 0 0 0 0 0 0 00000011 
 
-#### 浮点类型
+### 浮点类型
 
 Java的浮点类型可以表示一个小数，比如：123.4、7.8、0.12。。。
 
-| 类型         | 占用存储空间 | 范围                 |
-| ------------ | ------------ | -------------------- |
-| 单精度float  | 4字节        | -3.403E38~3.403E38   |
-| 双精度double | 8字节        | -1.798E308~1.798E308 |
+| 类型         | 占用存储空间 | 范围                             |
+| ------------ | ------------ | -------------------------------- |
+| 单精度float  | 4字节        | -3.403E38~3.403E38(有效位6-7位)  |
+| 双精度double | 8字节        | -1.798E308~1.798E308(有效位15位) |
 
-1、关于浮点数在机器中存放形式的说明：浮点数=符号位+指数位+尾数位
+1. 关于浮点数在机器中存放形式的说明：浮点数=符号位+指数位+尾数位
+2. 尾数部分可能丢失，造成精度损失（小数都是近似值）
 
-2、尾数部分可能丢失，造成精度损失（小数都是近似值）
+#### 浮点型细节
 
-浮点型细节
+1. 与整数类型类似，Java浮点类型也有固定的范围和字段长度，不受具体OS的影响
 
-1、与整数类型类似，Java浮点类型也有固定的范围和字段长度，不受具体OS的影响
+2. Java的浮点型常量默认为double型，声明float型常量，须后加'f'或'F'。
 
-2、Java的浮点型常量默认为double型，声明float型常量，须后加'f'或'F'
+3. 浮点型常量有两种表示形式
 
-3、浮点型常量有两种表示形式
+   十进制数形式：5.12、512.0f、.512（必须有小数点）
 
-​	十进制数形式：5.12、512.0f、.512（必须有小数点）
+   科学计数法形式：5.12e2[5.12*10的2次方]、5.12E-2
 
-​	科学计数法形式：5.12e2[5.12*10的2次方]、5.12E-2
-
-4、通常情况下，应该使用double型，因为它比float型更精确
+4. 通常情况下，应该使用double型，因为它比float型更精确
 
 ```java
 double num9 = 2.1234567851;
@@ -425,7 +542,7 @@ float num10 = 2.12345678F;
 //2.1234567
 ```
 
-5、浮点数使用陷进2.7和8.1/3比较
+5. 浮点数使用陷进2.7和8.1/3比较
 
 ```java
 double num = 2.7;
@@ -444,15 +561,17 @@ if (Math.abs(num - num1)<0.0000001) {
 }
 ```
 
-#### Java API文档
+6. 三个特殊值：`Double.POSTIVE_INFINITY(正无穷)、Double.NEGATIVE_INFINITY(负无穷)、Double.NaN(非数)`
+
+### Java API文档
 
 1、API(Application Programming Interface，应用程序编程接口)是Java提供的基本编程接口`https://www.matools.com`
 
-#### 字符类型（char）
+### 字符类型（char）
 
-##### 基本介绍
+#### 基本介绍
 
-字符类型可以表示单个字符，字符类型是char，char是两个字节（可以存放汉字），多个字符我们用字符串String。
+字符类型可以表示单个字符（用单引号括起来），字符类型是char，char是两个字节（可以存放汉字），多个字符我们用字符串String。
 
 ```java
 public class Char01 {
@@ -464,15 +583,15 @@ public class Char01 {
         char c4 = 97;
         //复制快捷键 ctrl+d
         //
-        System.out.println(c1);
-        System.out.println(c2);
-        System.out.println(c3);
-        System.out.println(c4);//输出c4时候，会输出97表示的字符
+        System.out.println(c1);//a
+        System.out.println(c2);//制表位
+        System.out.println(c3);//夏
+        System.out.println(c4);//输出c4时候，会输出97表示的字符 a
     }
 }
 ```
 
-##### 字符类型使用细节
+#### 字符类型使用细节
 
 1. 字符常量是用单引号`''`括起来的单个字符。
 
@@ -487,6 +606,8 @@ public class Char01 {
 4. 可以直接给char赋一个整数，然后输出时，会按照对应的unicode字符输出[97]
 
 5. char类型时可以进行运算的，相当于一个整数，因为它都对应有unicode码。
+
+6. char类的值可以表示位十六进制值，范围从`\u0000~\uFFFF`。转义字符`\u`还可以出现再加引号的字符常量或字符串之外。（而其他转移字符不可以）
 
 ```java
 public class CharDetail {
@@ -505,7 +626,7 @@ public class CharDetail {
 
 ```
 
-##### 字符类型本质探讨
+#### 字符类型本质探讨
 
 1. 字符型存储到计算机中，需要将字符对应的码值（整数）找出来，比如`'a'`
 
@@ -515,11 +636,11 @@ public class CharDetail {
 
 2. 字符和码值的对应关系时通过字符编码表绝对的（规定好的）
 
-#### 布尔类型：boolean
+### 布尔类型：boolean
 
-##### 基本介绍
+#### 基本介绍
 
-1. 布尔类型也叫boolean类型，boolean类型数据只允许取值true和false，无null
+1. 布尔类型也叫boolean类型，boolean类型数据只允许取值true和false，用来判定逻辑条件，无null
 2. boolean类型占1个字节
 3. boolean类型试于逻辑运算，一般用于程序流程控制
    - if条件控制语句
@@ -541,13 +662,65 @@ public class Boolean {
 }
 ```
 
-##### 使用细节说明
+#### 使用细节说明
 
-不可以用0或非0的整数代替false和true，这点和C语言不同
+1. 不可以用0或非0的整数代替false和true，这点和C语言不同
+2. 整形值和布尔值之间不能相互转换。
 
-### 编码
+### 字符串
 
-#### 介绍一下字符编码表
+每个用双引号括起来的字符串都是`String`类的一个实例
+
+#### 子串
+
+`String`类的`substring(a,b)`方法可以从一个较大的字符串提取一个子串。
+
+#### 检测字符串是否相等
+
+可以使用equals方法检测两个字符串是否相等。
+
+`s.equals(str);`
+
+如果字符串s和字符串str相等，则返回true；否则返回false。
+
+#### 空串与Null串
+
+空串`""`长度为0的字符串。
+
+`if(str.length()==0)`或`if(str.equals(""))`
+
+空串是一个java对象，有自己的串长度(0)和内容(空)。
+
+null：表示目前没有任何对象与该变量关联。
+
+## 大数
+
+如果基本的整数和浮点数精度不能够满足需求，一下两个类可以满足。
+
+`BigInteger`:实现任意精度的整数运算
+
+ `BigDecimal`:实现任意精度的浮点数运算
+
+使用静态的valueOf()方法可以将普通的数值转换为大数。
+
+```java
+public class BigInteger_ {
+    public static void main(String[] args) {
+        //使用静态的valueOf()方法可以将普通的数值转换为大数.
+        BigInteger a = BigInteger.valueOf(100);
+        System.out.println(a);
+        BigInteger b = BigInteger.valueOf(9);//109
+        //add=+
+        System.out.println(a.add(b));
+        //multiply = *
+        System.out.println(a.multiply(b));//900
+    }
+}
+```
+
+## 编码
+
+### 介绍一下字符编码表
 
 ASCII(ASCII编码一个字节表示，一个128个字符，实际上一个字节可以表示256个字符，只用128个)
 
@@ -580,15 +753,18 @@ big5码（繁体中文，台湾，香港）
 2. UTF-8是一种变长的编码方式。它可以使使用1-6个字符表示一个符号，根据不同的符号变化字节长度。
 3. 使用大小可变的编码字母占1个字节，汉字占3个字节。
 
-### 数据类型转换
+## 数据类型转换
 
-- 自动类型转换
+### 自动类型转换
 
 当java程序在进行赋值或运算时，精度小的类型自动转换为精度达的数据类型，这个就是自动类型转换。
 
 数据类型精度（容量）大小排序为（背，规则）
 
-![image-20221123153016573](JavaGrammar.assets/image-20221123153016573.png)
+![image-20230214101008549](JavaGrammar.assets/image-20230214101008549.png)
+
+1. 实线箭头表示无信息丢失的转换。
+2. 虚线箭头表示可能有精度损失的转换。
 
 ```java
 public class AutoConvert {
@@ -601,14 +777,14 @@ public class AutoConvert {
 }
 ```
 
-- 自动类型转换注意和细节
+#### 自动类型转换注意和细节
 
-1. 有多种类型的数据混合运算时，系统首先自动将所有数据转换成容量最大的那种数据类型，然后再进行计算。
+1. 有多种类型的数据混合运算时，**系统首先自动将所有数据转换成容量最大的那种数据类型**，然后再进行计算。
 2. 当我们把精度（容量）大的数据类型赋值给精度（容量）小的数据类型时，就会报错，反之就会进行自动类型转换。
-3. （byte、short）和char之间不会相互自动转换。
-4. byte、short、char他们三者可以计算，在计算时首先转换为int类型
-5. boolean不参与转换
-6. 自动提升原则：表达式结果的类型自动提升为操作数中最大的类型
+3. （byte、short）和char之间**不会相互自动转换**。
+4. byte、short、char他们三者可以计算，在计算时**首先转换为int类型**。
+5. boolean不参与转换。
+6. 自动提升原则：表达式结果的类型自动提升为操作数中最大的类型。
 
 ```java
 public class AutoConvertDetail {
@@ -640,15 +816,15 @@ public class AutoConvertDetail {
 }
 ```
 
-- 强制类型转换
+### 强制类型转换
 
-自动类型转换的逆过程，将容量大的数据类型转换为容量小的数据类型，使用时哟啊加上强制转换符（），但可能照成精度降低或溢出，格外注意。
+自动类型转换的逆过程，将容量大的数据类型转换为容量小的数据类型，使用时要加上强制转换符`（）`，但可能照成**精度降低或溢出**，格外注意。
 
 ```java
 public class ForceConvert {
     public static void main(String[] args) {
         int i = (int) 1.9;//精度损失
-        System.out.println("n1=" + i);
+        System.out.println("n1=" + i);//1
         int i2 = 2000;
         byte b1 = (byte) i2;//-48 数据溢出
         System.out.println("b1=" + b1);
@@ -656,19 +832,19 @@ public class ForceConvert {
 }
 ```
 
-- 强制类型转换细节说明
+#### 强制类型转换细节说明
 
 1. 当进行数据的大小从大->小，就需要使用强制转换
 
 2. 强转符号只针对于最近的操作数有效，往往会使用小括号提升优先级
 
    ```java
-   //int x =(int10*3.5+6*1.5;//double->int
+   //int x =(int)10*3.5+6*1.5;//double->int
    int x = (int)(10*3.5+6*1.5);
    System.out.println(x);
    ```
 
-3. char类型可以报错int的常量值，但不能保存int的变量值，需要强转
+3. char类型可以保存`int`的常量值，但不能保存int的变量值，需要强转
 
    ```java
    char c1 = 100;//ok
@@ -678,9 +854,9 @@ public class ForceConvert {
    System.out.println(c2);
    ```
 
-4. byte和short类型在进行运算时，当作int类型处理
+4. `byte`和`short`,`shar`类型在进行运算时，当作`int`类型处理
 
-#### 基本数据类型转换-练习
+### 基本数据类型转换-练习
 
 ```java
 short s = 12;//ok
@@ -697,7 +873,7 @@ short s 14;//ok
 short s +b;//no int->short
 ```
 
-#### 基本数据类型和String类型的转换
+### 基本数据类型和String类型的转换
 
 在程序开发中，我们进程需要将基本数据类型转成String类型。或者将String类型转成基本数据类型。
 
@@ -724,15 +900,16 @@ String类型转基本数据类型
 
 ```java
 //String->对应的基本数据类型
-//解读 使用基本数据类型对应的包装类，得到基本数据类型
+//解读 使用基本数据类型对应的包装类，得到基本数据类型（基本类型包装类.parseXX();）
 String s5 = "123";
 int num1 = Integer.parseInt(s5);//123
 double num2 = Double.parseDouble(s5);//123.0
 float num3 = Float.parseFloat(s5);//123.0
-System.out.println(num1 + "\t" + num2 + "\t" + num3);
+System.out.println(num1 + "\t" + num2 + "\t" + num3);//123	123.0	123.0
 //怎么把字符串转成字符char->含义是指把字符串的第一个字符得到
 //解读s5.charAt(0)得到s5字符串的第一个字符'1'
-System.out.println(s5.charAt(0));
+//调用s.charAt(n)将返回位置n的代码单元，n介于0~s.length()-1之间。
+System.out.println(s5.charAt(0));//1
 ```
 
 1. 在将String类型转成基本数据类型时，要确保String类型能够转成有效的数，比如：我们把“123”转成一个整数，但是不能把“hello”转成一个整数。
@@ -825,13 +1002,13 @@ public class HomeWork04 {
 */
 ```
 
-## 第4章	运算符
+# 第4章	运算符
 
-### 运算符介绍
+## 运算符介绍
 
 运算符是一种特殊的符号，用以表示数据的运算、赋值和比较等
 
-#### 算数运算符
+### 算数运算符
 
 算数运算符符是对数值类型的变量进行运算的，在Java程序中使用的非常多。
 
@@ -848,7 +1025,7 @@ public class HomeWork04 {
 | --     | 自减(前\后)：先运算后取值\先取值后运算 | `a=2;b=--a;b\=a--;` | `a=1;b=1\b=2` |
 | +      | 字符串相加                             | "lsp"+"cjk"         | "lspcjk"      |
 
-##### 案例演示
+#### 案例演示
 
 案例限时算符运算符的使用（ArithmeticOperator）
 
@@ -862,7 +1039,7 @@ public class ArithmeticOperator {
         System.out.println(d);//2.0
         System.out.println("=======================");
         //% 取模、取余数
-        //%的本质 看一个公式 a%b=a-a/b*b
+        //%的本质 看一个公式 a%b=a-a/b*b(余数的符号看除数)
         System.out.println(10 % 3);//1
         System.out.println(-10 % 3);//-1
         System.out.println(10 % -3);//1
@@ -894,22 +1071,23 @@ public class ArithmeticOperator {
 
 ```java
 //面试题
-/*
-1、
-public class ArithmeticOperatorExercise {
+public class ArithmeticOperatorExercise01 {
     public static void main(String[] args) {
-        int i = 1;
+        /*int i = 1;
         i = i++;//规则使用临时变量：(1)temp=i;(2)i=i+1;(3)i=temp;
-        System.out.println(i);//1
+        System.out.println(i);//1*/
+        int i = 1;
+        i = ++i;//规则使用临时变量：(1)i=i+1;(2)temp=i;(3)i=temp;
+        System.out.println(i);
+
     }
 }
-问：结果是多少？
+//问：结果是多少？
 //i=1
 2、
 int i = 1;
 i = ++i;//规则使用临时变量：(1)i=i+1;(2)temp=i;(3)i=temp;
 System.out.println(i);
-*/
 ```
 
 ```java
@@ -945,10 +1123,10 @@ public class ArithmeticOperatorExercise03 {
 }
 ```
 
-#### 关系运算符
+### 关系运算符
 
-1. 关系运算符的结果都是boolean型，也就是要么是true，要么是false
-2. 关系表达式经常用在if结构的条件中或循环结构的条件中
+1. 关系运算符的结果都是`boolean`型，也就是要么是`true`，要么是`false`。
+2. 关系表达式经常用在`if`结构的条件中或循环结构的条件中
 
 | 运算符     | 运算               | 范例                   | 结果  |
 | ---------- | ------------------ | ---------------------- | ----- |
@@ -960,7 +1138,7 @@ public class ArithmeticOperatorExercise03 {
 | >=         | 大于等于           | 8>=7                   | true  |
 | instanceof | 检查是否是类的对象 | "fxy"instanceof String | true  |
 
-##### 案例演示
+#### 案例演示
 
 案例演示关系运算符的使用(RelationalOperator)
 
@@ -982,13 +1160,13 @@ public class RelationalOperator {
 }
 ```
 
-##### 细节说明
+#### 细节说明
 
-1. 关系运算符的结果都是boolean型，也就是要么true，要么是false
-2. 关系运算符组成的表达式，我们称**关系表达式**。a>b
-3. 比较运算符"=="不能误写成"="
+1. 关系运算符的结果都是`boolean`型，也就是要么`true`，要么是`false`
+2. 关系运算符组成的表达式，我们称**关系表达式**。`a>b`
+3. 比较运算符`==`不能误写成`=`
 
-#### 逻辑运算符
+### 逻辑运算符
 
 1. 短路与`&&`，短路或`||`，取反`!`
 2. 逻辑与`&`，逻辑或`|`，逻辑异或`^`
@@ -1000,22 +1178,22 @@ public class RelationalOperator {
 | false | true  | false | false | true  | true   | true  | true  |
 | false | false | false | false | false | false  | true  | false |
 
-##### 说明逻辑运算规则
+#### 说明逻辑运算规则
 
-1. a&b：&叫逻辑与->当a和b同时为true，则结果为true，否则为false
-2. a&&b：&&叫短路与->当a和b同时为true，则结果过为true，否则为false
-3. a|b：|叫逻辑或->当a和b，有一个为true，则结果为true，否则为false
-4. a||b：||叫短路或->当a和b，有一个为true，则结果为true，否则为false
-5. !a：叫取反->当a为true，则结果为false，当a为false，结果为true
-6. a^b：叫逻辑异或->当a和b不同时，则结果为true，否则为false
+1. `a&b`：`&`叫逻辑与->当a和b同时为true，则结果为true，否则为false
+2. `a&&b`：`&&`叫短路与->当a和b同时为true，则结果过为true，否则为false
+3. `a|b`：`|`叫逻辑或->当a和b，有一个为true，则结果为true，否则为false
+4. `a||b`：`||`叫短路或->当a和b，有一个为true，则结果为true，否则为false
+5. `!a`：叫取反->当a为true，则结果为false，当a为false，结果为true
+6. `a^b`：叫逻辑异或->当a和b不同时，则结果为true，否则为false
 
-##### &&和&基本规则
+#### &&和&基本规则
 
-短路与&&：条件1&&条件2	两个条件都为true，结果为true，否则false
+短路与`&&`：条件1`&&`条件2	两个条件都为true，结果为true，否则false
 
-逻辑与&：条件1&条件2	两个条件都为true，结果为true
+逻辑与`&`：条件1`&`条件2	两个条件都为true，结果为true
 
-###### &&和&案例演示
+##### &&和&案例演示
 
 ```java
 public class LogicOperator01 {
@@ -1031,7 +1209,7 @@ public class LogicOperator01 {
         if (age > 20 & ++age < 90) {
             System.out.println("ok2");
         }
-        System.out.println("age="+age);//age=21
+        System.out.println("age=" + age);//21
         //区别
         int a = 4;
         int b = 9;
@@ -1045,19 +1223,19 @@ public class LogicOperator01 {
 }
 ```
 
-###### &&和&使用区别
+##### &&和&使用区别
 
-1. &&短路与：如果第一个条件为false，则第二个条件不会判断，最终及结果false，效率高。
-2. &逻辑与：不管第一个条件是否为false，第二条件都要判断，效率低。
+1. `&&`短路与：如果**第一个条件为false**，则**第二个条件不会判断**，最终及结果false，效率高。
+2. `&`逻辑与：**不管第一个条件是否为false，第二条件都要判断**，效率低。
 3. 开发中，我们使用的基本都是短路与&&，效率高。
 
-##### ||和|基本规则
+#### ||和|基本规则
 
-短路或||		条件1||条件2		两个条件只要有一个成立，结果true，否则为false
+短路或`||`		条件1`||`条件2		两个条件只要有一个成立，结果true，否则为false
 
-|逻辑或			条件1|条件2		只要有一个条件成立，结果true，否则为false
+`|`逻辑或			条件1`|`条件2		只要有一个条件成立，结果true，否则为false
 
-###### ||和|案例演示
+##### ||和|案例演示
 
 ```java
 public class LogicOperator02 {
@@ -1077,17 +1255,17 @@ public class LogicOperator02 {
 }
 ```
 
-###### ||和|使用区别
+##### ||和|使用区别
 
-1. ||短路或：如果第一个条件为true，则第二个条件不会判断，最终为true，效率高
-2. |逻辑或：不管第一个体哦阿健是否为true，第二个条件都要判断，效率低
+1. `||`短路或：如果**第一个条件为true**，则**第二个条件不会判断**，最终为true，效率高
+2. `|`逻辑或：不管第一个条件是否为true，**第二个条件都要判断**，效率低
 3. 开发中，我们基本使用||
 
-##### ！取反基本规则
+#### ！取反基本规则
 
-！非		！条件			如果条件本身成立，结果为false，否则为true
+`！`非		`！`条件			如果条件本身成立，结果为false，否则为true
 
-###### ！案例
+##### ！案例
 
 ```java
 public class InverseOperator {
@@ -1102,11 +1280,11 @@ public class InverseOperator {
 }
 ```
 
-##### ^异或基本规则
+#### ^异或基本规则
 
-a^b：叫逻辑异或，当a和b不同时，则结果为true，否则为false
+`a^b`：叫逻辑异或，当**a和b不同时**，则**结果为true**，**否则为false**。
 
-##### 练习题
+#### 练习题
 
 ```java
 public class Test01 {
@@ -1160,19 +1338,19 @@ public class Test04 {
 }
 ```
 
-#### 赋值运算符
+### 赋值运算符
 
 赋值运算符就是将某个运算后的值，赋给指定的变量。
 
 赋值运算符的分类
 
-1、基本赋值运算符=
+1、基本赋值运算符`=`
 
-2、复合赋值运算符+=、-=、*=、/=、%-等。
+2、复合赋值运算符`+=`、`-=`、`*=`、`/=`、`%=`等。
 
 a+=b;=>a=a+b;
 
-##### 案例
+#### 案例
 
 ```java
 public class AssignOperator {
@@ -1188,11 +1366,11 @@ public class AssignOperator {
 }
 ```
 
-##### 赋值运算符特点
+#### 赋值运算符特点
 
 1. 运算顺序从右往左`int num = a+b+c;`
 
-2. 赋值运算符的左边只能是变量，右边可以是变量、表达式、常量值。
+2. 赋值运算符的左边只能是变量，右边可以是**变量**、**表达式**、**常量值**。
 
    `int num =20;int num2 = 78*34-10;int num3 =a;`
 
@@ -1211,9 +1389,9 @@ b++;//b=(byte)(b+1);
 System.out.println(b);
 ```
 
-#### 三元运算符
+### 三元运算符
 
-##### 基本语法
+#### 基本语法
 
 `条件表达式？表达式1：表达式2;`
 
@@ -1224,7 +1402,7 @@ System.out.println(b);
 
 口诀：[一灯大师：一真大师]
 
-##### 案例
+#### 案例
 
 ```java
 public class TernaryOperator {
@@ -1244,7 +1422,7 @@ public class TernaryOperator {
 }
 ```
 
-##### 使用细节
+#### 使用细节
 
 1. 表达式1和表达式2要为可以赋给接受变量的类型（可以自动转换或强转）
 
@@ -1297,7 +1475,7 @@ public class TernaryOperatorExercise {
 ### 运算符优先级
 
 1. 运算符有不同的优先级，所谓优先级就是表达式运算中的运算顺序。
-2. 只有单目运算符、赋值运算符是从右向左运算的。
+2. 只有**单目运算符**、**赋值运算符**是从**右向左**运算的。
 
 | 结合性 | 符号                                                |
 | :----: | :-------------------------------------------------- |
@@ -1338,20 +1516,20 @@ public class TernaryOperatorExercise {
 
 1. 由26个英文字母大小写，0-9，_或$组成
 2. 数字不可以开头。	`int 3ab = 1;//错误`
-3. 不可以使用关键字和保留字，但能包含关键子和保留字。
+3. 不可以使用**关键字**和**保留字**，但**能包含**关键子和保留字。
 4. Java中严格区分大小写，长度无限制。`int totalNum = 10;int n = 90;`
 5. 标识符不能包含空格。`int a b = 90;`
 
 #### 标识符命名规范
 
-1. 包名：多个单词组成时所有字母都小写：aaa.bbb.ccc//比如：com.summer.crm
-2. 类名、接口名：多个单词组成时，所有单词的首字母大写：XxYyZz//比如：TankShotGame[大驼峰]
-3. 变量名、方法名：多个单词组成时，第一个单词首字母小写，第二个单词开始每个单词首字母大写：xxxYyyZzz//比如：tankShotGame[小驼峰，简称驼峰法]
-4. 常量名：所有字母都大写。多个单词时每个单词用下划线连接：XXX_YYY_ZZZ//比如：定义一个所得税率TAX_RATE
+1. **包名**：多个单词组成时**所有字母都小写**：aaa.bbb.ccc//比如：com.summer.crm
+2. **类名、接口名**：多个单词组成时，所有单词的首字母大写：XxYyZz//比如：`TankShotGame`[大驼峰]
+3. **变量名、方法名**：多个单词组成时，第一个单词首字母小写，第二个单词开始每个单词首字母大写：xxxYyyZzz//比如：`tankShotGame`[小驼峰，简称驼峰法]
+4. **常量名**：**所有字母都大写**。多个单词时每个单词用**下划线连接**：XXX_YYY_ZZZ//比如：定义一个所得税率TAX_RATE
 
-#### 关键字
+### 关键字
 
-##### 关键字的定义和特点
+#### 关键字的定义和特点
 
 定义：被java语言赋予了特殊含义，用做专门用途的字符串
 
@@ -1359,7 +1537,7 @@ public class TernaryOperatorExercise {
 
 #### 保留字
 
-java保留字：现在java版本尚未是哦那个，但以后版本可能会作为关键字使用。自己命名标识符要避免使用这些保留字
+java保留字：现在java版本尚未使用，但以后版本可能会作为关键字使用。自己命名标识符要避免使用这些保留字
 
  1).访问修饰符的关键字（共3个）
 
@@ -1470,6 +1648,10 @@ byValue、cast、future、generic、inner、operator、outer、rest、var、goto
 
 Input.java，需要一个扫描器（对象)，就是Scanner
 
+`nextLine()方法：输入中包含空格。`
+
+`next()方法：以空白符作为分隔符。`
+
 #### 步骤
 
 1. 导入该类的所在包，java.util.*
@@ -1504,6 +1686,24 @@ public class Input {
 }
 ```
 
+### 格式化输出
+
+`System.out.println("%8.2f",x);`
+
+会以一个字段宽度打印x：包含8个字符，另外精度为小数点后2个字符。
+
+| 转换符 | 类型           | 示例      | 转换符 | 类型     | 示例  |
+| ------ | -------------- | --------- | ------ | -------- | ----- |
+| d      | 十进制整数     | 159       | s      | 字符串   | hello |
+| x      | 十六进制整数   | 9f        | c      | 字符     | H     |
+| o      | 八进制整数     | 237       | b      | 布尔     | true  |
+| f      | 浮点数         | 15.9      | h      | 散列码   |       |
+| e      | 指数浮点数     | 1.59e+01  | %      | 百分号   | %     |
+| g      | 通用浮点数     |           | n      | 行分隔符 |       |
+| a      | 十六进制浮点数 | 0x1.fccdp |        |          |       |
+
+
+
 ### 进制
 
 对于整数，有四种表示方式：
@@ -1531,31 +1731,48 @@ public class Input {
 3. 负数的反码=它的原码符号位不变，其它位取反（0->1,1->0)
 4. 负数的补码=它的反码+1，负数的反码=负数的补码-1
 5. 0的反码，补码都是0
-6. java没有无符号位，换言之，java中的数都是有符号的
+6. java没有无符号位，换言之，**java中的数都是有符号的**
 7. 在计算机运算的时候，都是以**补码的方式**来运算的
 8. 当我们看运算结果的时候，要看他的原码(!!!)
 
 #### 位运算符
 
-按位与&、按位或|、按位异或^、按位取反~
+按位与`&`、按位或`|`、按位异或`^`、按位取反`~`
 
-| 运算符      | 说明                                       |
-| ----------- | ------------------------------------------ |
-| 按位与&     | 两位全为1，结果为1，否则为0                |
-| 按位或      | 两位有一个为1，结果为1，否则为0            |
-| 按位异或^   | 两位一个为0，一个为1，结果为1，否则为00    |
-| 按位取反~   | 0->1、1->0                                 |
-| 算数右移<<  | 低位溢出，符号位不变，并用符号位溢出的高位 |
-| 算数左移>>  | 符号位不变，地位补0                        |
-| >>>逻辑右移 | 低位溢出，高位补0                          |
+| 运算符        | 说明                                       |
+| ------------- | ------------------------------------------ |
+| 按位与`&`     | 两位全为1，结果为1，否则为0                |
+| 按位或`|`     | 两位有一个为1，结果为1，否则为0            |
+| 按位异或`^`   | 两位一个为0，一个为1，结果为1，否则为00    |
+| 按位取反`~`   | 0->1、1->0                                 |
+| 算数右移`<<`  | 低位溢出，符号位不变，并用符号位溢出的高位 |
+| 算数左移`>>`  | 符号位不变，地位补0                        |
+| `>>>`逻辑右移 | 低位溢出，高位补0                          |
 
 ```java
+public class BitOperator01 {
+    public static void main(String[] args) {
+        //先得到2的补码=> 2的原码
+        System.out.println(2&3);//2
+        System.out.println(~-2);
+        /*
+        * 1、得到2的补码 00000000 00000000 00000000 00000010
+        * 2、~2的操作   11111111 11111111 11111111 11111101 运算后的补码
+        * 3、运算后的反码11111111 11111111 11111111 11111100
+        * 4、运算后的原码10000000 00000000 00000000 00000011=>-3*/
+        System.out.println(~2);
+    }
+}
 public class BitOperator02 {
     public static void main(String[] args) {
-        int a = 1 >> 2;//1/2^2
-        int c = 1 << 2;//1/2^2
+        int a = 1 >> 2;//1/2/2  0
+        int c = 1 << 2;//1*2*2  0
         System.out.println(a);
         System.out.println(c);
+        System.out.println(15 >> 2);
+        System.out.println(-10.5 % 3);
+        int i = 66;
+        System.out.println(++i + i);//134
     }
 }
 ```
@@ -1566,7 +1783,7 @@ public class BitOperator02 {
 
 `10/3=?;		10%5=?;		-10.5%3 = ?;`
 
-a%b当a是小数时，公式=a-(int)a/b*b
+`a%b`当`a`是小数时，公式`=a-(int)a/b*b`
 
 -10.5%3=-10.5-(int)10.5/3*3=10.5+9=1.5
 
@@ -1599,9 +1816,9 @@ char c1 = '夏'
 String str2 = c1+ "";
 ```
 
-## 第5章	控制结构
+# 第5章	控制结构
 
-### 程序流程控制介绍
+## 程序流程控制介绍
 
 在程序中，程序运行的流程控制决定程序是如何执行的，是我们必须掌握的，主要有三大流程控制语句
 
@@ -1624,15 +1841,15 @@ public class Test{
 
 ![image-20221205210253412](JavaGrammar.assets/image-20221205210253412.png)
 
-#### 分支控制（if-else）
+### 分支控制（if-else）
 
 - 分支控制if-else介绍
 
 让程序有选择的执行，分支控制有三种
 
-##### 1、单分支
+#### 1、单分支
 
-###### 基本语法
+##### 基本语法
 
 ```java
 if(条件表达式){
@@ -1640,9 +1857,9 @@ if(条件表达式){
 }
 ```
 
-说明：当条件表达式为true时，就会执行{}的代码。如果为false，就不执行。
+说明：当条件表达式为true时，就会执行`{}`的代码。如果为false，就不执行。
 
-特别说明，如果{}中只有一条语句，则可以不用{}，建议写上{}
+特别说明，如果`{}`中只有一条语句，则可以不用`{}`，建议写上`{}`
 
 ```java
 package com.basic.www.conpter03;
@@ -1665,9 +1882,9 @@ public class If01 {
 
 ![image-20221205213300385](JavaGrammar.assets/image-20221205213300385.png)
 
-##### 2、双分支
+#### 2、双分支
 
-###### 基本语法
+##### 基本语法
 
 ```java
 if(条件表达式){
@@ -1678,7 +1895,7 @@ else{
 }
 ```
 
-说明：当条件表达式成立，即执行代码块1，否则执行代码块2。如果执行代码块只有一条语句，则{}可以省略，否则，不能省略。
+说明：当条件表达式成立，即执行代码块1，否则执行代码块2。如果执行代码块只有一条语句，则`{}`可以省略，否则，不能省略。
 
 ```java
 //编写一个程序，可以输入人的年龄，如果该同志的年龄大于18岁，则输出"你的年龄大于18，要对自己的行为负责，送入监狱"。否则，输出"你的年龄不大这次放过你"。
@@ -1764,9 +1981,9 @@ public class IfTest04 {
 }
 ```
 
-##### 3、多分支
+#### 3、多分支
 
-基本语法
+##### 基本语法
 
 ```java
 if(条件表达式1){
@@ -1823,7 +2040,7 @@ public class If03 {
 
 #### 嵌套分支
 
-在一个分支结构中又完整的嵌套了另一个完整的分支结构，里面的分支的结构称为内层分支外面的分支结构称为外层分支。规范：不要超过3曾（可读性不好）
+在一个分支结构中又完整的嵌套了另一个完整的分支结构，里面的分支的结构称为内层分支外面的分支结构称为外层分支。规范：不要超过3层（可读性不好）
 
 基本语法
 
@@ -1866,7 +2083,7 @@ public class NestedIf {
 
 #### switch分支结构
 
-基本语法
+##### 基本语法
 
 ```java
 switch(表达式){
@@ -1890,7 +2107,7 @@ switch(表达式){
 1. switch关键字，表示switch分支
 2. 表达式对应一个值
 3. case常量1：当表达式的值等于常量1，就执行语句块1
-4. break：表示推出switch
+4. break：表示退出switch
 5. 如果和case常量1匹配，就执行语句块1，如果没有匹配，就继续匹配case常量2
 6. 如果一个都没匹配上，执行default  
 
@@ -1939,10 +2156,10 @@ public class Switch01 {
 }
 ```
 
-switch细节
+##### switch细节
 
-1. 表达式数据类型，应和case后的常量类型一致，或者时可以自动转成可以相互比较的类型，比如输入的是字符，而常量是int
-2. switch(表达式)中表达式的返回值必须是：(byte,short,int,char,enum,String)
+1. 表达式数据类型，应和case后的常量**类型一致**，或者是可以**自动转成可**以相互比较的类型，比如输入的是字符，而常量是int
+2. switch(表达式)中表达式的**返回值必须**是：(byte,short,int,char,enum,String)
 
 ```java
 double c =1.1;
@@ -1953,11 +2170,11 @@ switch(c){//错误
 }
 ```
 
-3. case子句中的值必须是常量，而不能是变量
+3. case子句中的值必须是**常量**，而不能是变量
 4. default子句是可选的，当没有匹配的case时，执行default
 5. break语句用来在执行完一个case分支后使程序跳出switch语句块；如果没有写break，程序会顺序执行到switch结尾。
 
-switch练习
+##### switch练习
 
 ```java
 /*
@@ -1996,14 +2213,14 @@ public class SwitchExercise {
 }
 ```
 
-switch和if的比较
+##### switch和if的比较
 
 1. 如果判断的具体数值不多，而且复合byte，short，int，char，enum，String这6中类型。虽然两个语句都可以使用，建议使用switch语句
 2. 其他情况：对区间判断，对结果为boolean类型判断，使用if，if的使用范围更广
 
-### 循环控制
+## 循环控制
 
-#### for
+### for
 
 让代码可以循环的执行
 
@@ -2020,7 +2237,7 @@ public class For01 {
 }
 ```
 
-基本语法
+#### 基本语法
 
 ```java
 for(循环变量初始化;循环条件;循环变量迭代){
@@ -2039,10 +2256,10 @@ for(循环变量初始化;循环条件;循环变量迭代){
 
 ![image-20221206215220434](JavaGrammar.assets/image-20221206215220434.png)
 
-- 注意事项和细节
+#### 注意事项和细节
 
 1. 循环条件是返回一个布尔值的表达式
-2. for(;循环判断条件;)中的初始化和变量迭代可以写到其他地方，但是两边的分号不能省略。
+2. `for(;循环判断条件;)`中的初始化和变量迭代可以写到其他地方，但是两边的分号不能省略。
 3. 循环初始值可以有多条初始化语句，但要求类型一样，并且中间用逗号隔开。
 4. 使用内存分析法
 
@@ -2059,7 +2276,7 @@ public class ForDetail {
 
 ![image-20221206220824179](JavaGrammar.assets/image-20221206220824179.png)
 
-- for循环练习题
+#### for循环练习题
 
 ```java
 public class ForExercise01 {
@@ -2095,9 +2312,9 @@ public class ForExercise02 {
 }
 ```
 
-#### while
+### while
 
-- 基本语法
+#### 基本语法
 
 ```java
 while(循环条件){
@@ -2106,19 +2323,19 @@ while(循环条件){
 }
 ```
 
-- 说明
+#### 说明
 
-1. while循环也有四要素
+1. `while`循环也有四要素
 2. 只有四要素放的位置，不一样
 
 ![image-20221207105251803](JavaGrammar.assets/image-20221207105251803.png)
 
-- 注意事项和细节
+#### 注意事项和细节
 
 1. 循环条件是返回一个布尔值的表达式
 2. while循环是先判断再执行语句
 
-- 练习
+#### 练习
 
 ```java
 public class WhileExercise01 {
@@ -2148,9 +2365,9 @@ public class WhileExercise02 {
 }
 ```
 
-#### do...while
+### do...while
 
-- 基本语法
+#### 基本语法
 
 ```java
 循环变量初始化;
@@ -2160,22 +2377,22 @@ do{
 }while(循环条件)
 ```
 
-- 说明
+#### 说明
 
-1. do...while是关键字
+1. `do...while`是关键字
 2. 也有循环四要素，只是位置不一样
 3. 先执行，再判断，也就是说，一定会执行一次
 4. 最后有一个分号`;`
-5. while和do...while区别举例：要账
+5. `while`和`do...while`区别举例：要账
 
 ![image-20221207110723685](JavaGrammar.assets/image-20221207110723685.png)
 
-- 注意事项和细节说明
+#### 注意事项和细节说明
 
 1. 循环条件是返回一个布尔值的表达式
-2. do...while循环是先执行，再判断，因此它至少执行一次
+2. `do...while`循环是先执行，再判断，因此它至少执行一次
 
-- 练习
+#### 练习
 
 ```java
 public class DoWhileExercise01 {
@@ -2209,11 +2426,11 @@ public class DoWhileExercise02 {
 }
 ```
 
-#### 多重循环控制（难点！重点！）
+### 多重循环控制（难点！重点！）
 
-1. 将一个循环放在另一个循环体内，就形成了嵌套循环。其中，for、while、do...while均可作为外层循环和内层循环。（建议一般使用两层，最多不要超过3曾，否则，代码的可读性很差）
-2. 实质上，嵌套循环就是把内层循环当成外层循环的循环体。当只有内层循环的循环条件为false时，才会完全跳出内层循环，才可结束外层的当次循环，开始下一次的循环。
-3. 设外层循环次数为m次，内层为n次，则内层循环体实际上需要执行m*n次。
+1. 将一个循环放在另一个循环体内，就形成了嵌套循环。其中，`for、while、do...while`均可作为外层循环和内层循环。（建议一般使用两层，最多不要超过3层，否则，代码的可读性很差）
+2. 实质上，嵌套循环就是把内层循环当成外层循环的循环体。当只有内层循环的循环条件为`false`时，才会完全跳出内层循环，才可结束外层的当次循环，开始下一次的循环。
+3. 设外层循环次数为`m`次，内层为`n`次，则内层循环体实际上需要执行`m*n`次。
 
 ```java
 for(int i =0;i < 2;i++){
@@ -2225,7 +2442,7 @@ for(int i =0;i < 2;i++){
 
 ![image-20221207113743294](JavaGrammar.assets/image-20221207113743294.png)
 
-- 练习
+#### 练习
 
 ```java
 public class MulForExercise01 {
@@ -2281,7 +2498,7 @@ public class MulForExercise02 {
 }
 ```
 
-- 经典的打印金字塔
+##### 经典的打印金字塔
 
 使用for循环完成下面的案例
 
@@ -2350,11 +2567,11 @@ public class Stars {
 }
 ```
 
-#### break
+### break
 
-- 基本语法
+#### 基本语法
 
-break语句用于终止某个语句块的执行，一般使用在swtich或者循环中
+break语句用于**终止某个语句块**的执行，一般使用在**`swtich`或者循环中**
 
 ```java
 {
@@ -2364,11 +2581,11 @@ break语句用于终止某个语句块的执行，一般使用在swtich或者循
 }
 ```
 
-- 以while使用break为例，画出示意图
+#### 以while使用break为例，画出示意图
 
 ![image-20221209141444182](JavaGrammar.assets/image-20221209141444182.png)
 
-- 看下面一个需求
+#### 看下面一个需求
 
 随机生成1-100的一个数，知道生成了97这个数，看看一共用了几次？
 
@@ -2395,7 +2612,7 @@ for(int i =0;i<10;i++){
 }
 ```
 
-- 注意事项和细节
+#### 注意事项和细节
 
 1. break语句出现出现在多层嵌套的语句块中时，可以通过标签指明要终止的是哪一层语句块
 2. 标签的基本使用
@@ -2436,9 +2653,9 @@ public class BreakDetail {
 
 4、在实际的开发中，尽量不要使用标签。
 
-5、如果没有指定break，默认退出最近的循环体
+5、如果没有指定break，默认**退出最近的循环体**
 
-- 练习
+#### 练习
 
 ```java
 //1-100内的数求和，求出当和第一次大于20的当前数（for+break）
@@ -2494,14 +2711,14 @@ public class BreakExercise02 {
 }
 ```
 
-#### continue
+### continue
 
-- 基本介绍
+#### 基本介绍
 
-1. continue语句用于结束本次循环，继续执行下一次循环
+1. continue语句用于**结束本次循环**，**继续执行下一次循环**
 2. continue语句出现在多层嵌套的循环语句体中时，可以通过标签指明要跳过的是哪一层循环，这个和前面的标签使用的规则一样。
 
-- 基本语法
+#### 基本语法
 
 ```java
 {
@@ -2511,7 +2728,7 @@ public class BreakExercise02 {
 }
 ```
 
-- 以while使用continue为例，画出示意图
+#### 以while使用continue为例，画出示意图
 
 ![image-20221209152833972](JavaGrammar.assets/image-20221209152833972.png)
 
@@ -2530,7 +2747,7 @@ public class Continue01 {
 }
 ```
 
-- 细节分析和说明
+#### 细节分析和说明
 
 ```java
 public class ContinueDetail {
@@ -2552,11 +2769,11 @@ public class ContinueDetail {
 }
 ```
 
-#### return
+### return
 
-- 介绍
+#### 介绍
 
-return使用在方法，表示跳出所在的方法，在讲解方法的时候，会详细的介绍
+return使用在方法，表示**跳出所在的方法**，在讲解方法的时候，会详细的介绍
 
 **注意**：如果return写在main方法，退出程序...
 
@@ -2764,24 +2981,24 @@ public class HomeWork06 {
 //8、求1+(1+2)+(1+2+3)+(1+2+3+4)+...+(1+2+3+4+...+100)的结果
 ```
 
-## 第6章 数组、排序和查找
+# 第6章 数组、排序和查找
 
-### 数组
+## 数组
 
-#### 数组介绍
+### 数组介绍
 
 数组可以存放多个**同一类型**的数据。数组也是一种数据结构，是引用类型。
 
-即：数组就是一组数据
+即：数(数据)组(一组)就是一组数据
 
-#### 数组的使用
+### 数组的使用
 
-- 使用方式1-动态初始化
+#### 使用方式1-动态初始化
 
 ```java
 //数组的定义
-//数据类型 数组名[]=new 数据类型[大小];==数据类型[] 数组名=new 数据类型[大小];
-int a[]= new int[];//创建了一个数组，名字a，存放5个int
+//数据类型 数组名[]=new 数据类型[大小];<==>数据类型[] 数组名=new 数据类型[大小];
+int a[]= new int[5];//创建了一个数组，名字a，存放5个int
 //说明：这是定义数组的一种方法。
 //数组的引用（使用）
 //数组名[下标/索引]比如：你要使用a数组的第3个数 a[2],下标从0开始
@@ -2802,23 +3019,21 @@ public class Array02 {
         }
         for (int i = 0; i < score.length; i++) {
             System.out.println("成绩分别为：" + score[i]);
-
         }
-
-
     }
 }
 ```
 
-- 使用方式2-动态初始化
+#### 使用方式2-动态初始化
 
 ```java
 //先声明数组
 //语法：数据类型 数组名[];
-//数据类型[] 数组名;
+//	   数据类型[] 数组名;
 int a[];
 int[] a;
 //创建数组
+new int[n];//创建一个长度为n的数组
 //语法：
 //数组名=new 数据类型[大小];
 a=new int[10];
@@ -2844,7 +3059,7 @@ public class Array03 {
 }
 ```
 
-- 使用方式3-静态初始化
+#### 使用方式3-静态初始化
 
 ```java
 //初始化数组
@@ -2874,7 +3089,7 @@ public class Array04 {
 
 1. 数组是多个相同类型数据的组合，实现对这些数据的统一管理
 
-2. 数组中的元素可以是任何数据类型，包括基本类型和引用类型，但是不能混用。
+2. 数组中的元素可以是任何数据类型，包括**基本类型**和**引用类型**，但是**不能混用**。
 
 3. 数组创建后，如果没有赋值，有默认值
 
@@ -2896,7 +3111,7 @@ public class Array04 {
    //则有效下标为0-4
    ```
 
-7. 数组属于引用类型，数组型数据是对象（object）
+7. 数组属于**引用类型**，数组型数据是对象（object）
 
 
 ```java
@@ -2916,7 +3131,7 @@ public class ArrayDetail {
         //数组下标必须在指定范围内使用，否则报：下标越界异常
         int[] arr5 = new int[5];
         //System.out.println(arr5[5]);
-        //Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 5
+        //Exception in thread "main"         java.lang.ArrayIndexOutOfBoundsException: 5
         //	at com.basic.www.conpter04.ArrayDetail.main(ArrayDetail.java:24)
         //数组的下标 最小=0，最大=数组长度-1(4)
     }
@@ -2974,16 +3189,18 @@ public class ArrayExercise03 {
 }
 ```
 
-#### 数组赋值机制
+### 数组赋值机制
 
-1. 基本数据类型赋值，这个值就是具体的数据，而且相互不影响。
+1. 基本数据类型**赋值**，这个值就是具体的数据，而且**相互不影响**。
+
+2. n2的值只是n1复制过来的。相当于n1的副本。
 
    ```java
    int n1=2;
    int n2= n1;
    ```
 
-2. 数组在默认情况下是引用传递，赋的值是地址。
+3. 数组在默认情况下是**引用传递**，赋的值是地址。
 
    ```java
    int[] arr1={1,2,3};
@@ -2992,7 +3209,7 @@ public class ArrayExercise03 {
 
 ![image-20221222162215364](JavaGrammar.assets/image-20221222162215364.png)
 
-#### 数组拷贝
+### 数组拷贝
 
 ```java
 //实现数组拷贝（内容复制）
@@ -3021,7 +3238,7 @@ public class ArrayCopy {
 
 ![image-20221222163355733](JavaGrammar.assets/image-20221222163355733.png)
 
-#### 数组反转
+### 数组反转
 
 ```java
 //要求：把数组的元素内容反转。
@@ -3074,7 +3291,7 @@ public class ArrayReverse02 {
 }
 ```
 
-#### 数组添加
+### 数组添加
 
 ```java
 /*
@@ -3559,7 +3776,7 @@ public class HomeWork01 {
 }
 ```
 
-## 第7章 面向对象编程(基础部分)
+# 第7章 面向对象编程(基础部分)
 
 ###  类与对象
 
@@ -5043,7 +5260,7 @@ class PersonT {
 ```java
 ```
 
-## 第8章面向对象编程（中级部分）
+# 第8章面向对象编程（中级部分）
 
 ### 包
 
@@ -7459,3 +7676,1385 @@ public class SmallChangeSysOOP {
 }
 ```
 
+# 第10章 面向对象编程（高级部分）
+
+## 类变量和类方法
+
+### 类变量/静态变量
+
+#### 快速入门
+
+```java
+public class ChildGame {
+    public static void main(String[] args) {
+        //定义一个变量conut ,统计有多少小孩加入游戏
+        int count = 0;
+        Child child01 = new Child("小明");
+        child01.join();
+        //count++;
+        child01.count++;
+        Child child02 = new Child("小红");
+        child02.join();
+        //count++;
+        child02.count++;
+        Child child03 = new Child("小南");
+        child03.join();
+        //count++;
+        child03.count++;
+        //=====================
+        //类变量，可以通过类名访问
+        System.out.println("共有：" + Child.count + "小孩加入了游戏");
+        System.out.println("child01.count=" + child01.count);
+        System.out.println("child01.count=" + child02.count);
+        System.out.println("child01.count=" + child03.count);
+    }
+}
+
+class Child {
+    private String name;
+    //定义一个变量count。是一个类变量（静态变量）static静态
+    //该变量最大的特点就是会被Child类的所有对象实例共享
+    public static int count = 0;
+
+    public Child(String name) {
+        this.name = name;
+    }
+
+    public void join() {
+        System.out.println(name + "加入了游戏");
+    }
+}
+```
+
+**static变量是同一个类的所有对象共享**，随着类加载而产生。（不用实例化即可访问）
+
+#### 什么是类变量
+
+类变量也叫静态变量/静态属性，是该类的所有对象共享的变量，任何一个该类的对象去访问它时，取到的都是相同的值，同样任何一个该类的对象去修改它时，修改的也是同一个变量。
+
+#### 如何定义类变量
+
+`访问修饰符 static 数据类型 变量名;`[推荐]
+
+`static 访问修饰符 数据类型 变量名;`
+
+#### 如何访问类变量
+
+`类名.类变量名`[推荐使用]
+
+`对象名.类变量名`
+
+静态变量的访问修饰符的访问权限和范围和普通性是一样的。
+
+```java
+public class VisitStatic {
+    public static void main(String[] args) {
+        //类名.类变量名
+        //类变量是随着类的加载而创建，即使没有创建对象也可以访问
+        System.out.println(A.name);
+        //对象名.类变量名
+        System.out.println(new A().name);
+    }
+}
+class A{
+    //类变量
+    //必须遵守相关的访问权限
+   public static String name ="summer";
+}
+```
+
+#### 类变量使用注意事项和细节
+
+1. 什么时候需要使用类变量
+
+   当我们需要让某个类的所有对象都共享一个变量时，可以考虑使用类变量（静态变量）
+
+2. 类变量与实例变量（普通变量）区别
+
+   类变量是该类的所有对象共享的，而实例变量是每个对象独享的。
+
+3. 加上static称为类变量或静态变量，否则称为实例变量/普通变量/非静态变量
+
+4. 类变量可以通过`类名.类变量名`或`对象名.类变量名`来访问，满足访问修饰符的访问权限和范围。
+
+5. 实例变量不能通过`类名.类变量名`方式访问。
+
+6. 类变量是在类加载时就初始化了，也就是说，即使你没有创建对象，只要类加载了，就可以使用类变量了。
+
+7. 类变量的声明周期是随类的加载开始的，随着类消亡而销毁。
+
+### 类方法
+
+#### 类方法基本介绍
+
+类方法也叫静态方法。
+
+形式：`访问修饰符 static 数据返回类型 方法名(){}`【推荐】
+
+`static 访问修饰符 数据返回类型 方法名(){}`
+
+#### 类方法的调用
+
+使用方式:`类名.类方法名`或者`对象名.方法名`【满足访问修饰符的访问权限和范围】
+
+```java
+public class StaticMethod_ {
+    public static void main(String[] args) {
+        //创建2个学生对象，交学费
+        Student tom = new Student("tom");
+        //tom.payFee(100);
+        Student.payFee(800);//对的
+        Student james = new Student("james");
+        james.payFee(200);
+        //输出当前受到的总学费  类名.类方法名
+        Student.showFee();
+    }
+}
+
+class Student {
+    private String name;//普通成员
+    //定义一个静态变量，来累计学生的学费
+    private static double fee = 0.0;
+
+    public Student(String name) {
+        this.name = name;
+    }
+
+    //1、当方法使用了static修饰后，该方法就是静态方法
+    //2、静态方法就可以访问静态属性
+    public static void payFee(double fee) {
+        Student.fee += fee;//累计到静态fee
+    }
+
+    public static void showFee() {
+        System.out.println("总学费有：" + Student.fee);
+    }
+}
+```
+
+#### 类方法经典的使用场景
+
+当方法中不涉及到任何和对象相关的成员，则可以将方法设计成静态方法，提高开发效率。
+
+比如：工具类中的方法utils、Math类、Arrarys类，Collections集合类。
+
+#### 类方法使用注意事项和细节
+
+1. 类方法和普通方法都是随着类的加载而加载，将结构信息存储在方法区：
+
+   类方法中无this的参数
+
+   普通方法中隐含着this的参数
+
+2. 类方法可以通过类名调用，也可以通过对象名调用。
+
+3. 普通方法和对象有关，需要通过对象名调用，比如`对象名.方法名(参数)`,不能通过类名调用。
+
+4. 类方法中不允许使用和对象有关的关键字，比如this和super。普通方法（成员方法）可以。
+
+5. 类方法（静态方法）中，**只能访问静态变量或静态方法**。（静态方法只能访问静态成员）
+
+6. 普通成员方法，即可以访问普通变量（方法），也可以访问静态变量（方法）。
+
+小结：静态方法：只能访问静态的成员；非静态的方法：可以访问静态成员或非静态成员。（必须遵守访问权限）
+
+```java
+public class StaticMethodDetail {
+    public static void main(String[] args) {
+        D.hi();
+        //非静态方法不能通过类名调用。
+        D.hello();
+    }
+}
+
+class D {
+    private int n1 = 100;
+    private static int n2 = 200;
+
+    public void say() {
+        //非静态方法
+    }
+
+    public static void hi() {
+        //静态方法，类方法
+        //类方法中不允许使用和对象有关的关键字，
+        //比如this和super。普通方法（成员方法）可以。
+        //System.out.println(this.n1);
+    }
+
+    //类方法（静态方法）中，只能访问静态变量或静态方法
+    //静态方法只能访问静态成员
+    public static void hello() {
+        System.out.println(n2);
+        System.out.println(D.n2);
+        hi();
+        //say();//错误
+    }
+
+    public void ok() {
+        //访问非静态成员
+        System.out.println(n1);
+        say();
+        //静态成员
+        System.out.println(n2);
+        hi();
+        hello();
+    }
+}
+```
+
+练习
+
+```java
+public class StaticExeecise01 {
+    public static void main(String[] args) {
+        new Test().count();//count=9
+        new Test().count();//count=10
+        System.out.println(Test.count);//11
+    }
+}
+
+class Test {
+    static int count = 9;
+
+    public void count() {
+        System.out.println("count=" + (count++));
+    }
+}
+
+public class StaticExeecise02 {
+    public static void main(String[] args) {
+        System.out.println("Number of total is:" + Person.getTotalPerson());//0
+        Person p1 = new Person();//走构造器
+        System.out.println("Number of total is:" + Person.getTotalPerson());
+    }
+}
+
+class Person {
+    private int id;
+    private static int total = 0;
+
+    public static int getTotalPerson() {
+        //id++;//静态方法无法访问非静态属性
+        return total;
+    }
+
+    public Person() {//构造器
+        total++;//1
+        id = total;
+    }
+}
+```
+
+## 理解main方法语法
+
+### 深入理解main方法
+
+解释main方法的形式：`public static void main(String[] args){}`
+
+main方法是虚拟机调用
+
+1. java虚拟机需要调用类的main()方法，所以该方法的访问权限必须是public
+2. java虚拟机在执行main()方法时不必创建对象，所以该方法必须是static
+3. 该方法接收String类型的数组参数，该数组中保持执行java命令时传递给所运行的类的参数。
+4. java执行的程序参数1 参数2 参数3
+
+![image-20230215142529356](JavaGrammar.assets/image-20230215142529356.png)
+
+1. 在main()方法中，我们可以直接调用main方法所在类的静态方法或静态属性。
+2. 但是，不能直接访问该类中的非静态成员，必须创建该类的一个实例对象后，才能通过这个对象去访问类中的非静态成员。
+
+```java
+public class Main01 {
+    //静态的变量
+    private static String name = "summersdu";
+    //非静态属性
+    private int n1 = 10000;
+
+    //静态方法
+    public static void hi() {
+        System.out.println("Main01的hi方法");
+    }
+
+    //非静态方法
+    public void say() {
+        System.out.println("非静态方法的say方法");
+    }
+
+    public static void main(String[] args) {
+        //静态方法可以访问本类的静态成员
+        System.out.println("name" + Main01.name);
+        hi();
+        //静态方法mian无法访问本类的非静态
+        Main01 main01 = new Main01();
+        System.out.println("n1=" + main01.n1);
+        main01.say();
+
+    }
+}
+```
+
+idea如何传递参数如下图
+
+edit configurations
+
+![image-20230215143556354](JavaGrammar.assets/image-20230215143556354.png)
+
+## 代码块
+
+### 基本介绍
+
+代码块又称为**初始化块**，属于类中的成员【即 是类的一部分】，类似于方法，将逻辑语句封装在方法体中，通过`{}`包围起来。
+
+但和方法不同，没有方法名，没有放回，没有参数，只有方法体，而且不用通过对象或类显示调用，而是加载类时，或创建对象时隐式调用。
+
+### 基本语法
+
+```java
+[修饰符]{
+    代码
+};
+```
+
+注意：
+
+1. 修饰符可选，要写的话，只能写`static`
+2. 代码块分为两类，使用`static`修饰的叫静态代码块，没有`static`修饰的，叫普通代码块。
+3. 逻辑语句可以为任何逻辑语句（输入、输出、方法调用、循环、判断等）
+4. `;`号可以写上，也可以省略。
+
+### 代码块的好处
+
+1. 相当于另外一种形式的构造器（对构造器的补充机制），可以做初始化的操作。
+2. 如果多个构造器都有重复的语句，可以抽取到初始化块中，提高代码的重用性。
+
+```java
+public class CodeBlock01 {
+    public static void main(String[] args) {
+        //Moive moive = new Moive("你好，李焕英");
+        Moive moive01 = new Moive("流浪地球2", 101);
+    }
+}
+
+class Moive {
+    private String name;
+    private double price;
+    private String director;
+
+    //构造器->重载
+    /*
+     * 1、下面的构造器有相同的语句
+     * 2、这样代码比较冗余
+     * 3、把相同的语句放在代码块中
+     * 4、当我们不管调用哪个构造器，创建对象，都会先调用代码块
+     * 5、代码块调用的顺序优先于构造器*/ {
+        System.out.println("电影屏幕打开");
+        System.out.println("广告开始");
+        System.out.println("电影正式开始");
+    }
+
+    public Moive(String name) {
+        System.out.println("Moive(String name)构造器被调用");
+        this.name = name;
+    }
+
+    public Moive(String name, double price) {
+        System.out.println("(String name, double price)构造器被调用");
+        this.name = name;
+        this.price = price;
+    }
+
+    public Moive(String name, double price, String director) {
+        System.out.println("(String name, double price, String director)构造器被调用");
+        this.name = name;
+        this.price = price;
+        this.director = director;
+    }
+}
+```
+
+### 代码块使用注意事项和细节
+
+1. `static`代码块也叫静态代码块，作用就是对类进行初始化，而且它随着**类的加载**而执行，并且只会执行一次。如果是普通代码块，每创建一个对象，就执行。
+2. 类什么时候被加载[重要]
+   1. 创建对象实例时（`new`）
+   2. 创建子类对象实例时，父类也会被加载。
+   3. 使用类的静态成员时（静态属性，静态方法），而且父类先被加载，子类后被加载。
+3. 普通的代码块，在创建对象实例时，会被隐式的调用。被创建一次，就会调用一次。如果只是使用类的静态成员时，普通代码块并不会执行。
+4. 创建一个对象时，在一个类调用顺序是：
+   1. 调用静态代码块和静态属性初始化（注意：静态代码块和静态属性初始化调用的优先级一样，如果有多个静态代码块和多个静态变量初始化，则按他们定义的顺序调用）
+   2. 调用普通代码块和普通属性的初始化（注意：普通代码块和普通属性初始化调用的优先级一样，如果有多个普通代码块和多个普通初始化，则按定义顺序调用）
+   3. 调用构造方法。
+
+```java
+public class CodeBlockDetail02 {
+    public static void main(String[] args) {
+        A a = new A();
+        /*getN1被调用
+          A 静态代码块01
+          getN2被调用
+          A 普通代码块01
+          A无参构造器被调用
+         */
+    }
+}
+
+class A {
+    //普通属性
+    private int n2 = getN2();
+
+    //静态属性的初始化
+    private static int n1 = getN1();
+
+    static {
+        //静态代码块
+        System.out.println("A 静态代码块01");
+    }
+
+    {
+        //普通代码块
+        System.out.println("A 普通代码块01");
+    }
+
+
+    public static int getN1() {
+        System.out.println("getN1被调用");
+        return 100;
+    }
+
+    public int getN2() {
+        //普通方法
+        System.out.println("getN2被调用");
+        return 100;
+    }
+
+    //无参构造器
+    public A() {
+        System.out.println("A无参构造器被调用");
+    }
+}
+```
+
+5. 构造器的最前面其实隐含了super()和调用普通代码块。静态相关的代码块，属性初始化，在类加载时，就执行完毕，因此是优先于构造器和普通代码块执行的。
+
+6. 我们看一下创建一个子类时（继承关系），他们的静态代码块，静态属性初始化，普通代码块，普通属性初始化，构造方法的调用顺序如下：
+   1. 父类的静态代码块和静态属性（优先级一样，按定义顺序执行）
+   2. 子类的静态代码块和静态属性（优先级一样，按定义顺序执行）
+   3. 父类的普通代码块和普通属性初始化（优先级一样，按定义顺序执行）
+   4. 父类的构造方法
+   5. 子类的普通代码块和普通属性初始化（优先级一样，按定义顺序执行）
+   6. 子类的构造方法
+7. 静态代码块只能直接调用静态成员（静态属性和静态方法），普通代码块可以调用任意成员。
+
+#### 小结
+
+1. `static`代码块时类加载时执行，只会执行一次。
+2. 普通代码块是在创建对象时调用的，创建一次，调用一次。
+3. 类被加载的3种情况。
+
+```java
+public class CodeBlockDetail04 {
+    public static void main(String[] args) {
+        new B04();//创建对象
+        /*
+         * 1、类的加载
+         * 1.1加载父类A04，1.2再加载B02
+         * 2、创建对象
+         * 2.1从子类的构造器开始*/
+        new C04();
+    }
+}
+
+class A04 {//父类
+    private static int n1 = getN1();
+
+    static {
+        System.out.println("A04的第一个静态代码块");//2
+    }
+
+    {
+        System.out.println("A04的第一个普通代码块");//5
+    }
+
+    public int n2 = getN2();
+
+    public static int getN1() {
+        System.out.println("getN1");//1
+        return 10;
+    }
+
+    public int getN2() {
+        /*
+         * 隐藏
+         * supoer()
+         * 普通代码块*/
+        System.out.println("getN2");//6
+        return 20;
+    }
+
+    public A04() {
+        System.out.println("A04的构造方法");//7
+    }
+}
+
+class C04 {
+    private int n1 = 100;
+    private static int n2 = 200;
+
+    public void m1() {
+    }
+
+    private static void m2() {
+    }
+
+    static {
+        //静态代码块，只能调用静态成员
+        System.out.println(n2);
+        m2();
+    }
+
+    {
+        //普通代码块，可以使用任意成员
+        System.out.println(n1);
+        System.out.println(n2);
+        m1();
+        m2();
+    }
+}
+
+class B04 extends A04 {//B04继承了A04
+    private static int n3 = getN3();
+
+    static {
+        System.out.println("B04的第一个静态代码块");//4
+    }
+
+    {
+        System.out.println("B04的第一个普通代码块");//8
+    }
+
+    public static int getN3() {
+        /*
+         * 隐藏
+         * super()
+         * 普通代码块*/
+        System.out.println("getN3");//3
+        return 30;
+    }
+
+    public B04() {
+        System.out.println("B04的构造器");//9
+    }
+}
+```
+
+```java
+public class CodeBlockExercise02 {
+    public static void main(String[] args) {
+        Test test = new Test();
+        /*
+        * 静态成员sam初始化
+          static块被执行
+          sam1成员初始化
+          Test默认构造器被调用*/
+    }
+}
+
+class Sample {
+    Sample(String s) {
+        System.out.println(s);
+    }
+
+    Sample() {
+        System.out.println("sample默认构造器被调用");
+    }
+}
+
+class Test {
+    Sample sam1 = new Sample("sam1成员初始化");
+    static Sample sam2 = new Sample("静态成员sam初始化");
+
+    static {
+        System.out.println("static块被执行");
+        if (sam2 == null) {
+            System.out.println("sam is null");
+        }
+    }
+
+    public Test() {
+        System.out.println("Test默认构造器被调用");
+    }
+}
+```
+
+## 单例设计模式
+
+### 什么是单例模式
+
+1. 所谓类的单例设计模式，就是采取一定的方法保证在整个的软件系统种，对某个类只能存在一个对象实例，并且该类只提供一个取得其对象实例的方法
+2. 单例设计模式有两种方式：
+   1. 饿汉式
+   2. 懒汉式
+
+饿汉式步骤：
+
+1. 构造器私有化===>防止直接new对象
+2. 类的内部创建对象
+3. 向外暴露一个静态的公共方法。`getInstance`
+
+```java
+public class SingleTon01 {
+    public static void main(String[] args) {
+        //饿汉式单例模式
+        //通过方法获取对象
+        Girlfriend gf01 = Girlfriend.getInstance();
+        System.out.println(gf01);//Girlfeiend{name='summer'}
+        Girlfriend gf02 = Girlfriend.getInstance();
+        System.out.println(gf02);//Girlfeiend{name='summer'}
+
+        System.out.println(gf01 == gf02);//true
+        //System.out.println(Girlfriend.n);
+    }
+}
+
+//有一个类 Girlfeiend，只能有一个女朋友
+class Girlfriend {
+    private String name;
+    public static int n = 100;
+    //为了能够在静态方法种，返回gf对象，需要将其修饰改为static
+    //通常是重量级对象，饿汉式可能造成创建了对象，但是没有使用。
+    private static Girlfriend gf = new Girlfriend("summer");
+
+    //如何保障我们只能创建一个GirlFriend
+    //1、将构造器私有化
+    private Girlfriend(String name) {
+        System.out.println("构造器被调用");
+        this.name = name;
+    }
+
+    //2、类的内部创建。(该对象是static)
+    //3、提供一个公共的静态方法
+    public static Girlfriend getInstance() {
+        return gf;
+    }
+
+    @Override
+    public String toString() {
+        return "Girlfriend{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+}
+```
+
+```java
+public class SingleTon02 {
+    public static void main(String[] args) {
+        //懒汉式
+        //System.out.println(Cat.n1);
+        Cat instance01 = Cat.getInstance();
+        System.out.println(instance01);//Cat{name='火锅'}
+        //再次调用getInstance()方法
+        Cat instance02 = Cat.getInstance();
+        System.out.println(instance02);//Cat{name='火锅'}
+        System.out.println(instance01 == instance02);//true
+
+    }
+}
+
+//只能创建一个Cat对象，使用单例模式
+class Cat {
+    private String name;
+    public static int n1 = 999;
+    //2、定义一个静态属性
+    private static Cat cat;//默认为null
+
+    //1、构造器私有化
+    private Cat(String name) {
+        System.out.println("构造器被调用");
+        this.name = name;
+    }
+
+    //3、提供给公共的static方法，可以返回一个Cat对象
+    public static Cat getInstance() {
+        if (cat == null) {
+            //如果还没有创建猫
+            cat = new Cat("火锅");
+        }
+        return cat;
+    }
+
+    @Override
+    public String toString() {
+        return "Cat{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+}
+```
+
+### 总结
+
+饿汉式VS懒汉式
+
+1. 二者最主要的区别在于创建对象的**时机**不同：饿汉式是在类加载就创建了对象实例，而懒汉式是在使用时才创建。
+2. 饿汉式不存在线程安全问题，懒汉式存在线程安全问题。
+3. 饿汉式存在资源浪费的可能。因为如果程序员一个对象实例都没有使用，那么饿汉式创建的对象就浪费了，懒汉式是使用时才创建，就不存在这个问题。
+4. 在javaSE标准类种，`java.lang.Runtime`就是经典的单例模式。
+
+## 抽象类
+
+当父类的某些方法需要声明，但是又不确定如何实现时，可以将其声明为抽象方法，那么这个类就是抽象类。
+
+当父类的一些方法不能确定时，可以用`abstract`关键字来修饰该方法，这个方法就是抽象方法，用`abstract`来修饰该类就是抽象类。
+
+### 抽象类的介绍
+
+1. 用`abstract`关键字来修饰一个类时，这个类就叫抽象类
+
+   `访问修饰符 abstract 类名{}`
+
+2. 用`abstract`关键字来修饰一个方法时，这个方法就是抽象方法
+
+   `访问修饰符 abstract 返回类型 方法名(参数列表);`//没有方法体
+
+3. 抽象类的价值更多作用在于设计，是设计者设计好后，让子类继承并实现抽象类`()`
+
+### 抽象类使用注意和细节
+
+1. 抽象类不能被实例化
+2. 抽象类不一定要包含abstract方法。也就是说，抽象类可以没有abstract方法
+3. 一旦包含了abstract方法，则这个类必须声明为abstract
+4. abstract只能**修饰类和方法**，不能修饰属性和其他的。
+5. 抽象类可以有任意成员[抽象类本质还是类]，比如：非抽象方法、构造器、静态属性等
+6. 抽象方法不能有主体，即不能实现
+7. 如果一个类继承了抽象类，则它必须实现抽线类的所有抽线方法，除非它自己也声明为abstract类。
+8. 抽象方法不能使用private、final和static来修饰，因为这些关键字都是和重写相违背。
+
+### 练习
+
+```java
+public class AbstractExercise01 {
+    public static void main(String[] args) {
+        Manager m1 = new Manager("summer", 01, 1000.9);
+        m1.setBonus(8000);
+        m1.work();
+        CommonEmployee james = new CommonEmployee("james", 02, 9000);
+        james.work();
+
+
+    }
+}
+
+abstract class Employee {
+    //三个属性
+    private String name;
+    private int id;
+    private double salary;
+
+    public Employee(String name, int id, double salary) {
+        this.name = name;
+        this.id = id;
+        this.salary = salary;
+    }
+
+    abstract void work();
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+}
+
+class Manager extends Employee {
+    //奖金属性
+    private double bonus;
+
+    public double getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(double bonus) {
+        this.bonus = bonus;
+    }
+
+    public Manager(String name, int id, double salary) {
+        super(name, id, salary);
+        this.bonus = bonus;
+
+    }
+
+    @Override
+    void work() {
+        System.out.println("经理：" + getName() + "正在工作");
+    }
+}
+
+class CommonEmployee extends Employee {
+    public CommonEmployee(String name, int id, double salary) {
+        super(name, id, salary);
+    }
+
+    @Override
+    void work() {
+        System.out.println("普通员工：" + getName() + "正在工作");
+    }
+}
+```
+
+### 抽象类最佳实践-模板设计模式
+
+```java
+public class TestTemplate {
+    public static void main(String[] args) {
+        AA aa = new AA();
+        aa.calculateTime();
+        BB bb = new BB();
+        bb.calculateTime();
+    }
+}
+abstract public class Template {//模板
+    public abstract void  job();//抽象方法
+    public void calculateTime() {//调用了job方法
+        //得到开始时间
+        long start = System.currentTimeMillis();
+        job();//动态绑定
+        //得到结束的时间
+        long end = System.currentTimeMillis();
+        System.out.println("执行时间=" + (end - start));
+    }
+}
+public class AA extends Template{
+
+    //计算任务
+    //1+...+10000
+    public void job() {//实现了Template的抽象方法
+        long num = 0;
+        for (long i = 1; i < 1000000; i++) {
+            num += i;
+        }
+    }
+}
+public class BB extends Template {
+
+    public void job() {//重写了Template 的job方法
+        long num = 0;
+        for (long i = 1; i < 1000000; i++) {
+            num *= i;
+        }
+    }
+}
+```
+
+## 接口
+
+### 接口快速入门
+
+```java
+public class Interface01 {
+    public static void main(String[] args) {
+        //创建手机，相机
+        Phone phone = new Phone();
+        Camera camera = new Camera();
+        //创建计算机
+        Computer computer = new Computer();
+        computer.work(phone);//把手机接入计算机
+        System.out.println("============");
+        computer.work(camera);//把手机接入计算机
+    }
+}
+public interface UsbInteface {//接口
+    //规定相关方法
+    public void start();
+    public void stop();
+}
+public class Computer {
+    //编写一个方法
+    public void work(UsbInteface usbInteface) {
+        //通过接口调用方法
+        usbInteface.start();
+        usbInteface.stop();
+    }
+}
+public class Phone implements UsbInteface{
+    @Override
+    public void start() {
+        System.out.println("手机开始工作");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("手机停止工作");
+    }
+}
+public class Camera implements UsbInteface {//实现接口,把接口的方法实现
+
+    @Override
+    public void start() {
+        System.out.println("相机开始工作");
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("相机停止工作");
+    }
+}
+```
+
+### 基本介绍
+
+接口就是给出一些没有实现的方法，封装到一起，到某个类要使用的时候，再根据具体情况把这些方法写出来。
+
+### 语法
+
+```java
+interface 接口名{
+    //属性
+    //方法1、抽象方法；2、默认实现方法；3、静态方法
+}
+class 类名 implements 接口{
+    //自己属性;
+   	//自己方法;
+    //必须实现的接口的抽象方法
+}
+```
+
+### 小结
+
+1. 在`jdk7.0`之前，接口里的所有方法都没有方法体。
+2. `jdk8.0`后接口可以有静态方法，默认方法，也就是说接口中可以有方法的具体实现。
+
+```java
+public class Interface02 {
+    public static void main(String[] args) {
+        
+    }
+}
+interface AInterface02{
+    //属性
+    public int n1=10;
+
+    //写方法
+    //在接口中，抽象方法，可以省略abstract关键字
+    public void hi();
+    //在jdk8后 ，可以有默认实现方法,需要使用default关键字修饰
+    default public void ok(){
+        System.out.println("ok");
+    }
+    //也可以静态方法
+    public static void say(){
+        System.out.println("say hi hello");
+    }
+}
+//1、如果一个类implements实现接口
+//2、需要将该接口的所有抽象方法都实现
+class A implements AInterface02{
+    @Override
+    public void hi() {
+        System.out.println("hi");
+    }
+}
+```
+
+### 深入讨论
+
+```java
+public class Interface03 {
+    public static void main(String[] args) {
+        MysqlDB mysqlDB = new MysqlDB();
+        t(mysqlDB);
+    }
+
+    public static void t(DBInterface db) {
+        db.connect();
+        db.close();
+    }
+}
+public interface DBInterface {//项目经理
+    public void connect();
+    public void close();
+}
+public class MysqlDB implements DBInterface {
+    //连接Mysql
+    @Override
+    public void connect() {
+        System.out.println("连接Mysql");
+    }
+
+    @Override
+    public void close() {
+        System.out.println("关闭Mysql");
+    }
+}
+public class OracleDB implements DBInterface {
+    //连接Oracle
+    @Override
+    public void connect() {
+        System.out.println("连接Oracle");
+    }
+
+    @Override
+    public void close() {
+        System.out.println("关闭Oracle");
+    }
+}
+```
+
+### 注意事项和细节
+
+1. 接口不能被实例化
+
+2. 接口中所有的方法是`public`方法，接口中抽象方法，可以不用`abstract`修饰
+
+   `void aaa();<====>abstract void aaa();`
+
+3. 一个普通类实现接口，就必须将该接口的所有方法都实现。（alt+enter快速实现）
+
+4. 抽象类实现接口，可以不用实现接口的方法。
+
+5. 一个类同时可以实现多个接口。
+
+6. 接口中的属性，只能是final的，而且是`public static final`修饰符。
+
+   `int a = 1;`实际上是`public static final int a = 1;`必须初始化。
+
+7. 接口中属性的访问形式：`接口名.属性名`
+
+8. 一个接口不能继承其他的类，但是可以继承多个别的接口。
+
+   `interface A extends B,C{}`
+
+9. 接口的修饰符只能是public和默认，这点和类的修饰符是一样的。
+
+```java
+public class InterfaceDetail01 {
+    public static void main(String[] args) {
+        //IA ia = new IA();
+    }
+}
+interface IA{
+    //接口不能被实例化
+    //接口中所有的方法是public方法，接口中抽象方法，可以不用abstract修饰
+    void say();
+    //一个普通类实现接口，就必须将该接口的所有方法都实现。
+    void hi();
+
+}
+class Cat implements IA{
+    @Override
+    public void say() {
+
+    }
+
+    @Override
+    public void hi() {
+
+    }
+}
+abstract class Tiger implements IA{}
+public class InterfaceDetail02 {
+    public static void main(String[] args) {
+        //接口中属性是public static final
+        System.out.println(IB.n1);//说明n1是static
+        //IB.n1=1000;
+        //说明n1是final
+    }
+}
+interface IB{
+    //接口中的属性，只能是final的，而且是public static final修饰符。
+    int n1 =100;//等价 public static final int n1 = 100;
+    void say();
+}
+interface IC{
+    void hi();
+}
+//一个接口不能继承其他的类，但是可以继承多个别的接口。
+interface ID extends IC,IB{
+
+}
+//接口的修饰符只能是public和默认，这点和类的修饰符是一样的.
+interface IE{}
+class Pig implements IB,IC{
+    //一个类同时可以实现多个接口。
+    @Override
+    public void say() {
+
+    }
+
+    @Override
+    public void hi() {
+
+    }
+}
+```
+
+### 练习
+
+```java
+public class InterfaceExercise01 {
+    public static void main(String[] args) {
+        BB b = new BB();
+        System.out.println(b.a);//23
+        System.out.println(AA.a);//23
+        System.out.println(BB.a);//23
+    }
+}
+interface AA{
+    int a =23;//public static final int a = 23;
+}
+class BB implements AA{
+}
+```
+
+### 实现接口VS继承类
+
+```java
+public class ExtendsVsInterface {
+    public static void main(String[] args) {
+        LittleMonkey wukong = new LittleMonkey("孙大圣");
+        wukong.climbing();
+        wukong.swimming();
+        wukong.flying();
+    }
+}
+
+//猴子
+class Monkey {
+    private String name;
+
+    public void climbing() {
+        System.out.println("猴子会爬树");
+    }
+
+    public Monkey(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
+//接口
+interface Fishable {
+    void swimming();
+}
+
+interface Birdable {
+    void flying();
+}
+/*
+* 1、当子类继承了父类，就自动拥有父类的功能
+* 2、如果子类需要扩展功能，可以通过实现接口的方式扩展
+* 3、实现接口 是对java 单继承机制的补充。*/
+//小猴子 继承了猴子
+class LittleMonkey extends Monkey implements Fishable, Birdable {
+    public LittleMonkey(String name) {
+        super(name);
+    }
+
+    @Override
+    public void swimming() {
+        System.out.println(getName() + "通过学习可以游泳");
+    }
+
+    @Override
+    public void flying() {
+        System.out.println(getName() + "通过学习可以飞翔");
+    }
+}
+```
+
+1. 接口和继承解决的问题不同
+
+   1. 继承的价值主要在于：解决代码的复用性和可维护性。
+   2. 几口的加载主要在于：设计，设计好各种规范（方法），让其他类去实现这些方法
+
+2. 接口比继承更加灵活
+
+   接口比继承更加灵活，继承是满足is-a的关系，而接口只需满足like-a的关系。
+
+3. 接口在一定程度上实现代码解耦（接口规范性+动态绑定）
+
+### 接口的多态性
+
+#### 多态参数
+
+接口引用可以指向实现了接口的类的对象
+
+#### 多态数组
+
+```java
+public class InterfacePolyArr {
+    public static void main(String[] args) {
+        //多态数组 接口类型数组
+        Usb[] usbs = new Usb[2];
+        usbs[0] = new Phone_();
+        usbs[1] = new Camera_();
+        //遍历usbs数组
+        for (int i = 0; i < usbs.length; i++) {
+            usbs[i].work();//动态绑定
+            if (usbs[i] instanceof Phone_) {//判断他的运行类型Phone_
+                ((Phone_) usbs[i]).call();
+            }
+        }
+    }
+}
+
+interface Usb {
+    void work();
+}
+
+class Phone_ implements Usb {
+    public void call() {
+        System.out.println("手机可以打电话");
+    }
+
+    @Override
+    public void work() {
+        System.out.println("手机工作中");
+    }
+}
+
+class Camera_ implements Usb {
+    @Override
+    public void work() {
+        System.out.println("相机工作中");
+    }
+}
+```
+
+#### 接口存在多态传递现象
+
+```java
+public class InterfacePolyPass {
+    public static void main(String[] args) {
+        //多态传递现象
+        //接口类型的变量可以指向，实现了该接口的类的对象的实例
+        IG ig = new Teacher();
+        /*
+        *如IG继承了IH接口，而Teacher类实现了IG接口
+        *那么，实际上就相当于Teacher类也实现了IH接口
+        * 这就是所谓的接口多态传递现象。 */
+        IH ih = new Teacher();
+    }
+}
+```
+
+```java
+public class InterfaceExercise02 {
+    public static void main(String[] args) {
+
+    }
+}
+
+interface AE02 { // 1min 看看
+    int x = 0;
+} //想到 等价 public static final int x = 0;
+
+class BE02 {
+    int x = 1;
+} //普通属性
+
+class CE02 extends BE02 implements AE02 {
+    public void pX() {
+//System.out.println(x); //错误，原因不明确 x
+        //可以明确的指定 x
+        //访问接口的 x 就使用 A.x
+        //访问父类的 x 就使用 super.x
+        System.out.println(AE02.x + " " + super.x);
+    }
+
+    public static void main(String[] args) {
+        new CE02().pX();
+    }
+}
+```
+
+## 内部类
+
+### 基本介绍
+
+一个类的内部又完整的嵌套了另一个类结构。被嵌套的类型称为内部类(inner class)，嵌套其他类的类称为外部类(outer class)。是我们类的第五大成员（属性、方法、构造器、代码块、内部类），内部类最大的特点就是可以直接访问私有属性，并且可以体现类与类之间的包含关系。
+
+### 基本语法
+
+```java
+class Outer{//外部类
+    class Inner{//内部类
+        
+    }
+}
+class Other{//外部其他类
+    
+}
+```
+
+```java
+public class InnerClass01 {//外部其他类
+
+    public static void main(String[] args) {
+
+    }
+}
+
+class Outer {//外部类
+    //属性
+    private int n1 = 10;
+
+    //构造器
+    public Outer(int n1) {
+        this.n1 = n1;
+    }
+
+    //方法
+    public void m1() {
+        System.out.println("m1()");
+    }
+
+    {
+        //代码块
+        System.out.println("代码块");
+    }
+
+
+    class Inner {//内部类
+
+    }
+}
+```
+
+### 内部类的分类
+
+定义在外部类局部位置上（比如方法内）：
+
+1. 局部内部类（有类名）
+2. 匿名内部类（没有类名，重点）
+
+定义在外部类的成员位置上
+
+1. 成员内部类（没有static修饰）
+2. 静态内部类（使用static修饰）
