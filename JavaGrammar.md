@@ -2312,6 +2312,23 @@ public class ForExercise02 {
 }
 ```
 
+### 增强for循环
+
+```java
+//使用 增强for循环 的格式是什么？
+//增强for循环：
+for(集合/数组的数据类型 变量名 : 集合名/数组名){
+}
+public class PlusFor {
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5, 6, 7};
+        for (int i : arr) {
+            System.out.print(i + "\t");
+        }
+    }
+}
+```
+
 ### while
 
 #### 基本语法
@@ -2977,10 +2994,6 @@ public class HomeWork06 {
 }
 ```
 
-```java
-//8、求1+(1+2)+(1+2+3)+(1+2+3+4)+...+(1+2+3+4+...+100)的结果
-```
-
 # 第6章 数组、排序和查找
 
 ## 数组
@@ -3131,7 +3144,7 @@ public class ArrayDetail {
         //数组下标必须在指定范围内使用，否则报：下标越界异常
         int[] arr5 = new int[5];
         //System.out.println(arr5[5]);
-        //Exception in thread "main"         java.lang.ArrayIndexOutOfBoundsException: 5
+        //Exception in thread "main"         java.lang.ArrayIndexOutOfBoundsException: 5  数组越界
         //	at com.basic.www.conpter04.ArrayDetail.main(ArrayDetail.java:24)
         //数组的下标 最小=0，最大=数组长度-1(4)
     }
@@ -3205,6 +3218,7 @@ public class ArrayExercise03 {
    ```java
    int[] arr1={1,2,3};
    int[] arr2=arr1;
+   //arr1赋值给arr2，所以arr2存放的就是arr1存放的地址，所以他们都指向同一个地址。
    ```
 
 ![image-20221222162215364](JavaGrammar.assets/image-20221222162215364.png)
@@ -3216,22 +3230,26 @@ public class ArrayExercise03 {
 //将int[] arr1={10,20,30};拷贝到arr2数组，要求空间独立
 public class ArrayCopy {
     public static void main(String[] args) {
-        int[] arr1={10,20,30};
+        int[] arr1 = {10, 20, 30};
         //创建一个新的数组arr2，开辟新的数据空间
-        int[] arr2=new int[arr1.length];
+        int[] arr2 = new int[arr1.length];
         //遍历arr1，把每个元素拷贝到对应的位置
         for (int i = 0; i < arr1.length; i++) {
-            arr2[i]=arr1[i];
+            arr2[i] = arr1[i];
         }
-        arr2[0]=100;
+        arr2[0] = 100;
         System.out.println("=====arr2======");
         for (int i = 0; i < arr2.length; i++) {
-            System.out.println(arr2[i]);
+            System.out.print(arr2[i] + "\t");
         }
+        System.out.println();
         System.out.println("=====arr1======");
         for (int i = 0; i < arr1.length; i++) {
-            System.out.println(arr1[i]);
+            System.out.print(arr1[i]+"\t");
         }
+        //可以使用Arrays.copyOf(arr1,arr1.length);
+        //第二个参数是新数组的长度，可以增加数组的大小。
+        //如果长度小于原始数组长度，则只拷贝前面的值。
     }
 }
 ```
@@ -3347,7 +3365,7 @@ public class ArrayAdd02 {
 */
 ```
 
-### 排序
+## 排序
 
 排序是将多个数据，依指定的顺序进行排列的过程。
 
@@ -3361,7 +3379,7 @@ public class ArrayAdd02 {
 
    数据量过大，无法全部加载到内存中，需要借助外部存储进行排序。包括（合并排序法和直接合并排序法）
 
-#### 冒泡排序法
+### 冒泡排序法
 
 冒泡排序法（Bubble Sorting）的基本思想是：通过对排序序列从后向前（从下标较大的元素开始），依次比较相邻元素的值，若发现逆序则交换，使值较大的元素逐渐从前移向后部，就像水底下的气泡一样逐渐向上冒。
 
@@ -3378,6 +3396,7 @@ public class ArrayAdd02 {
 public class BubbleSort {
     public static void main(String[] args) {
         //24，69，80，57，13冒泡排序
+        //24, 69, 80, 57, 13,110,120,119,12305,-1
         int[] arr = {24, 69, 80, 57, 13,110,120,119,12305,-1};
         int temp = 0;
         //将多轮排序使用外层循环括起来
@@ -3436,20 +3455,53 @@ public class BubbleSort {
 }
 ```
 
-### 查找
+## 查找
 
 1. 顺序查找
 2. 二分查找[二分法]
 
 ```java
 //1、有一个数列：白眉鹰王、金毛狮王、紫衫龙王、青翼蝠王猜数游戏：从键盘中任意输入一个名称，判断数列中是否包含此名字[顺序查找]要求：如果找到了，就提示找到了，并给出下标值
+public class SeqSearch {
+    public static void main(String[] args) {
+        //定义一个字符串数组
+        String[] names = {"白眉鹰王", "金毛狮王", "紫衫龙王", "青翼蝠王"};
+        //接收用户输入
+        Scanner scanner = new Scanner(System.in);
 
-//===============================
-//2、请对一个有序数组进行二分查找{1,8,10,89,1000,1234}，输入一个数看看该数组是否存在次数，并且求出下标，如果没有就提示"没有这个数"。
-
+        System.out.println("请输入名字:");
+        String findName = scanner.next();
+        //遍历数组，逐一比较，如果有，就提示
+        //编程思想,一个金典的方法
+        int index = -1;
+        for (int i = 0; i < names.length; i++) {
+            //字符串比较equals
+            if (findName.equals(names[i])) {
+                System.out.println("恭喜您找到：" + findName);
+                System.out.println("下标为：" + i);
+                //把i保存到index
+                index = i;
+                break;//退出
+            }
+        }
+        if (index == -1) {//没有找到
+            System.out.println("非常遗憾没有找到：" + findName);
+        }
+    }
+}
 ```
 
-### 多维数组-----二维数组
+## 多维数组-----二维数组
+
+### 声明
+
+`int[][] arr;`
+
+### 初始化
+
+`arr new intp[4][6];`
+
+#### 使用方式1：动态初始化0
 
 ```java
 //请用二位数组输出如下图形
@@ -3459,40 +3511,6 @@ public class BubbleSort {
 0 2 0 3 0 0
 0 0 0 0 0 0
 */
-public class TwoDimensionalArray01 {
-    public static void main(String[] args) {
-        /*
-         * 1、从定义形式上看int[][]
-         * 2、原来的一维数组的每个元素是一维数组，就构成了二维数组*/
-        int[][] arr = {{0, 0, 0, 0, 0, 0},
-                {0, 0, 1, 0, 0, 0},
-                {0, 2, 0, 3, 0, 0},
-                {0, 0, 0, 0, 0, 0}};
-
-        //关于二维数组的关键概念
-        System.out.println("二维数组的元素个数：" + arr.length);
-        //二维数组的每个元素是一维数组，所以需要得到每个一维数组的值，需要再次遍历
-        //如果访问第(i+1)个一维数组第(j+1)个值 arr[i][j];
-        
-        //输出二维图形
-        for (int i = 0; i < arr.length; i++) {//遍历二维数组的每个元素
-            //遍历二维数组的每个元素（数组）
-            /*
-            arr[i]表示：二维数组的第i+1个元素 比如arr[0]：二维数组的第一个元素
-            * 1、arr[i].length得到对应的 每个一维数组的长度*/
-            for (int j = 0; j < arr[i].length; j++) {
-                System.out.print(arr[i][j] + "\t");
-                //输出了一维数组
-            }
-            System.out.println();//换行
-        }
-    }
-}
-```
-
-#### 使用方式1：动态初始化0
-
-```java
 /*
 语法：类型[][] 数组名=new 类型[大小][大小];
 int a[][]=new int[2][3];
@@ -3617,7 +3635,7 @@ int[][] arr = {{1,1,1},{8,8,9},{100}}
 */
 ```
 
-#### 二维数组的遍历
+### 二维数组的遍历
 
 ```java
 //int arr[][]={{4,6},{1,4,5,7},{-2}};遍历该二维数组，并得到和
@@ -3680,7 +3698,7 @@ public class YangHui {
 }
 ```
 
-#### 二维数组使用细节和注意事项
+### 二维数组使用细节和注意事项
 
 1、一维数组的声明方式有：
 
@@ -3697,7 +3715,7 @@ int[] y[];
 int y[][];
 ```
 
-3、二维数组实际上是由多个一维数组组成的，它的各个一维数组的长度可以相同，也可以不相同。比如：`map[][]`是一个二维数组
+3、二维数组实际上是由多个一维数组组成的，它的各个**一维数组的长度可以相同**，**也可以不相同**。比如：`map[][]`是一个二维数组
 
 ```java
 map[][]={{1,2},{3,4,5}};
@@ -3705,7 +3723,7 @@ map[][]={{1,2},{3,4,5}};
 
 由map[0]是一个含有两个元素的一维数组，map[1]是一个含有三个元素的一维数组构成，我们也称为列数不等的二维数组。
 
-#### 二维数组课堂练习
+### 二维数组课堂练习
 
 ```java
 //声明：int[]x,y[];一下选项可允许通过遍历的是?
