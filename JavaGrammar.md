@@ -3796,7 +3796,7 @@ public class HomeWork01 {
 
 # 第7章 面向对象编程(基础部分)
 
-###  类与对象
+##  类与对象
 
 ```java
 public class Object01 {
@@ -3861,7 +3861,7 @@ class Cat {
 }
 ```
 
-#### 类与对象的关系示意图
+### 类与对象的关系示意图
 
 ![image-20230130144745638](JavaGrammar.assets/image-20230130144745638.png)
 
@@ -3875,13 +3875,15 @@ class Cat {
 
 3、把类实例化...
 
-#### 类与对象的区别和联系
+### 类与对象的区别和联系
 
-1. 类是抽象的，概念的，代表一类事物，比如人类，猫类...，即它是数据类型。
-2. 对象是具体的，实际的，代表一个具体事务，即 是实例。
+1. 类是抽象的，概念的，代表一类事物，比如人类，猫类...，即它是**数据类型**。
+2. 对象是具体的，实际的，代表一个具体事务，即是**实例**。
 3. 类是对象的模板，对象是类的一个个体，对应一个实例。
+4. **类是**构造**对象**的**模板**，类想象成制作饼干的摸具，将对象想象为饼干。
+5. 由类构造(`construct`)对象的过程称为创建类的实例(`instance`)。
 
-#### 对象在内存中存在形式（重要的）
+## 对象在内存中存在形式（重要的）
 
 ```java
 Cat cat=new Cat();
@@ -3890,29 +3892,29 @@ cat.age=12;
 cat.color="白色";
 ```
 
-![image-20230130152105872](JavaGrammar.assets/image-20230130152105872.png)
+![image-20230217173238621](JavaGrammar.assets/image-20230217173238621.png)
 
-#### 属性、成员变量
+## 属性、成员变量
 
-1. 从概念或叫法上看：成员变量=属性=field（字段）（即 成员变量是用来表示属性的）
+1. 从概念或叫法上看：成员变量=属性=`field`（字段）（即 成员变量是用来表示属性的）
 
-2. 属性是类的一个组成部分，一般是基本数据类型，也可以是应用类型（对象、数组）。
+2. 属性是类的一个组成部分，一般是**基本数据类型**，也可以是**引用类型**（对象、数组）。
 
-   比如前面定义猫类的int age就是属性
+   比如前面定义猫类的`int age`就是属性
 
-##### 注意事项和细节说明
+### 注意事项和细节说明
 
-1. 属性的定义语法同变量，示例：访问修饰符 属性类型 属性名;
+1. 属性的定义语法同变量，示例：`访问修饰符 属性类型 属性名;`
 
-   访问修饰符：控制属性的访问范围
+   访问修饰符：控制属性的**访问范围**。
 
-   有四种访问修饰符：public protected 默认 private
+   有**四种访问修饰符**：public protected 默认 private
 
-2. 属性的定义类型可以是为任意类型，包含基本类型或引用类型
-
-   `int 0，short 0, byte 0, long 0, float 0.0,double 0.0，char \u0000，boolean false，String null`
+2. 属性的定义类型可以是为任意类型，包含**基本类型**或**引用类型**。
 
 3. 属性如果不赋值，有默认值，规则和数组一致。
+
+   `int 0，short 0, byte 0, long 0, float 0.0,double 0.0，char \u0000，boolean false，String null`
 
 ```java
 public class PropertiesDetail {
@@ -3938,7 +3940,7 @@ class Person{
 //age=0 name=null sal=0.0 isPass=false
 ```
 
-#### 如何创建对象
+## 如何创建对象
 
 1. 先声明再创建
 
@@ -3953,7 +3955,27 @@ class Person{
    Cat cat = new Cat();
    ```
 
-#### 类和对象内存分配机制（重要）
+## 类和对象内存分配机制（重要）
+
+### 类加载时机
+
+1. 创建对象
+2. 调用类的静态成员
+3. 加载子类
+
+### 类在实例化后的内存分配
+
+1. 每次创建对象时，都需要进行加载和创建2个操作：
+   1. 先去判断需要的类是否已经加载，如果已经加载，则无需再加载，如果没有加载，则需要通过类加载器加载类信息到方法区。
+   2. 在堆中创建新对象。
+2. 栈、堆、方法区的存储
+   1. 栈：对象的引用、局部变量
+   2. 堆：对象和全局变量（属性）
+   3. 方法区：类信息、属性信息、方法信息。
+3. 方法的调用机制
+   1. 每次调用方法，伴随着"方法入栈"操作，也就是栈中为该方法分配了一块空间，用于保存该方法涉及到的变量。
+   2. 每次方法调用结束，伴随着"方法出栈"操作，也就是栈中分配的空间被释放了。
+   3. 在类的方法调用过程中，首先判断方法区是否存在该方法，存在则方法入栈，调用结束后出栈。
 
 ```java
 public class Object03 {
@@ -3974,13 +3996,13 @@ class Person01{
 
 ![image-20230130173712213](JavaGrammar.assets/image-20230130173712213.png)
 
-##### Java内存的结构分析
+## Java内存的结构分析
 
 1. 栈：一般存放基本数据类型（局部变量）
 2. 堆：存放对象（Cat cat，数组等）
 3. 方法区：常量池（常量，比如字符串），类加载信息
 
-##### Java创建对象的流程简单分析
+## Java创建对象的流程简单分析
 
 ```java
 Person p=new Person();
@@ -3988,8 +4010,8 @@ p.name="jack";
 p.age=10;
 ```
 
-1. 先加载Person类信息（属性和方法信息，只会加载一次）
-2. 再堆中分配空间，进行默认初始化。
+1. 先加载`Person`类信息（属性和方法信息，只会加载一次）
+2. 在堆中分配空间，进行默认初始化。
 3. 把堆中的地址赋给p，p就指向对象
 4. 进行指定初始化，比如p1.name="jack"  p1.age=10;
 
@@ -4002,17 +4024,17 @@ b=a;
 System.out.println(b.name);//summer
 b.age=200;
 b=null;//b指向的地址为空
-System.out.println(a.age);
+System.out.println(a.age);//200
 System.out.println(b.age);//出现异常
 ```
 
-### 成员方法
+## 成员方法
 
-#### 基本介绍
+### 基本介绍
 
 在某些情况下，我们需要定义成员方法（简称方法）。比如人类：除了有一些属性外（年龄、姓名...），我们人类还有一些行为比如：可以说话、跑步...，通过学习，还可以做算术。这时就要用成员方法才能完成。
 
-#### 成员方法快速入门
+### 成员方法快速入门
 
 1. 添加speak成员方法，输出：我是一个好人
 2. 添加cal01成员方法，可以计算从1+...+1000的结果
@@ -4085,19 +4107,19 @@ class Person {
     }
 ```
 
-#### 方法的调用机制原理（重要！）
+### 方法的调用机制原理（重要！）
 
 ![image-20230130204223671](JavaGrammar.assets/image-20230130204223671.png)
 
-##### 方法调用小结
+### 方法调用小结
 
-1. 当程序执行到方法时，就会开辟一个独立的空间（栈空间）
-2. 当方法执行完毕，或者执行到return语句时，就会返回
-3. 返回到调用方法的地方
-4. 返回后，继续执行方法后面的代码
-5. 当main方法（栈）执行完毕，整个程序退出
+1. 当程序执行到方法时，就会开辟一个独立的空间（栈空间）。
+2. 当方法执行完毕，或者执行到return语句时，就会返回.
+3. 返回到调用方法的地方。
+4. 返回后，继续执行方法后面的代码。
+5. 当`main`方法（栈）执行完毕，整个程序退出。
 
-#### 成员方法的好处
+### 成员方法的好处
 
 提高代码的复用性
 
@@ -4143,7 +4165,7 @@ class MyTools {
 }
 ```
 
-#### 成员方法的定义
+### 成员方法的定义
 
 ```java
 public 返回数据类型 方法名(形参列表...){
@@ -4158,18 +4180,18 @@ public 返回数据类型 方法名(形参列表...){
 3. 方法主体：表示为了实现某一功能代码块
 4. return语句不是必须的
 
-#### 方法的注意事项和细节
+### 方法的注意事项和细节
 
-##### 修饰符（作用是控制方法使用的范围）
+### 修饰符（作用是控制方法使用的范围）
 
-如果不写默认访问。（有四种：public protected 默认 private）
+如果不写默认访问。（有四种：`public protected 默认 private`）
 
-##### 返回类型
+### 返回类型
 
-1. 一个方法最多有一个返回值(如果返回多个结果，返回数组)
+1. 一个方法**最多有一个返回值**(如果返回多个结果，返回数组)
 2. 返回类型可以是为任意类型，包含基本类型或引用类型（数组，对象）
-3. 如果方法要求有返回数据类型，则方法体中最后的执行语句必须为return 值;而且要求返回值类型必须和return的值类型一致或兼容。
-4. 如果方法是void，则方法体中可以没有return语句，或者只写return;
+3. 如果方法要求有返回数据类型，则方法体中最后的执行语句必须为`return 值`;而且要求返回值类型必须和`return`的值类型一致或兼容。
+4. 如果方法是`void`，则方法体中可以没有`return`语句，或者只写`return`;
 
 ```java
 public class MethodDetail01 {
@@ -4209,18 +4231,18 @@ class AA {
 }
 ```
 
-##### 方法名
+### 方法名
 
-遵循驼峰命名法，最好见名知意，表达出该功能的意思即可。
+遵循**驼峰命名法**，最好见名知意，表达出该功能的意思即可。
 
-##### 形参列表
+### 形参列表
 
-1. 一个方法可以有0个参数，也可以有多个参数，中间用逗号隔开。
+1. 一个方法可以有0个参数，也可以有多个参数，中间用**逗号隔开**。
 2. 参数类型可以为任意类型，包含基本类型或应用类型。
 3. 调用带参数的方法时，一定对应着参数列表传入相同类型或兼容类型的参数！！！
 4. 方法定义时的参数称为形式参数，简称形参；方法调用时的参数称为实际参数，简称实参，实参和形参的类型要一致或兼容、个数、顺序必须一致！！！
 
-##### 方法体
+### 方法体
 
 里面写完功能的具体的语句，可以为输入、输出、变量、运算、分支、循环、方法调用，但里面不能再定义方法！！！即：方法里不能嵌套定义。
 
@@ -9070,9 +9092,488 @@ class Outer {//外部类
 定义在外部类局部位置上（比如方法内）：
 
 1. 局部内部类（有类名）
-2. 匿名内部类（没有类名，重点）
+2. 匿名内部类（没有类名，重点!!!!!!）
 
 定义在外部类的成员位置上
 
 1. 成员内部类（没有static修饰）
 2. 静态内部类（使用static修饰）
+
+#### 局部内部类的使用
+
+说明：局部内部类是定义在外部类的局部位置，比如方法中，并且有类名。
+
+1. 可以直接访问外部类的所有成员，包含私有的。
+
+2. 不能添加访问修饰符，因为它的地位就是一个局部变量。局部变量是不能用修饰符的。但是可以使用`final`修饰符，因为局部变量也可以使用`final`。
+
+3. 作用域：仅仅在定义它的方法或代码块中。
+
+4. 局部内部类-------访问------>外部类的成员（访问方式：直接访问）
+
+5. 外部类-----访问----->局部内部类的成员。（访问方式：创建对象，再访问（注意：必须作用域内））
+
+6. 外部其他类---不能访问---->局部内部类（因为 局部内部类地位是一个局部变量）
+
+7. 如果外部类和局部内部类的成员重名时，默认遵循就近原则，如果想访问外部类的成员，则可以使用（外部类名.this.成员）去访问。
+
+   `System.out.println("外部类的n2="+外部类名.this.n2);`
+
+```java
+public class LocalInnerClass {
+    public static void main(String[] args) {
+        //局部内部类
+        Outer02 outer02 = new Outer02();
+        outer02.m1();
+        System.out.println("outer02 hashcode()="+outer02.hashCode());//Outer02.this hashCode()=460141958
+    }
+}
+
+class Outer02 {//外部类
+    private int n1 = 100;
+
+    private void m2() {
+        System.out.println("Outer02");
+    }//私有方法
+
+    public void m1() {//方法
+        //局部内部类是定义正在外部类的局部位置，通常在方法中。
+        //不能添加访问修饰符。但是可以使用final修饰符，
+        //作用域：仅仅在定义它的方法或代码块中。
+        /* final*/
+        class Inner02 {
+            //局部内部类（本质仍然是一个类）
+            //可以直接访问外部类的所有成员，包含私有的。
+            private int n1 = 800;
+
+            public void f1() {
+                //局部内部类可以直接访问外部类的成员。
+                //如果外部类和局部内部类的成员重名时，默认遵循就近原则，
+                //如果想访问外部类的成员，
+                //则可以使用（外部类名.this.成员）去访问。
+                System.out.println("n1：" + n1+"外部类n1="+Outer02.this.n1);
+                //Outer02.this外部类的对象，即哪个对象调用了m1，Outer02.this就是哪个对象
+                System.out.println("Outer02.this hashCode()="+Outer02.this.hashCode());///Outer02.this hashCode()=460141958
+                m2();//Outer02
+            }
+        }
+        //外部类在方法中，可以创建Inner02对象，然后调用方法。
+        Inner02 inner02 = new Inner02();
+        inner02.f1();
+    }
+
+    {
+        //代码块
+        class Inner03 {
+
+        }
+    }
+}
+```
+
+#### 匿名内部类的使用
+
+说明：匿名内部类是定义在外部类的局部位置，比如方法中，并且没有类名
+
+1、本质是类；2、内部类；3、该类没有名字；4、同时是对象
+
+1. 匿名内部类的基本语法
+
+   `new 类或接口(参数列表){类体};`
+
+   ```java
+   public class AnonymousInnerClass {
+       public static void main(String[] args) {
+           //匿名内部类
+           Outer03 outer03 = new Outer03();
+           outer03.method();
+       }
+   }
+   
+   class Outer03 {//外部类
+       private int n1 = 10;//属性
+   
+       public void method() {//方法
+           //基于接口的匿名内部类
+           /*
+            * 1、想使用接口IA接口，并创建对象
+            * 2、写个类，实现该接口，并创建对象
+            * 3、需求Tiger类只是使用一次，以后不再使用。
+            * 4、使用匿名内部类实现
+            * 5、tiger的编译类型是---->IA
+            * 6、tiger的运行类型----->就是匿名内部类 XXXX====>Outer03$1
+            *
+            * 底层会分配类名 Outer03$1
+            * class XXXX implements IA{
+            *   @Override
+               public void cry() {
+                   System.out.println("老虎在叫...");
+               }
+            * }
+            * 7、jdk底层会创建匿名内部类Outer03$1，立即马上会创建了Outer03$1实例，
+            * 并且把地址返回给tiger
+            * 8、匿名内部类使用一次，就不能再使用。
+            * */
+           /*Tiger tiger = new Tiger();
+           tiger.cry();*/
+           IA tiger = new IA() {
+               @Override
+               public void cry() {
+                   System.out.println("老虎在叫...");
+               }
+           };
+           System.out.println("tiger的运行类型=" + tiger.getClass());
+           tiger.cry();
+           tiger.cry();
+           tiger.cry();
+           //基于类的内部类
+           /*
+           * 1、father编译类型Father
+           * 2、father 运行类型 Outer03$2
+           * 3、底层会创建匿名内部类
+           * class Outer03$2 extends Father{
+           *  @Override
+               public void test() {
+                   System.out.println("匿名内部类重写了test方法");
+               }
+           * }
+           *
+           * 4、同时也直接返回了匿名内部类 Outer03$2对象
+           * 5、参数列表会传递给构造器*/
+           Father father = new Father("summer") {
+               @Override
+               public void test() {
+                   System.out.println("匿名内部类重写了test方法");
+               }
+           };
+           System.out.println("father的运行类型=" + father.getClass());//Outer03$2
+           father.test();
+           /*
+            * 基于抽象类的匿名内部类
+            * */
+           Animal animal = new Animal() {
+               @Override
+               void eat() {
+                   System.out.println("小狗吃骨头");
+               }
+           };
+           animal.eat();
+       }
+   }
+   
+   interface IA {//接口
+   
+       public void cry();
+   }
+   
+   /*class Tiger implements IA {
+       @Override
+       public void cry() {
+           System.out.println("老虎叫唤...");
+       }
+   }
+   
+   class Dog implements IA {
+       @Override
+       public void cry() {
+           System.out.println("火锅在叫...");
+       }
+   }*/
+   
+   class Father {
+       public Father(String name) {//构造器
+           System.out.println("接收到name=" + name);
+       }
+   
+       public void test() {//方法
+   
+       }
+   }
+   
+   abstract class Animal {
+       abstract void eat();
+   }
+   ```
+
+2. 匿名内部类的语法比较奇特，因为匿名内部类即是一个类的定义，同时它本身也是一个对象，因此从语法上看，它既有定义类的特征，也有创建对象的特征，因此可以调用匿名内部类方法。
+
+3. 可以直接访问外部类的所有成语那，包含私有的。
+
+4. 不能添加访问修饰符，因为它的地位就是一个局部变量。
+
+5. 作用域：仅仅在定义的方法或代码块中。
+
+6. 匿名内部类---访问---->外部类成员。（访问方式：直接访问）
+
+7. 外部其他类----不能访问---->匿名内部类（因为 匿名内部类地位是一个局部变量）
+
+8. 如果外部类和匿名内部类的成员重名时，匿名内部类访问的话，默认遵循就近原则，如果想访问外部类的成员，则可以使用（外部类名.this.成员）去访问。
+
+```java
+public class AnonymousInnerClassDetail {
+    public static void main(String[] args) {
+        Outer04 outer04 = new Outer04();
+        outer04.f1();
+        //外部其他类----不能访问---->匿名内部类
+    }
+}
+
+class Outer04 {
+    private int n1 = 99;
+
+    public void f1() {
+        //创建一个基于类的匿名内部类
+        //不能添加访问修饰符
+        //作用域：仅仅在定义的方法或代码块中。Outer04$1
+        //如果外部类和匿名内部类的成员重名时，匿名内部类访问的话，默认遵循就近原则，
+        //如果想访问外部类的成员，则可以使用（外部类名.this.成员）去访问。
+        Person p = new Person() {
+            private int n1 = 88;
+
+            @Override
+            public void hi() {
+                System.out.println("匿名内部类重写了hi方法 n1=" + n1);
+                //Outer04.this就是调用 f1的 对象
+                System.out.println("外部类的 n1=" + Outer04.this.n1);
+            }
+        };
+        p.hi();//动态绑定
+        //也可以直接调用，匿名内部类本身也是返回对象
+        //class 匿名内部类 extends Person{}
+        /*new Person() {
+            @Override
+            public void hi() {
+                System.out.println("匿名内部类重写了hi方法,hahaha");
+            }
+
+            @Override
+            public void ok(String name, int n) {
+                super.ok(name, n);
+            }
+        }.ok("summer", 25);*/
+    }
+}
+
+class Person {//类
+
+    public void hi() {
+        System.out.println("Person的hi方法");
+    }
+
+    public void ok(String name, int n) {
+        System.out.println("Person ok()" + name + n);
+    }
+}
+```
+
+#### 匿名内部类的最佳实践
+
+匿名内部类当作实参直接传递。
+
+```java
+public class InnerClassExercise01 {
+    public static void main(String[] args) {
+        //匿名内部类当作实参直接传递。
+        /*f1(new IB(){
+            @Override
+            public void show() {
+                System.out.println("匿名内部类当作实参直接传递");
+            }
+        });*/
+        //传统方式
+        f1(new ID());
+    }
+
+    //静态方法，形参时接口类型
+    public static void f1(IC ic) {
+        ic.show();
+    }
+}
+//接口
+interface IC {
+    void show();
+}
+
+//类实现IB
+class ID implements IC {
+    @Override
+    public void show() {
+        System.out.println("传统方式");
+    }
+}
+```
+
+```java
+public class InnerClassExercise02 {
+    public static void main(String[] args) {
+        //测试手机类的闹钟功能，通过匿名内部类（对象）作为参数，打印：懒猪起床了
+        //再传入另外一个匿名内部类（对象），打印：小伙伴出门了
+        Cellphone cellphone = new Cellphone();
+        /*1、传递的是实现了Bell接口的匿名内部类
+        * 2、重写了ring方法
+        * 3、Bell bell = new Bell() {
+            @Override
+            public void ring() {
+                System.out.println("懒猪起床了");
+            }
+        }*/
+        cellphone.alarmClock(new Bell() {
+            @Override
+            public void ring() {
+                System.out.println("懒猪起床了");
+            }
+        });
+        cellphone.alarmClock(new Bell() {
+            @Override
+            public void ring() {
+                System.out.println("小伙伴出门了");
+            }
+        });
+    }
+}
+//铃声接口Bell,里面有个ring方法
+interface Bell {//接口
+    void ring();
+}
+//手机类Cellphone，有闹钟功能alarmClock，参数是Bell类型
+class Cellphone{//类
+    public void alarmClock(Bell bell){//形参是接口类型
+        System.out.println(bell.getClass());//InnerClassExercise02$2
+        bell.ring();//动态绑定
+    }
+}
+```
+
+#### 成员内部类的使用
+
+说明：成员内部类定义是在外部类的成员位置，并且没有static修饰。
+
+1. 可以直接访问外部类的所有成员，包含私有的。
+2. 可以添加任意访问修饰符（public、protected、默认、private）,因为它的地位就是一个成员。
+3. 作用域：和外部类的其他成员一样，为整个类体。在外部类的成员方法中创建成员内部类对象，再调用方法。
+4. 成员内部类----访问---->外部类（访问方式：直接访问）
+5. 外部类----访问---->内部类（访问方式：创建对象，再访问）
+6. 外部其他类-----访问----->成员内部类
+7. 如果外部类和内部类的成员重名时，内部类访问的话，默认遵循就近原则，如果想访问外部类的成员，则使用(外部类名.this.成员)去访问。
+
+```java
+public class MemberInnerClass01 {
+    public static void main(String[] args) {
+        Outer05 outer05 = new Outer05();
+        outer05.t1();
+        //外部其他类，使用成员内部类三种方式
+        /*
+         * 1、outer05.new Inner05() 相当于把new Inner05()当作是outer05的成员*/
+        Outer05.Inner05 inner05 = outer05.new Inner05();
+        /*2、在外部类中编写一个方法，可以返回 Inner05对象*/
+        Outer05.Inner05 inner051 = outer05.getInner05();
+        inner051.say();
+    }
+}
+
+class Outer05 {//外部类
+    private int n1 = 10;
+    public String name = "summer";
+
+    //成员内部类是定义在外部的成员位置上。
+    //可以添加任意访问修饰符（public、protected、默认、private）,
+    //因为它的地位就是一个成员。
+    /*private*/ class Inner05 {
+        private int n1 = 100;
+        private int n2 = 20;
+
+        public void say() {
+            //可以访问外部类的所有成员
+            System.out.println("Outer05 的 n1 =" + n1 + " outer05的name=" + name);
+            hi();
+            System.out.println("外部成员 n1=" + Outer05.this.n1);
+        }
+    }
+
+    //方法
+    public void t1() {
+        //外部类使用内部类，创建内部类的对象，然后调用。
+        Inner05 inner05 = new Inner05();
+        inner05.say();
+        System.out.println(inner05.n2);
+    }
+
+    private void hi() {
+        System.out.println("hi");
+    }
+
+    //返回一个Inner05的实例
+    public Inner05 getInner05() {
+        return new Inner05();
+    }
+}
+```
+
+静态内部类的使用
+
+说明：静态内部类是定义在外部类的成员位置，并且有static修饰
+
+1. 可以直接访问外部类的所有静态方法，包含私有，但不能直接访问非静态成员。
+2. 可以添加任意访问修饰符(public、protected、默认、private)，因为它的位置就是一个成员。
+3. 作用域：同其他的成员，为整个类体。
+4. 静态内部类---访问---->外部类（比如：静态属性）（访问方式：直接访问所有静态成员）
+5. 外部类----访问---->静态内部类（访问方式：创建对象，再访问）
+6. 外部其他类----访问----->静态内部类
+7. 如果外部类和静态内部类的成员重名时，静态内部类访问时，默认遵循就近原则，如果想访问外部类的成员，则可以使用(外部类名.成员)去访问。
+
+```java
+public class StaticInnerClass01 {
+    public static void main(String[] args) {
+        Outer06 outer06 = new Outer06();
+        //outer06.m1();
+        //外部其他类使用静态内部类
+        /*1、因为静态内部类，是可以通过类名直接访问（前提是满足访问权限）*/
+        Outer06.Inner06 inner06 = new Outer06.Inner06();
+        inner06.say();
+        /*2、编写一个方法。可以返回静态内部类的实例*/
+        Outer06.Inner06 inner061 = outer06.getInner06();
+        System.out.println("=========");
+        inner061.say();
+        Outer06.Inner06 inner06_ = Outer06.getInner06_();
+        inner06_.say();
+    }
+}
+
+class Outer06 {
+    private static String name = "summer";
+    private int n1 = 10;
+
+    private static void f1() {
+        System.out.println("外部类的静态方法f1()");
+    }    //Inner06就是一个静态内部类
+
+    //放在外部类的成员位置
+    //使用static修饰
+    //可以直接访问外部类的所有静态方法，包含私有，但不能直接访问非静态成员。
+    //可以添加任意访问修饰符(public、protected、默认、private)，
+    //因为它的位置就是一个成员。
+    //作用域：同其他的成员，为整个类体。
+    static class Inner06 {
+        private static String name = "james";
+
+        public void say() {
+            System.out.println(name + "外部类的name=" + Outer06.name);
+            f1();
+        }
+    }
+
+    public void m1() {
+        Inner06 inner06 = new Inner06();
+        inner06.say();
+    }
+
+    public Inner06 getInner06() {
+        return new Inner06();
+    }
+
+    public static Inner06 getInner06_() {
+        return new Inner06();
+    }
+}
+```
+
