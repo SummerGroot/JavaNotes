@@ -4667,7 +4667,7 @@ class MyCalculator {
 #### 注意事项和细节
 
 1. 方法名：必须相同
-2. 形参列表：必须不同（**形参类型**或**个数**或顺序，**至少有一样不同**，参数名无要求）
+2. 形参列表：必须不同（**形参类型**或**个数**或**顺序**，**至少有一样不同**，参数名无要求）
 3. 返回类型：无要求
 
 ```java
@@ -5548,28 +5548,28 @@ class Test {
 
 # 第8章面向对象编程（中级部分）
 
-### 包
+## 包
 
-#### 包的三大作用
+### 包的三大作用
 
 1. 区分相同名字的类
-2. 当类很多时，可以很好的管理类（看Java API文档）
+2. 当类很多时，可以很好的管理类（看`Java API`文档）
 3. 控制访问范围
 
-#### 包基本语法
+### 包基本语法
 
 `package com.edu`
 
 1. package关键字，表示打包
 2. com.edu：表示包名
 
-#### 包的本质分析（原理）
+### 包的本质分析（原理）
 
 实际上就是创建不同的文件夹来保存类文件。
 
 ![image-20230207142918166](JavaGrammar.assets/image-20230207142918166.png)
 
-#### 快速入门
+### 快速入门
 
 ```java
 package com.basic.www.conpter08.conpter08_1.use;
@@ -5594,13 +5594,13 @@ public class Test {
 }
 ```
 
-#### 包的命名
+### 包的命名
 
-##### 命名规则
+#### 命名规则
 
-只能包含数字、字母、下划线、小圆点，但不能用数字开头，不能是关键字或保留字
+只能包含**数字、字母、下划线、小圆点**，但不能用数字开头，不能是关键字或保留字
 
-##### 命名规范
+#### 命名规范
 
 一般是小写字母+小圆点
 
@@ -5635,11 +5635,25 @@ java.awt.*//是做java的界面开发，GUI
 
 引入一个包的主要目的是要使用该包下的类。
 
-比如:`import java util.Scanner;`就只是引入一个类Scanner。
+比如:`import java util.Scanner;`就只是引入一个类`Scanner`。
 
-`import java.util.*;`表示将java.util包所有都引入
+`import java.util.*;`表示将`java.util`包所有都引入
 
 ```java
+package com.basic.www.chapter08.pkg_;
+/*
+ * 我们需要使用到哪个类，就导入哪个类，不建议使用*导入
+ * import java.util.Scanner 表示只会导入java.util包下的Scanner
+ * import java.util.* 表示将java.util 包下的所有类都导入
+ * */
+import java.util.Arrays;
+
+/**
+ * @version: java version 1.8
+ * @Author: Summer Johnny
+ * @description:
+ * @date: 2023-02-07 14:58
+ */
 public class Import01 {
     public static void main(String[] args) {
         //使用系统提供Arrays完成数组排序
@@ -5654,23 +5668,39 @@ public class Import01 {
         }
     }
 }
+//package的作用是声明当前类所在的包，
+//需要放在class的最上面，
+//一个类中最多只有一句package
+package com.basic.www.chapter08.pkg_;
+
+/**
+ * @version: java version 1.8
+ * @Author: Summer Johnny
+ * @description:
+ * @date: 2023-02-07 15:28
+ */
+public class Pkg {
+    public static void main(String[] args) {
+        //
+    }
+}
 ```
 
 #### 注意事项和细节
 
-1. package的作用是声明当前类所在的包，需要放在class的最上面，一个类中最多只有一句package
-2. import指令 位置放在package的下面，在类定义前面，可以有多句且没有顺序要求。
+1. `package`的作用是声明当前类所在的包，需要放在`class`的最上面，一个类中最多只有一句`package`
+2. `import`指令 位置放在`package`的下面，在类定义前面，可以有多句且没有顺序要求。
 
-### 访问修饰符
+## 访问修饰符
 
-#### 基本介绍
+### 基本介绍
 
-java提供四种访问修饰符符号控制方法和属性（成员变量）的访问权限（范围）。
+`java`提供四种访问修饰符符号控制**方法**和**属性（成员变量）**的访问权限（范围）。
 
-1. 公开级别：用public修饰，对外公开。
-2. 受保护级别：用protected修饰，对子类和同一个包中的类公开。
+1. 公开级别：用`public`修饰，对外公开。
+2. 受保护级别：用`protected`修饰，对子类和同一个包中的类公开。
 3. 默认级别：没有修饰符号，想同一个包的类公开。
-4. 私有级别：用private修饰，只有类本身可以访问，不对外公开
+4. 私有级别：用`private`修饰，只有类本身可以访问，不对外公开
 
 | 访问级别 | 访问控制修饰符 | 同类 | 同包 | 子类 | 不同包 |
 | -------- | -------------- | ---- | ---- | ---- | ------ |
@@ -5679,35 +5709,35 @@ java提供四种访问修饰符符号控制方法和属性（成员变量）的�
 | 默认     | 没有修饰符     | Y    | Y    | N    | N      |
 | 私有     | private        | Y    | N    | N    | N      |
 
-#### 使用的注意事项
+### 使用的注意事项
 
 1. 修饰符可以用来修饰类中的属性，成员方法以及类。
 2. 只有默认和public次啊能修饰类，并且遵循以上访问权限的特点。
 3. 学完继承再说.....
 4. 成员方法的访问规则和属性完全一样。
 
-### 面向对象的三大特征
+## 面向对象的三大特征
 
-#### 基本介绍
+### 基本介绍
 
-面向对象编程有三大特征：封装、继承、多态。
+面向对象编程有三大特征：**封装、继承、多态**。
 
-#### 封装
+### 封装
 
-##### 封装介绍
+#### 封装介绍
 
-封装(**encapsulation**)就是把抽象的**数据[属性]**和对数据的**操作[方法]**封装在一起，数据被保护在内部，程序的其他部分只有通过被授权的操作[方法]，才能对数据进行操作。
+封装(**`encapsulation`**)就是把抽象的**数据[属性]**和对数据的**操作[方法]**封装在一起，数据被保护在内部，程序的其他部分只有通过被授权的操作[方法]，才能对数据进行操作。
 
-##### 封装的理解和好处
+#### 封装的理解和好处
 
 1. 隐藏实现细节：方法(连接数据库)<--调用(传入参数....)
 2. 可以对数据进行验证，保证安全合理
 
-##### 封装的实现步骤
+#### 封装的实现步骤（三步）
 
-1. 将属性进行私有化private（不能直接修改数据）
+1. 将属性进行私有化`private`（不能直接修改数据）
 
-2. 提供一个公共的**(public)set方法**，用于对属性判断并赋值
+2. 提供一个公共的`(public)set`方法，用于对**属性判断并赋值**。
 
    ```java
    public void setXxx(类型 参数名){Xxx表示某个属性
@@ -5716,7 +5746,7 @@ java提供四种访问修饰符符号控制方法和属性（成员变量）的�
    }
    ```
 
-3. 提供一个公共的(public)get方法，用于获取属性的值
+3. 提供一个公共的`(public)get`方法，用于**获取属性的值**。
 
    ```java
    public 数据类型 getXxx(类型 参数名){
@@ -5725,72 +5755,73 @@ java提供四种访问修饰符符号控制方法和属性（成员变量）的�
    }
    ```
 
-##### 快速入门
+#### 快速入门
 
 ```java
 public class Encapsulation01 {
     public static void main(String[] args) {
         /*
-         * 不能随便参看人的年龄，工作等隐私，并对设置的年龄进行合理的验证。
+         * 不能随便查看人的年龄，工作等隐私，并对设置的年龄进行合理的验证。
          * 年龄合理就设置，否则给默认
          * 年龄必须在1-120，
          * 工资不能直接查看
          * name的长度在2-6字符之间*/
-        Person p1 = new Person();
-        p1.setName("avenger");
-        p1.setAge(30);
-        p1.setSalary(30000.0);
+        System.out.println("=======p1的信息=======");
+        Person p1 = new Person();//创建对象
+        p1.setName("夏源");
+        p1.setAge(30);//赋值
+        p1.setSalary(30000.0);//赋值
         System.out.println(p1.info());
-
     }
 }
-
 class Person {
     public String name;//名字公开
     private int age;//年龄私有化
     private double salary;//工资私有化
-
+    //无参构造器
+    Person() {
+    }
+    //带参构造器
+    public Person(String name, int age, double salary) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+    }
     //setXxx和getXxx快捷键----alt+insert(Getter and Setter)
     //根据要求完善代码
     public void setName(String name) {
         //加入对数据的校验
-        if(name.length() >= 2 && name.length() <= 6){
+        if (name.length() >= 2 && name.length() <= 6) {
             this.name = name;
-        }else {
+            System.out.println("name.length = " + name.length());
+        } else {
             System.out.println("名字的长度不对，需要2-6字符");
-            this.name="summer";
+            this.name = "summer";
         }
-
     }
-
     public String getName() {
         return name;
     }
-
     public int getAge() {
         return age;
     }
-
     public void setAge(int age) {
         //判断
-        if (age >=1&&age<=120) {
+        if (age >= 1 && age <= 120) {
             this.age = age;
-        }else {
+        } else {
             System.out.println("你设置的年龄有误，需要在1-120");
             //给一个默认年龄
             this.age = 18;
         }
     }
-
     public double getSalary() {
         //可以增加对当前对象权限的判断
         return salary;
     }
-
     public void setSalary(double salary) {
         this.salary = salary;
     }
-
     //写一个方法。返回属性信息
     public String info() {
         return "信息为name=" + name + ",age=" + age + ",薪水=" + salary;
@@ -5798,7 +5829,7 @@ class Person {
 }
 ```
 
-##### 将构造器和setXxx结合
+#### 将构造器和setXxx结合
 
 ```java
 public class Encapsulation01 {
@@ -5889,7 +5920,7 @@ class Person {
 }
 ```
 
-##### 练习
+#### 练习
 
 ```java
 public class AccountTest {
@@ -5910,15 +5941,15 @@ class Account {
      * 2、通过setXxx的方法给Account的属性赋值
      * 3、在AccountTest中测试*/
     //为了封装将，3个属性设置为private
-    private String name;
+    private String name;//属性
     private double balance;
     private String pwd;
 //提供两个构造器
 
-    public Account() {
+    public Account() {//无参构造器
     }
 
-    public Account(String name, double balance, String pwd) {
+    public Account(String name, double balance, String pwd) {//有参构造器
         this.setName(name);
         this.setBalance(balance);
         this.setPwd(pwd);
@@ -5934,7 +5965,7 @@ class Account {
             this.name = name;
         } else {
             System.out.println("姓名要求（长度为2位3位或4位）");
-            this.name = "无名";
+            this.name = "名字为空";
         }
 
     }
@@ -5976,15 +6007,15 @@ class Account {
 }
 ```
 
-#### 继承
+### 继承
 
-##### 继承基本介绍和示意图
+#### 继承基本介绍和示意图
 
-继承可以解决代码复用，让我们的编程更加靠近人类思想。当多个类存在相同的属性（变量）和方法时，可以从这些类中抽象出父类，在父类中定义这些相同的属性和方法，所有的子类不需要重新定义这些属性和方法，只需要通过extends来声明继承父类即可。
+继承可以解决代码复用，让我们的编程更加靠近人类思想。当多个类存在相同的属性（变量）和方法时，可以从这些类中抽象出父类，在父类中定义这些相同的属性和方法，所有的子类不需要重新定义这些属性和方法，只需要通过`extends`来声明继承父类即可。
 
 ![image-20230208105045692](JavaGrammar.assets/image-20230208105045692.png)
 
-##### 继承的基本语法
+#### 继承的基本语法
 
 ```java
 class 子类 extends 父类{
@@ -5992,16 +6023,16 @@ class 子类 extends 父类{
 }
 ```
 
-1. 子类就会自动拥有父类定义的属性和方法。
+1. 子类就会自动拥有父类定义的**属性**和**方法**。
 2. 父类又叫超类，基类。
 3. 子类又叫派生类。
 
-##### 快速入门
+#### 快速入门
 
 ```java
 public class Extend01 {
     public static void main(String[] args) {
-        com.basic.www.conpter08.extend_.Pupil p1 = new Pupil();
+        com.basic.www.conpter08.extend_.Pupil p1 = new Pupil();//创建对象
         p1.name = "james";
         p1.age = 11;
         p1.testing();
@@ -6045,30 +6076,30 @@ public class Graduate extends Student{
 }
 ```
 
-##### 继承给编程带来的遍历
+#### 继承给编程带来的便利
 
 1. 代码的复用性提高了
 2. 代码的扩展性和维护性提高了
 
-##### 继承的细节
+#### 继承的细节
 
-1. 子类继承了所有的属性和方法，非私有的属性和方法可以在子类直接访问，但是私有属性和方法不能在子类直接访问，要通过父类提供公共的方法去访问。
+1. **子类继承了所有的属性和方法**，**非私有**的属性和方法可以在**子类直接访问**，但是私有属性和方法不能在子类直接访问，要通过父类提供公共的方法去访问。
 
-2. 子类没有继承父类的构造器，但必须调用父类的构造器，完成父类的初始化。
+2. 子类没有继承父类的构造器，但**必须调用父类的构造器**，完成父类的初始化。
 
-3. 当创建子类对象时，不管使用子类的哪个构造器，默认情况下总会去调用父类的无参构造器，如果父类没有提供无参构造器，则必须在子类的构造器中用super去指定使用父类的哪个构造器完成对父类的初始化工作，否则，编译不会通过。
+3. 当创建子类对象时，不管使用子类的哪个构造器，**默认**情况下总会去**调用父类的无参构造器**，如果父类没有提供无参构造器，则必须在子类的构造器中用super去指定使用父类的哪个构造器完成对父类的初始化工作，否则，编译不会通过。
 
-4. 如果希望指定去调用父类的某个构造器，则显示的调用一下。`super(参数列表)`
+4. 如果希望指定去调用父类的某个构造器，则显式的调用一下。`super(参数列表)`
 
-5. `super`在使用时，必须放在构造器第一行。（super只能在构造器中使用）
+5. `super`在使用时，必须放在**构造器第一行**。（super只能在构造器中使用）
 
 6. `super()`和`this()`都只能放在构造器第一行，因此这两个方法不能共存在一个构造器。
 
-7. java所有类都是Object类的子类，Object是所有类的基类。
+7. `java`所有类都是`Object`类的子类，`Object`是所有类的基类。
 
-8. 父类构造器的调用不限于直接父类！将一直往上追溯直到Object类（顶级父类）。
+8. 父类构造器的调用不限于直接父类！将一直往上追溯直到`Object`类（顶级父类）。
 
-9. 子类最多只能继承一个父类（指直接继承），即java中是**单继承机制**。
+9. **子类最多只能继承一个父类**（指直接继承），即`java`中是**单继承机制**。
 
    如何让A类继承B类和C类？
 
@@ -6077,13 +6108,20 @@ public class Graduate extends Student{
 ```java
 public class ExtendsDetail {
     public static void main(String[] args) {
-       /* System.out.println("第1个对象");
+        System.out.println("第1个对象");
         Sub sub = new Sub();//创建子类对象sub
         System.out.println("第2个对象");
-        Sub sub2 = new Sub("summer");//创建子类对象sub2*/
+        Sub sub2 = new Sub("summer");//创建子类对象sub2
         System.out.println("第3个对象");
         Sub sub3 = new Sub("summer",24);//创建子类对象sub3
         //sub.sayOk();
+    }
+}
+public class TopBase {//父类是Objeact
+    TopBase() {
+        //super();
+        //Object无参构造器
+        System.out.println("TopBase构造器被调用");
     }
 }
 public class Base extends TopBase {//父类
@@ -6131,15 +6169,8 @@ public class Base extends TopBase {//父类
         test400();
     }
 }
-public class TopBase {//父类是Objeact
-    TopBase() {
-        //super();
-        //Object无参构造器
-        System.out.println("TopBase构造器被调用");
-    }
-}
 //Sub继承Base
-    //ctrl+h查看类的继承关系
+//ctrl+h查看类的继承关系
 public class Sub extends Base {//子类
 
     public Sub(String name, int age) {
@@ -6183,7 +6214,7 @@ public class Sub extends Base {//子类
 }
 ```
 
-##### 继承的本质分析（重要）
+#### 继承的本质分析（重要）
 
 当子类对象创建好后，建立查找关系。
 
@@ -6205,14 +6236,11 @@ public class ExtendsTheory {
         System.out.println(s.hobby);//玩耍
     }
 }
-
 class GrandPa {//爷类
     String name = "大头爷爷";
     String hobby = "玩耍";
     int age =98;
 }
-
-
 class Father extends GrandPa {//父类
     String name = "大头爸爸";
     private int age = 37;
@@ -6220,7 +6248,6 @@ class Father extends GrandPa {//父类
         return age;
     }
 }
-
 class Son extends Father {//子类
     String name = "大头儿子";
 }
@@ -6228,12 +6255,13 @@ class Son extends Father {//子类
 
 ![image-20230208150401346](JavaGrammar.assets/image-20230208150401346.png)
 
-##### 练习
+#### 练习
 
 ```java
 public class ExtendsExercise01 {
     public static void main(String[] args) {
-        B b = new B();
+        B b = new B();//创建对象
+        //会输出什么？
         /*
         a
         b name
@@ -6302,15 +6330,118 @@ class C02 extends B02 {
 ```
 
 ```java
+public class ExtendsExercise03 {
+    public static void main(String[] args) {
+        Pc pc = new Pc("intel", 16, 500, "IBM");
+        pc.printInfo();
+    }
+}
+
+/*
+ * 1、编写Computer类，包含CPU、内存、硬盘等属性，getDetails方法返回Computer详细信息
+ * 2、编写Pc子类，继承Computer类，添加特有属性（品牌brand）
+ * 3、编写NotePad子类，继承Computer类，添加特有属性（演示color）
+ * 4、编写Test类，在main方法中创建Pc和NotePad对象，分分别给对象中特有的属性赋值，
+ * 以及从Computer类继承的属性赋值，并使用方法打印输出信息。
+ * */
+class Computer {
+    private String cpu;
+    private int memory;
+    private int disk;
+
+    public Computer(String cpu, int memory, int disk) {
+        this.cpu = cpu;
+        this.memory = memory;
+        this.disk = disk;
+    }
+
+    //返回computer相信信息
+    public String getDetails() {
+        return "CPU: " + cpu + ", 内存: " + memory + ", 硬盘: " + disk;
+    }
+
+    public String getCpu() {
+        return cpu;
+    }
+
+    public void setCpu(String cpu) {
+        this.cpu = cpu;
+    }
+
+    public int getMemory() {
+        return memory;
+    }
+
+    public void setMemory(int memory) {
+        this.memory = memory;
+    }
+
+    public int getDisk() {
+        return disk;
+    }
+
+    public void setDisk(int disk) {
+        this.disk = disk;
+    }
+}
+
+class Pc extends Computer {
+    //编写Pc子类，继承Computer类，添加特有属性（品牌brand）
+    private String brand;
+
+    //这里IDEA根据继承的规则，自动把构造器的调用写好
+    //这里也体现出：继承设计的基本思想。父类的构造完成父类属性初始化
+    //子类的构造器完成子类属性初始化
+    public Pc(String cpu, int memory, int disk, String brand) {
+        super(cpu, memory, disk);
+        this.brand = brand;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void printInfo() {
+        System.out.println("PC信息：");
+        //System.out.println(getCpu()+getMemory()+getDisk());
+        //调用父类的getDetial方法，得到相关属性信息....
+        System.out.println(getDetails() + " brand:" + getBrand());
+    }
+}
+
+class NotePad extends Computer {
+    //编写NotePad子类，继承Computer类，添加特有属性（演示color）
+    private String color;
+
+    public NotePad(String cpu, int memory, int disk, String color) {
+        super(cpu, memory, disk);
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+}
+
+class Test {
+}
 ```
 
-#### super关键字
+## super关键字
 
-##### 基本介绍
+### 基本介绍
 
-super代表父类的引用，用于访问父类的属性，方法，构造器
+`super`代表父类的引用，用于访问父类的**属性，方法，构造器**。
 
-##### 基本语法
+#### 基本语法
 
 ```java
 public class super01 {
@@ -6321,13 +6452,27 @@ public class super01 {
     }
 }
 
+class Base {//父类是Object
+    //属性
+    public int n1 = 888;
+    public int age = 111;
+	//方法
+    public void cal() {
+        System.out.println("Base类的cal（）方法");
+    }
+
+    public void eat() {
+        System.out.println("Base类的eat（）方法");
+    }
+}
+
 class A extends Base {//父类是Base
     //4个属性
     public int n1 = 100;
     protected int n2 = 200;
     int n3 = 300;
     private int n4 = 400;
-
+	//构造器
     public A() {
 
     }
@@ -6339,7 +6484,7 @@ class A extends Base {//父类是Base
     public A(String name, int age) {
 
     }
-
+	//方法
     public void test100() {
     }
 
@@ -6393,7 +6538,7 @@ class B extends A {
          * 如果没有，则找父类（如果有，并可以调用，则调用）
          * 如果父类没有，则继续找父类的父类。直到Object类
          * 提示：如果查找方法的过程种，找到了，但是不能访问，则报错
-         *       如果查找方法的过程中，没有招法哦，则提示方法不存在*/
+         *       如果查找方法的过程中，没有找到，则提示方法不存在*/
         //this.cal();
         //等价cal（）；
         super.cal();
@@ -6408,30 +6553,19 @@ class B extends A {
         System.out.println("B类的cal方法");
     }
     public void test() {
-        System.out.println("super.n1=" + super.n1);
+        System.out.println("super.n1=" + super.n1);//super.n1=100
         super.cal();
     }
 }
 
-class Base {//父类是Object
-    public int n1 = 888;
-    public int age = 111;
 
-    public void cal() {
-        System.out.println("Base类的cal（）方法");
-    }
-
-    public void eat() {
-        System.out.println("Base类的eat（）方法");
-    }
-}
 ```
 
-1. 访问父类的属性，但不能访问父类的private属性
+1. 访问父类的属性，但不能访问父类的`private`属性
 
    `super.属性名;`
 
-2. 访问父类的方法，不能访问父类private方法
+2. 访问父类的方法，不能访问父类`private`方法
 
    `super.方法名(参数列表);`
 
@@ -6439,11 +6573,11 @@ class Base {//父类是Object
 
    `super(参数列表);`只能放在构造器的第一句，只能出现一句！！！
 
-##### super使用的细节
+### super使用的细节
 
 1. 调用父类的构造器的好排除（分工明确，父类属性由父类初始化，子类的属性由子类初始化）。
-2. 当子类中有和父类中的成员（属性和方法）重名时，为了访问父类的成员，必须通过super。如果没有重名，使用super、this、直接访问是一样的效果！
-3. super的访问不限于直接父类，如果爷爷类和本类中有同名的成员，也可也使用super去访问爷爷类的成员；如果多个基类（上级类）中都有同名的成员，使用super访问遵循就近原则。`A->B->C`，当然也需要遵守访问权限的相关规则。
+2. 当子类中有和父类中的成员（属性和方法）重名时，为了访问父类的成员，必须通过`super`。如果没有重名，使用`super`、`this`、直接访问是一样的效果！
+3. `super`的访问不限于直接父类，如果爷爷类和本类中有同名的成员，也可也使用super去访问爷爷类的成员；如果多个基类（上级类）中都有同名的成员，使用super访问遵循就近原则。`A->B->C`，当然也需要遵守访问权限的相关规则。
 
 |      | 区别点     | this                                                 | super                                    |
 | ---- | ---------- | ---------------------------------------------------- | ---------------------------------------- |
@@ -6452,13 +6586,13 @@ class Base {//父类是Object
 | 3    | 调用构造器 | 调用本类构造器，必须放在构造器的首行                 | 调用父类构造器，必须放在子类构造器的首行 |
 | 4    | 特殊       | 表示当前对象                                         | 子类中访问父类对象                       |
 
-#### 多态
+## 多态
 
-##### 多态基本介绍
+### 多态基本介绍
 
 方法或对象具有多种形态。多态建立在封装和继承之上。
 
-##### 多态的具体体现
+#### 多态的具体体现
 
 1. 方法多态:重写和重载就体现多态
 
@@ -6468,13 +6602,12 @@ public class PolyMethod {
         //方法重载体现多态
         A a = new A();
         //这里我们传入不同的参数，就对调用不同的sum方法
-        System.out.println(a.sum(10, 20));
-        System.out.println(a.sum(10, 20, 30));
-
+        System.out.println(a.sum(10, 20));//30
+        System.out.println(a.sum(10, 20, 30));//60
         //方法的重写体现多态
         B b = new B();
-        a.say();
-        b.say();
+        a.say();//A say()方法被调用
+        b.say();//B say()方法被调用
     }
 }
 
@@ -6501,21 +6634,21 @@ class A extends B {//子类
 }
 ```
 
-##### 对象的多态
+### 对象的多态
 
 2. 对象的多态（核心）
 
    1. **一个对象的编译类型和运行类型可以不一致**
 
-      `Animal animal = new Dog();`（animal编译类型是Animal，运行类型Dog）
+      `Animal animal = new Dog();`（`animal`编译类型是`Animal`，运行类型`Dog`）
 
-      父类的引用指向子类的对象
+      **父类的引用指向子类的对象**。
 
-      `animal = new Cat();`（animal的运行类型变成了Cat，编译类型仍然是Animal）
+      `animal = new Cat();`（`animal`的运行类型变成了`Cat`，编译类型仍然是`Animal`）
 
    2. **编译类型在定义对象时，就确定了，不能改变**
 
-   3. **运行类型时可以变化的**
+   3. **运行类型是可以变化的**
 
    4. **编译类型看定义时 `=` 号的左边，运行类型看`=`号的右边**
 
@@ -6523,7 +6656,6 @@ class A extends B {//子类
 public class PolyObject {
     public static void main(String[] args) {
         //对象多态特点
-
         //animal编译类型就是Animal，运行类型就Dog
         Animal animal = new Dog();
         //运行时，这时就执行到该行是，animal运行类型是Dog，所以cry就是Dog的cry
@@ -6552,7 +6684,7 @@ public class Dog extends Animal {
 }
 ```
 
-##### 多态入门
+### 多态入门
 
 使用多态的机制解决主人喂食问题。
 
@@ -6562,15 +6694,17 @@ public class Poly01 {
         Master tom = new Master("summer");
         Dog dog01 = new Dog("火锅~");
         Bone bone = new Bone("大棒骨~");
-        tom.feed(dog01, bone);
-
+        tom.feed(dog01, bone);//父类的引用指向子类的对象
+		//主人：summer 给 火锅~ 吃 大棒骨~
         Cat tom01 = new Cat("tom~");
         Fish fish01 = new Fish("小黄鱼~");
         tom.feed(tom01, fish01);
+        //主人：summer 给 tom~ 吃 小黄鱼~
         //添加 给小猪喂米饭
         Pig pig01 = new Pig("小花猪");
         Rice rice = new Rice("剩饭");
         tom.feed(pig01,rice);
+        //主人：summer 给 小花猪 吃 剩饭
     }
 }
 public class Master {
@@ -6619,22 +6753,56 @@ public class Pig extends Animal {
         super(name);
     }
 }
+public class Animal {
+    private String name;
+
+    public Animal(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+public class Dog extends Animal {
+    public Dog(String name) {
+        super(name);
+    }
+}
+public class Pig extends Animal {
+    public Pig(String name) {
+        super(name);
+    }
+}
+public class Cat extends Animal {
+    public Cat(String name) {
+        super(name);
+    }
+}
 ```
 
-##### 多态的注意事项和细节
+### 多态的注意事项和细节
 
-多态的前提是：两个对象（类）存在继承关系。
+多态的**前提是**：两个对象（类）存在继承关系。
 
-多态的向上转型。
+#### 多态的向上转型
 
 1. 本质：父类的引用指向了子类的对象
 2. 语法：`父类类型 引用名 =  new 子类类型();`
-3. 特点：编译类型看左边，运行类型看右边。可以调用父类中的所有成员（遵守访问权限）不能调用子类中特有成员。最终运行效果看子类（运行类型）的具体实现，调用方法时，从子类开始查找方法！！！
+3. 特点：
+   1. 编译类型看左边，运行类型看右边。
+   2. 可以调用父类中的所有成员（遵守访问权限）不能调用子类中特有成员。
+   3. 最终运行效果看子类（运行类型）的具体实现，调用方法时，从子类开始查找方法！！！
 
-多态的向下转型
+
+#### 多态的向下转型
 
 1. 语法：`子类类型 引用名 = （子类类型）父类引用;`
-2. 只能强转父类的引用，不能墙砖父类的对象。
+2. 只能强转父类的引用，不能强转父类的对象。
 3. 要求父类的引用必须指向的是当前目标类型的对象。
 4. 当向下转型后，就可以调用子类类型中所有的成员。
 
@@ -6704,7 +6872,7 @@ public class Dog extends Animal {//Dog是Animal子类
 }
 ```
 
-属性没有重写之说！！属性的值看编译类型
+**属性没有重写之说！！属性的值看编译类型**
 
 ```java
 public class PolyDetail02 {
@@ -6725,11 +6893,12 @@ class Sub extends Base {//子类
 }
 ```
 
-`instanceOf`比较操作符，用于判断**对象的运行类型**是否为XX类型或XX类型的子类型。
+`instanceOf`比较操作符，用于判断**对象的运行类型**是否为XX类型或XX类型的子类型。（后面的类型`>=`对象的运行类型）
 
 ```java
 public class PolyDetail03 {
     public static void main(String[] args) {
+        //编译类型和运行类型都是BB
         BB bb = new BB();
         System.out.println(bb instanceof BB);//true
         System.out.println(bb instanceof AA);//true
@@ -6753,7 +6922,7 @@ class BB extends AA {
 }//子类
 ```
 
-##### 练习
+#### 练习
 
 ```java
 public class PolyExercise01 {
@@ -6775,7 +6944,7 @@ public class PolyExercise01 {
 }
 ```
 
-##### Java动态绑定机制（非常重要）
+### Java动态绑定机制（非常重要）
 
 1. 当调用对象方法的时候，**该方法会和该对象的内存地址/运行类型绑定**
 2. 当调用对象属性时，**没有动态绑定机制**，哪里声明，哪里使用。
@@ -6805,10 +6974,12 @@ class A {//父类
      * 2、当调用对象属性时，没有动态绑定机制，哪里声明，哪里使用。
      * */
     public int sum() {
+        //当调用对象方法的时候，该方法会和该对象的内存地址/运行类型绑定
         return geti() + 10;//20+10
     }
 
     public int sum1() {//父类sum1
+        //当调用对象属性时，没有动态绑定机制，哪里声明，哪里使用
         return i + 10;
     }
 
@@ -6836,11 +7007,11 @@ class B extends A {//子类
 }
 ```
 
-##### 多态的应用
+### 多态的应用
 
-1. 多态数组
+#### 多态数组
 
-数组的定义类型为父类类型，里面保持的实际元素类型为子类类型
+数组的定义类型为父类类型，里面保持的实际元素类型为子类类型。
 
 ```java
 public class PolyArray {
@@ -6849,7 +7020,7 @@ public class PolyArray {
          * 应用实例：现有一个继承结构如下：要求创建1个Person对象，
          * 2个Student对象和2个Teacher对象，统一放在数组中，并调用say方法。
          * */
-        Person[] persons = new Person[5];
+        Person[] persons = new Person[5];//创建Person类型的数组
         persons[0] = new Person("summer", 20);
         persons[1] = new Student("lisi", 18, 100);
         persons[2] = new Student("james", 20, 98);
@@ -6858,7 +7029,7 @@ public class PolyArray {
 
         //循环遍历多态数组 调用say方法
         for (int i = 0; i < persons.length; i++) {
-            //提示：persons[i] 编译类型时Person，
+            //提示：persons[i] 编译类型是Person，
             //运行类型是根据实际情况由JVM来判断
             System.out.println(persons[i].say());//动态绑定机制
             //类型判断+向下转型
@@ -6963,7 +7134,7 @@ public class Teacher extends Person {
 }
 ```
 
-2. 多态参数
+#### 多态参数
 
 方法定义的形参类型为父类类型，实参类型允许为子类类型。
 
@@ -7068,9 +7239,9 @@ public class Manager extends Employee {
 }
 ```
 
-### 方法重写/覆盖（override）
+## 方法重写/覆盖（override）
 
-#### 基本介绍
+### 基本介绍
 
 简单的说：方法覆盖（重写）就是子类有一个方法，和父类的某个方法的名称、返回类型、参数一样，那么我们就说子类的这个方法覆盖了父类的那个方法。
 
@@ -7081,7 +7252,7 @@ public class Override01 {
     public static void main(String[] args) {
         //演示方法重写的情况
         Dog dog = new Dog();
-        dog.cry();
+        dog.cry();//小狗汪汪叫。。。
     }
 }
 
@@ -7133,13 +7304,13 @@ class Sub extends Base {//子类
 }
 ```
 
-#### 注意事项和使用细节
+### 注意事项和使用细节
 
 方法重写也叫方法覆盖，需要满足下面的条件。
 
 1. 子类的方法的**形参列表**，**方法名称**，要和父类方法的**形参列表**，**方法名称**完全一致。
 
-2. 子类方法的返回类型和父类方法返回类型一致，或者是父类返回子类的子类。
+2. 子类方法的返回类型和父类方法返回类型一致，或者是父类返回类型的子类。
 
    比如：父类返回类型是Object，子类方法返回类型是String
 
@@ -7153,12 +7324,12 @@ class Sub extends Base {//子类
 
    `public void sayOk(){}`
 
-#### 重写和重载的比较
+### 重写和重载的比较
 
-| 名称             | 发生范围 | 方法名   | 形参列表                     | 返回类型                                                   | 修饰符                             |
-| ---------------- | -------- | -------- | ---------------------------- | ---------------------------------------------------------- | ---------------------------------- |
-| 重载（overload） | 本类     | 必须一样 | 类型，个数，顺序至少一个不同 | 无要求                                                     | 无要求                             |
-| 重写（override） | 父子类   | 必须一样 | 必须相同                     | 子类重写的方法，返回的类型和父类返回的类型一致，或者是子类 | 子类方法不能缩小父类方法的访问范围 |
+| 名称               | 发生范围 | 方法名   | 形参列表                     | 返回类型                                                     | 修饰符                             |
+| ------------------ | -------- | -------- | ---------------------------- | ------------------------------------------------------------ | ---------------------------------- |
+| 重载（`overload`） | 本类     | 必须一样 | 类型，个数，顺序至少一个不同 | 无要求                                                       | 无要求                             |
+| 重写（`override`） | 父子类   | 必须一样 | 必须相同                     | 子类重写的方法，返回的类型和父类返回的类型一致，或者是父类的子类 | 子类方法不能缩小父类方法的访问范围 |
 
 ```java
 public class OverrideExercise {
@@ -7166,9 +7337,9 @@ public class OverrideExercise {
         /*
         * 分别创建Person和Student对象，调用say方法输出自我介绍*/
         Person summer = new Person("summer",24);
-        System.out.println(summer.say());
+        System.out.println(summer.say());//名字=summer 年龄24
         Student student = new Student("summer",25,123,98);
-        System.out.println(student.say());
+        System.out.println(student.say());//名字=summer 年龄25 id=123 score=98
     }
 }
 public class Person {
@@ -7234,9 +7405,9 @@ public class Student extends Person {
 }
 ```
 
-### Object类详解
+## Object类详解
 
-#### `==`和equals对比
+### `==`和equals对比
 
 `==`是比较运算符
 
