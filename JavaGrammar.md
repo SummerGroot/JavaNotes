@@ -8187,7 +8187,7 @@ class Child {
 
 #### 什么是类变量
 
-类变量也叫静态变量/静态属性，是该类的所有对象共享的变量，任何一个该类的对象去访问它时，取到的都是相同的值，同样任何一个该类的对象去修改它时，修改的也是同一个变量。
+**类变量**也叫**静态变量/静态属性**，是该类的**所有对象共享的变量**，任何一个该类的对象去访问它时，取到的都是相同的值，同样任何一个该类的对象去修改它时，修改的也是同一个变量。
 
 #### 如何定义类变量
 
@@ -8224,19 +8224,19 @@ class A{
 
 1. 什么时候需要使用类变量
 
-   当我们需要让某个类的所有对象都共享一个变量时，可以考虑使用类变量（静态变量）
+   当我们需要让某个类的**所有对象都共享**一个变量时，可以考虑使用类变量（静态变量）
 
 2. 类变量与实例变量（普通变量）区别
 
-   类变量是该类的所有对象共享的，而实例变量是每个对象独享的。
+   **类变量是**该类的**所有对象共享**的，而**实例变量**是**每个对象独享**的。
 
-3. 加上static称为类变量或静态变量，否则称为实例变量/普通变量/非静态变量
+3. 加上`static`称为类变量或静态变量，否则称为实例变量/普通变量/非静态变量
 
 4. 类变量可以通过`类名.类变量名`或`对象名.类变量名`来访问，满足访问修饰符的访问权限和范围。
 
 5. 实例变量不能通过`类名.类变量名`方式访问。
 
-6. 类变量是在类加载时就初始化了，也就是说，即使你没有创建对象，只要类加载了，就可以使用类变量了。
+6. 类变量是在**类加载时就初始化**了，也就是说，即使你没有创建对象，只要类加载了，就可以使用类变量了。
 
 7. 类变量的声明周期是随类的加载开始的，随着类消亡而销毁。
 
@@ -8244,9 +8244,11 @@ class A{
 
 #### 类方法基本介绍
 
-类方法也叫静态方法。
+类方法也叫**静态方法**。
 
-形式：`访问修饰符 static 数据返回类型 方法名(){}`【推荐】
+形式：
+
+`访问修饰符 static 数据返回类型 方法名(){}`【推荐】
 
 `static 访问修饰符 数据返回类型 方法名(){}`
 
@@ -8263,7 +8265,7 @@ public class StaticMethod_ {
         Student.payFee(800);//对的
         Student james = new Student("james");
         james.payFee(200);
-        //输出当前受到的总学费  类名.类方法名
+        //输出当前收到的总学费  类名.类方法名
         Student.showFee();
     }
 }
@@ -8293,23 +8295,23 @@ class Student {
 
 当方法中不涉及到任何和对象相关的成员，则可以将方法设计成静态方法，提高开发效率。
 
-比如：工具类中的方法utils、Math类、Arrarys类，Collections集合类。
+比如：工具类中的方法`utils`、`Math`类、`Arrarys`类，`Collections`集合类。
 
 #### 类方法使用注意事项和细节
 
 1. 类方法和普通方法都是随着类的加载而加载，将结构信息存储在方法区：
 
-   类方法中无this的参数
+   类方法中无`this`的参数
 
-   普通方法中隐含着this的参数
+   普通方法中隐含着`this`的参数
 
 2. 类方法可以通过类名调用，也可以通过对象名调用。
 
 3. 普通方法和对象有关，需要通过对象名调用，比如`对象名.方法名(参数)`,不能通过类名调用。
 
-4. 类方法中不允许使用和对象有关的关键字，比如this和super。普通方法（成员方法）可以。
+4. 类方法中不允许使用和对象有关的关键字，比如`this`和`super`。普通方法（成员方法）可以。
 
-5. 类方法（静态方法）中，**只能访问静态变量或静态方法**。（静态方法只能访问静态成员）
+5. 类方法（静态方法）中，**只能访问静态变量或静态方法**。（**静态方法只能访问静态成员**）
 
 6. 普通成员方法，即可以访问普通变量（方法），也可以访问静态变量（方法）。
 
@@ -8360,7 +8362,7 @@ class D {
 }
 ```
 
-练习
+#### 练习
 
 ```java
 public class StaticExeecise01 {
@@ -8372,7 +8374,7 @@ public class StaticExeecise01 {
 }
 
 class Test {
-    static int count = 9;
+    static int count = 9;//类变量，共享变量
 
     public void count() {
         System.out.println("count=" + (count++));
@@ -8407,18 +8409,18 @@ class Person {
 
 ### 深入理解main方法
 
-解释main方法的形式：`public static void main(String[] args){}`
+解释`main`方法的形式：`public static void main(String[] args){}`
 
-main方法是虚拟机调用
+`main`方法是虚拟机调用
 
-1. java虚拟机需要调用类的main()方法，所以该方法的访问权限必须是public
-2. java虚拟机在执行main()方法时不必创建对象，所以该方法必须是static
-3. 该方法接收String类型的数组参数，该数组中保持执行java命令时传递给所运行的类的参数。
-4. java执行的程序参数1 参数2 参数3
+1. `java`虚拟机需要调用类的`main()`方法，所以该方法的访问权限必须是`public`
+2. `java`虚拟机在执行`main()`方法时不必创建对象，所以该方法必须是`static`
+3. 该方法接收`String`类型的数组参数，该数组中保持执行`java`命令时传递给所运行的类的参数。
+4. `java`执行的程序参数1 参数2 参数3
 
 ![image-20230215142529356](JavaGrammar.assets/image-20230215142529356.png)
 
-1. 在main()方法中，我们可以直接调用main方法所在类的静态方法或静态属性。
+1. 在`main()`方法中，我们可以直接调用`main`方法所在类的静态方法或静态属性。
 2. 但是，不能直接访问该类中的非静态成员，必须创建该类的一个实例对象后，才能通过这个对象去访问类中的非静态成员。
 
 ```java
@@ -8451,9 +8453,9 @@ public class Main01 {
 }
 ```
 
-idea如何传递参数如下图
+`idea`如何传递参数如下图
 
-edit configurations
+`edit configurations`
 
 ![image-20230215143556354](JavaGrammar.assets/image-20230215143556354.png)
 
@@ -8463,13 +8465,13 @@ edit configurations
 
 代码块又称为**初始化块**，属于类中的成员【即 是类的一部分】，类似于方法，将逻辑语句封装在方法体中，通过`{}`包围起来。
 
-但和方法不同，没有方法名，没有放回，没有参数，只有方法体，而且不用通过对象或类显示调用，而是加载类时，或创建对象时隐式调用。
+但和方法不同，没有方法名，没有放回，没有参数，只有方法体，而且不用通过对象或类显式调用，而是**加载类时，或创建对象时隐式调用**。
 
 ### 基本语法
 
 ```java
 [修饰符]{
-    代码
+    //代码
 };
 ```
 
@@ -8482,7 +8484,7 @@ edit configurations
 
 ### 代码块的好处
 
-1. 相当于另外一种形式的构造器（对构造器的补充机制），可以做初始化的操作。
+1. 相当于另外一种形式的构造器（**对构造器的补充机制**），可以**做初始化的操作**。
 2. 如果多个构造器都有重复的语句，可以抽取到初始化块中，提高代码的重用性。
 
 ```java
@@ -8504,7 +8506,9 @@ class Moive {
      * 2、这样代码比较冗余
      * 3、把相同的语句放在代码块中
      * 4、当我们不管调用哪个构造器，创建对象，都会先调用代码块
-     * 5、代码块调用的顺序优先于构造器*/ {
+     * 5、代码块调用的顺序优先于构造器
+     */ 
+    {
         System.out.println("电影屏幕打开");
         System.out.println("广告开始");
         System.out.println("电影正式开始");
@@ -8532,7 +8536,7 @@ class Moive {
 
 ### 代码块使用注意事项和细节
 
-1. `static`代码块也叫静态代码块，作用就是对类进行初始化，而且它随着**类的加载**而执行，并且只会执行一次。如果是普通代码块，每创建一个对象，就执行。
+1. `static`代码块也叫静态代码块，作用就是对类进行初始化，而且它随着**类的加载**而执行，并且**只会执行一次**。如果是**普通代码块，每创建一个对象，就执行**。
 2. 类什么时候被加载[重要]
    1. 创建对象实例时（`new`）
    2. 创建子类对象实例时，父类也会被加载。
@@ -9994,3 +9998,552 @@ class Outer06 {
 }
 ```
 
+# 第11章 枚举和注解
+
+## 枚举
+
+1. 枚举对应英文`enumeration`简写`enum`
+2. 枚举是一组常量的集合。
+3. 枚举属于一种特殊的类，里面只包含一组有限的特定的对象。
+
+### 自定义类实现枚举
+
+1. 不需要提供setXxx方法，因为枚举对象值通常为只读。
+2. 对枚举对象/属性使用final+static共同修饰，实现底层优化。
+3. 枚举对象名通常使用全部大写，常量的命名规范。
+4. 枚举对象根据需要，也可也有多个属性。
+
+```java
+public class Enumration02 {
+    public static void main(String[] args) {
+        System.out.println(Season02.AUTUMN);
+        System.out.println(Season02.SUMMER);
+    }
+}
+
+//自定义枚举
+class Season02 {//类
+    private String name;
+    private String desc;//描述
+    //定义了4个对象
+    public static final Season02 SPRING = new Season02("春天", "温暖");
+    public static final Season02 WINTER = new Season02("冬天", "寒冷");
+    public static final Season02 SUMMER = new Season02("夏天", "炎热");
+    public static final Season02 AUTUMN = new Season02("秋天", "凉爽");
+
+    //1、将构造器私有化，防止直接被new
+    //2、去掉setXxx方法，只能读取，不能修改。
+    //3、在Season02内部，直接创建固定的对象(对外暴露对象)
+    //4、可以加final修饰符(通过public static final修饰符)
+    private Season02(String name, String desc) {
+        this.name = name;
+        this.desc = desc;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    @Override
+    public String toString() {
+        return "Season02{" +
+                "name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
+}
+```
+
+### enum关键字实现枚举
+
+```java
+public class Enumration03 {
+    public static void main(String[] args) {
+        System.out.println(Season03.AUTUMN);
+    }
+}
+//使用enum关键字实现枚举类
+enum Season03 {
+    //如果使用enum来实现枚举类
+    /*
+    * 1、使用关键字enum替代class
+    * 2、public static final Season02 SPRING = new Season02("春天", "温暖");
+    *   SPRING("春天","温暖"); 常量名(实参列表);
+    * 3、如果有多个常量(对象，使用逗号间隔。)
+    * 4、如果使用enum来实现枚举，要求将定义常量对象写在最前面
+    * */
+    SPRING("春天","温暖"),
+    SUMMER("夏天","白天"),
+    AUTUMN("秋天","冬天"),
+    WINTER("冬天","晚上");
+    private String name;
+    private String desc;//描述
+
+    private Season03(String name, String desc) {
+        this.name = name;
+        this.desc = desc;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    @Override
+    public String toString() {
+        return "Season03{" +
+                "name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                '}';
+    }
+}
+```
+
+### 注意事项
+
+1. 当我们使用`enum`关键字来开发一个枚举类时，默认会继承`Enum`类。而且是一个`final`类。
+2. 传统的`public static final Season02 SPRING = new Season02("春天", "温暖");`简化成`SPRING("春天","温暖");`，这里必须直到，它调用的是哪个构造器。
+3. 如果使用无参构造器创建枚举对象，则实参列表和小括号都可以省略。
+4. 当有多个枚举对时，使用`,`间隔，最后有一个分号结尾。
+5. 枚举对象必须放在枚举类的首行。
+
+![image-20230220130914460](JavaGrammar.assets/image-20230220130914460.png)
+
+### 练习
+
+```java
+enum Gender{
+    BOY,GIRL;//这里就是调用Gender类的无参构造器
+}
+//==========
+enum Gender2{
+    BOY,GIRL;
+}
+Gender2 boy=Gender2.BOY;
+Gender2 boy2=Gender2.BOY;
+System.Out.println(boy);////BOY
+//本质就是调用Gender2的父类的toString()
+/*
+public String toString() {
+        return name;
+    }
+*/
+System.Out.println(boy2==boy);//true
+```
+
+### enum常用方法
+
+说明：使用关键字`enum`时，会隐式继承`Enum`类，这样我们就可以使用`Enum`类相关的方法。
+
+```java
+public abstract class Enum<E extends Enum<E>>
+        implements Comparable<E>, Serializable {
+}
+```
+
+1. `toString`：`Enum`类已经重写过了，返回的是当前对象名，子类可以重写该方法，用于返回对象的属性信息。
+2. `name`：返回当前对象名（常量名），子类中不能重写。
+3. `ordinal`：返回当前对象的位置号，默认从0开始。
+4. `values`：返回当前枚举类中所有的常量。
+5. `valueOf`：将字符串转换成枚举对象，要求字符串必须为已有的常量名，否则报异常！
+6. `compareTo`：比较两个枚举常量，比较的就是位置号！
+
+```java
+public class EnumMethod {
+    public static void main(String[] args) {
+        //使用Season03枚举类
+        Season03 autumn = Season03.AUTUMN;
+        //输出枚举对象的名字
+        System.out.println(autumn.name());//AUTUMN
+        //ordinal()输出的是该枚举对象的次序/编号 ，从0开始编号的。
+        System.out.println(autumn.ordinal());//2
+        //从javap看出values方法，返回Season03[]
+        //含有定义的所有枚举对象
+        Season03[] values = Season03.values();
+        //增强for循环
+        for (Season03 season03 : values) {
+            System.out.println(season03);
+        }
+        //增强for循环
+        /*System.out.println("======增强for循环======");
+        int[] arrs = {1,2,3,4,5};
+        for(int i:arrs){
+            //依次从arrs数组中取出数据，赋给i
+            System.out.print(i);
+        }*/
+        //valueOf：将字符串转换成枚举对象，要求字符串必须为已有的常量名，否则报异常！
+        /*
+         * 1、根据你输入的"AUTUMN"到Season03的枚举对象去查找
+         * 2、如果找到了，就返回，如果没有找到，就报错
+         * */
+        Season03 autumn03 = Season03.valueOf("AUTUMN");
+        System.out.println(autumn03);
+        System.out.println(autumn == autumn03);//true
+        //conpareTo:比较两个枚举常量的位置号。
+        System.out.println(Season03.AUTUMN.compareTo(Season03.SPRING));//2
+        //AUTUMN的编号-SPRING的编号====>2-0=2
+
+    }
+}
+```
+
+```java
+public class EnumExercise02 {
+    public static void main(String[] args) {
+        Week[] values = Week.values();
+        System.out.println("===所有星期的信息如下===");
+        for (Week week : values) {
+            System.out.println(week);
+        }
+    }
+}
+
+//声明Week枚举类。其中包含星期一至星期日的定义；
+//MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY,SUNDAY
+//使用values返回所有的枚举数组，并遍历。
+enum Week {
+    MONDAY("星期一"),
+    TUESDAY("星期二"),
+    WEDNESDAY("星期三"),
+    THURSDAY("星期四"),
+    FRIDAY("星期五"),
+    SATURDAY("星期六"),
+    SUNDAY("星期天");
+    private String name;
+
+    Week(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+        /*"Week{" +
+                "name='" + name + '\'' +
+                '}';*/
+    }
+}
+```
+
+### enum实现接口
+
+1. 使用`enum`关键字后，就不能再继承其他类了，因为`enum`会隐式继承`Enum`，而`java`是但继承机制。
+
+2. 枚举类和普通类一样，可以实现接口
+
+   `enum 类名 implements 接口1,接口2{}`
+
+## 注解
+
+### 注解的理解
+
+1. 注解(`Annotation`)也被称为元数据(Metadata)，用于修饰解释包、类、方法、属性、构造器、局部变量等数据信息。
+2. 和注解一样，注解不影响程序逻辑，但注解可以被编译或运行，相当于嵌入在代码中的补充信息。
+3. 在`JavaSE`中，注解的使用目的比较简单，例如标记过时的功能，忽略警告等。在`JavaEE`中注解占据了更重要的角色，例如用来配置应用程序的任何切面，代替`javaEE`旧版中所遗留的繁冗代码和XML配置等。
+
+### 基本的Annotation介绍
+
+使用`Annotaion`时要在其前面添加`@`符号，并把该`Annotation`当成一个修饰符使用，用于修饰它支持的程序元素。
+
+`@Override`：限定某个方法，是重写父类方法，该注解只能用于方法。
+
+`@Deprecated`：用于表示某个程序元素(类、方法等)已过时。
+
+`@SuppressWarnings`：抑制编译器警告。
+
+#### `@Override`
+
+补充说明 ：`@interface`的说明
+
+`@interface`不是`interface`，是注解在`jdk1.5`后加入的
+
+```java
+public class Override_ {
+    public static void main(String[] args) {
+
+    }
+}
+
+class Father {
+    public void fly() {
+        System.out.println("father   fly()");
+    }
+}
+
+class Son extends Father {
+    @Override
+    /*
+     * 1、@Override 注解 放在fly方法上，表示子类的fly方法是重写了父类fly方法
+     * 2、如果没有写@Override 也是重写。
+     * 3、如果写了@Override注解，编译器就会去检查该方法是否真的重写了父类的方法
+     * 如果的确重写了，则编译通过，如果没有构成重写，则编译错误。
+     *如果发现 @interface 表示一个 注解类
+     * @Target(ElementType.METHOD)
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface Override {
+        }
+     * */
+    public void fly() {
+        super.fly();
+    }
+
+}
+```
+
+##### Override使用说明
+
+1. `@Override`表示指定重写父类的方法（从编译层面），如果父类没有`fly`方法，则会报错。
+2. 如果不写`@Override`注解，而父类仍有`public void fly(){}`，仍然构成重写。
+3. `@Override`只能修饰方法，不能修饰其他类、包、属性等。
+4. 查看`@Override`注解码源为`@Target(ElementType.METHOD)`，说明只能修饰方法
+5. `@Target`是修饰注解的注解，称为元注解。
+
+#### @Deprecated
+
+##### 说明
+
+1. 用于表示某个程序元素(类、方法等)已过时。
+2. 可以修饰方法、类、字段、参数等等。
+3. `@Target(value={CONSTRUCTOR, FIELD, LOCAL_VARIABLE, METHOD, PACKAGE, PARAMETER, TYPE})`
+4. @Deprecated的作用可以做到新旧版本的兼容和过度。
+
+#### @SuppressWarnings
+
+```java
+public class SuppressWarnings_ {
+    /*
+     * 1、当我们不希望看到这些警告的时候，可以使用SuppressWarnings注解来抑制警告信息
+     * 2、在{""}中，可以写入你希望抑制（不显示）警告信息*/
+    /*
+    * @SuppressWarning 中的属性介绍以及属性说明
+
+all，抑制所有警告
+boxing，抑制与封装/拆装作业相关的警告
+cast，抑制与强制转型作业相关的警告
+dep-ann，抑制与淘汰注释相关的警告
+deprecation，抑制与淘汰的相关警告
+fallthrough，抑制与switch陈述式中遗漏break相关的警告
+finally，抑制与未传回finally区块相关的警告
+hiding，抑制与隐藏变数的区域变数相关的警告
+incomplete-switch，抑制与switch陈述式(enum case)中遗漏项目相关的警告
+javadoc，抑制与javadoc相关的警告
+nls，抑制与非nls字串文字相关的警告
+null，抑制与空值分析相关的警告
+rawtypes，抑制与使用raw类型相关的警告
+resource，抑制与使用Closeable类型的资源相关的警告
+restriction，抑制与使用不建议或禁止参照相关的警告
+serial，抑制与可序列化的类别遗漏serialVersionUID栏位相关的警告
+static-access，抑制与静态存取不正确相关的警告
+static-method，抑制与可能宣告为static的方法相关的警告
+super，抑制与置换方法相关但不含super呼叫的警告
+synthetic-access，抑制与内部类别的存取未最佳化相关的警告
+sync-override，抑制因为置换同步方法而遗漏同步化的警告
+unchecked，抑制与未检查的作业相关的警告
+unqualified-field-access，抑制与栏位存取不合格相关的警告
+unused，抑制与未用的程式码及停用的程式码相关的警告
+*/
+    @SuppressWarnings({"all"})
+    public static void main(String[] args) {
+        List list = new ArrayList();
+        list.add("summer");
+        list.add("tom");
+        list.add("gigi");
+        int i;
+        System.out.println(list.get(1));
+    }
+}
+```
+
+# 第12章 异常-Exception
+
+## 基本概念
+
+java语言中，将程序执行中发生的不正常的情况称为"异常"。
+
+## 执行过程中所发生的异常时间可分为两大类
+
+1. `Error`（错误）：`java`虚拟机无法解决的严重问题。如：`JVM`系统内部错误、资源耗尽等严重情况。比如：`StackOverflowError[栈溢出]`和`OOM`（`out of memory`），`Error`是严重错误，程序会崩溃。
+2. `Exception`：其它因编程错误或偶然的外在因素导致的一般性问题，可以使用针对性的代码进行处理。例如空指针访问，试图读取不存在的文件，网络连接中断等，`Exception`分为两大类：**运行时异常**`[]`和**编译时异常**。
+
+![image-20230220162745422](JavaGrammar.assets/image-20230220162745422.png)
+
+## 异常体系图的小结
+
+1. 异常分为两大类，运行时异常和编译时异常。
+2. 运行时异常，编译器无法检测出。编译器不要求强制处置的异常。一般是值编程时的逻辑异常，是程序员应该避免其出现的异常。`java.lang.RuntimeException`类及它的子类都是运行时异常。
+3. 对于运行时异常，可以不做处理，因为这类异常很普通，若全处理可能会对程序的可读性和运行时效产生影响。
+4. 编译时异常，是编译器要求必须处置的异常。
+
+## 常见的运行时异常
+
+1. `NullPointerException` 空指针异常
+2. `ArithmeticException` 数学运算异常
+3. `ArrayIndexOutOfBoundsException` 数组下标越界异常
+4. `ClassCastException` 类型转换异常
+5. `NumberFormatException` 数字格式不正确异常[]
+
+### `NullPoinerException` 空指针异常
+
+当应用程序试图在需要对象的地方使用null时，抛出该异常。
+
+```java
+public class NullPointerException_ {
+    public static void main(String[] args) {
+        String name =null;
+        System.out.println(name.length());
+    }
+
+```
+
+### `ArithmeticException` 数学运算异常
+
+当出现异常的运算条件时，抛出该异常。
+
+### `ArrayIndexOutOfBoundsException` 数组下标越界异常
+
+用非法索引访问数组时抛出的异常。如果索引为负或大于等于数组大小，则该索引为非法索引。
+
+```java
+public class ArrayIndexOutOfBoundsException_ {
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5};
+
+        for (int i = 0; i </*=*/ arr.length; i++) {
+            System.out.print(arr[i] + "\t");
+        }
+    }
+}
+```
+
+### `ClassCastException` 类型转换异常
+
+当试图将对象强制转换为不是实例的子类时，抛出该异常。
+
+### `NumberFormatException` 数字格式不正确异常[]
+
+当应用程序试图将字符串转换成一种数值类型，但该字符串不能转换为适当的格式时，抛出该异常=>使用异常我们可以确保输入的是满足条件数字。
+
+```java
+public class NumberFormatException_ {
+    public static void main(String[] args) {
+        String name ="夏源";
+        //将String转换为int
+        /*
+        * Exception in thread "main" java.lang.NumberFormatException: For input string: "夏源"
+	at java.lang.NumberFormatException.forInputString(NumberFormatException.java:65)
+	at java.lang.Integer.parseInt(Integer.java:580)
+	at java.lang.Integer.parseInt(Integer.java:615)
+	at com.basic.www.chapter12.exception_.NumberFormatException_.main(NumberFormatException_.java:12)*/
+        int num = Integer.parseInt(name);
+        System.out.println(num);
+    }
+}
+```
+
+## 编译异常
+
+### 介绍
+
+编译异常是指在编译期间，就必须处理的异常，否则代码不能通过编译。
+
+### 常见的编译异常
+
+#### SQLException------>操作数据库时，查询表可能发生异常
+
+#### IOException------>操作文件时，发生的异常
+
+#### FileNotFoundException------>当操作一个不存在的文件时，发生异常
+
+#### ClassNotFoundException------>加载类，而该类不存在时，异常
+
+#### EOFException------>操作文件，到文件末尾，发生异常
+
+#### IIIegalArguementException------>参数异常
+
+## 异常处理
+
+### 基本介绍
+
+异常处理就是当异常发生时，对异常处理的方式。
+
+### 异常处理方式
+
+#### try-catch-finally
+
+程序员在代码中捕获发生的异常，自行处理
+
+![image-20230220181043681](JavaGrammar.assets/image-20230220181043681.png)
+
+1. `Java`提供`try`和`catch`块来处理异常。`try`块用于包含可能出错的代码。`catch`块用于处理`try`块中发生的异常。可以根据需要在程序中有多个`try....catch`块。
+
+##### 基本语法
+
+```java
+try{
+    //可疑代码
+    //将异常发生对应的异常对象，传递给catch块
+}catch(异常){
+    //对异常的处理
+}
+//如果没有finally也可以
+```
+
+```java
+public class Exception01 {
+    public static void main(String[] args) {
+        int num1 = 10;
+        int num2 = 0;
+        /*
+         * 1、num1 / num2===>10/0
+         * 2、当执行到num1 / num2 因为num2 =0 程序就会抛出异常 ArithmeticException
+         * 3、当抛出异常，程序就会崩溃。下面的代码就不再执行了*/
+        /*int res = num1 / num2;
+        System.out.println("程序继续....");*/
+        //可以使用try-catch异常处理机制来解决
+        //将代码块选中，输入快捷键 ctrl+alt+t->try-catch
+        //如果进行了异常处理，即使出现了异常，程序可以继续执行。
+        try {
+            int res = num1 / num2;
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println(e.getMessage());//输出异常信息
+        }
+        System.out.println("程序继续....");
+    }
+}
+```
+
+##### try-catch处理异常注意事项
+
+1. 如果异常发生了，则异常发生后面的代码不会执行，直接进入到catch块。
+
+2. 如果异常没有发生，则顺序执行try的代码块，不会进入catch。
+
+3. 如果希望不管是否发生异常，都执行某段代码(比如关闭连接，释放资源等)
+
+   则使用`try{}-catch(){}-finally{}`。
+
+4. 可以有多个`catch`语句,捕获不同的异常(进行不同业务处理)，要求父类异常在后，子类异常在前，比如(Exception在后，NullpointerException在前)，如果发生异常，只会匹配一个catch。
+
+5. 可以进行`try-catch`配合使用，这种用法相当于没有捕获异常，因此程序会直接崩掉。
+
+   `try{//代码块}finally{//总是执行}`
+
+6. dsadsa
+
+#### throws
+
+将发生的异常抛出，交给调用者(方法)来处理，最顶级的处理者时`JVM`。
+
+![image-20230220181848166](JavaGrammar.assets/image-20230220181848166.png)
