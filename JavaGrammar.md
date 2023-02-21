@@ -4203,7 +4203,7 @@ public 返回数据类型 方法名(形参列表...){
 ### 返回类型
 
 1. 一个方法**最多有一个返回值**(如果返回多个结果，返回数组)
-2. 返回类型可以是为任意类型，包含基本类型或引用类型（数组，对象）
+2. 返回类型可以是为任意类型，包含**基本类型**或**引用类型**（数组，对象）
 3. 如果方法要求有返回数据类型，则方法体中最后的执行语句必须为`return 值`;而且要求返回值类型必须和`return`的值类型一致或兼容。
 4. 如果方法是`void`，则方法体中可以没有`return`语句，或者只写`return;`
 
@@ -6085,13 +6085,13 @@ public class Graduate extends Student{
 
 1. **子类继承了所有的属性和方法**，**非私有**的属性和方法可以在**子类直接访问**，但是私有属性和方法不能在子类直接访问，要通过父类提供公共的方法去访问。
 
-2. 子类没有继承父类的构造器，但**必须调用父类的构造器**，完成父类的初始化。
+2. **子类没有继承父类的构造器**，但**必须调用父类的构造器**，完成父类的初始化。
 
 3. 当创建子类对象时，不管使用子类的哪个构造器，**默认**情况下总会去**调用父类的无参构造器**，如果父类没有提供无参构造器，则必须在子类的构造器中用super去指定使用父类的哪个构造器完成对父类的初始化工作，否则，编译不会通过。
 
 4. 如果希望指定去调用父类的某个构造器，则显式的调用一下。`super(参数列表)`
 
-5. `super`在使用时，必须放在**构造器第一行**。（super只能在构造器中使用）
+5. `super`在使用时，必须放在**构造器第一行**。（`super`只能在构造器中使用）
 
 6. `super()`和`this()`都只能放在构造器第一行，因此这两个方法不能共存在一个构造器。
 
@@ -6119,7 +6119,7 @@ public class ExtendsDetail {
 }
 public class TopBase {//父类是Objeact
     TopBase() {
-        //super();
+        //super();//默认调用
         //Object无参构造器
         System.out.println("TopBase构造器被调用");
     }
@@ -6575,7 +6575,7 @@ class B extends A {
 
 ### super使用的细节
 
-1. 调用父类的构造器的好排除（分工明确，父类属性由父类初始化，子类的属性由子类初始化）。
+1. 调用父类的构造器的好处（分工明确，父类属性由父类初始化，子类的属性由子类初始化）。
 2. 当子类中有和父类中的成员（属性和方法）重名时，为了访问父类的成员，必须通过`super`。如果没有重名，使用`super`、`this`、直接访问是一样的效果！
 3. `super`的访问不限于直接父类，如果爷爷类和本类中有同名的成员，也可也使用super去访问爷爷类的成员；如果多个基类（上级类）中都有同名的成员，使用super访问遵循就近原则。`A->B->C`，当然也需要遵守访问权限的相关规则。
 
@@ -7021,7 +7021,7 @@ public class PolyArray {
          * 2个Student对象和2个Teacher对象，统一放在数组中，并调用say方法。
          * */
         Person[] persons = new Person[5];//创建Person类型的数组
-        persons[0] = new Person("summer", 20);
+        persons[0] = new Person("summer", 20);//创建对象
         persons[1] = new Student("lisi", 18, 100);
         persons[2] = new Student("james", 20, 98);
         persons[3] = new Teacher("吉泽明步", 30, 8000);
@@ -7039,6 +7039,7 @@ public class PolyArray {
                 student.say();
                 //((Student) persons[i]).study();
             } else if (persons[i] instanceof Teacher) {
+                //判断persons[i]是不是Teacher
                 Teacher teacher = (Teacher) persons[i];//向下转型
                 teacher.teach();
             } else if (persons[i] instanceof Person) {
@@ -7141,7 +7142,7 @@ public class Teacher extends Person {
 ```java
 public class Polyparameter {
     public static void main(String[] args) {
-        Worker tom = new Worker("tom", 6125.2);
+        Worker tom = new Worker("tom", 6125.2);//创建对象
         Manager jack = new Manager("jack", 10000, 20000);
         Polyparameter polyparameter = new Polyparameter();
         polyparameter.showEmpAnnual(tom);
@@ -7413,15 +7414,15 @@ public class Student extends Person {
 
 1. `==`：即可以判断基本类型，又可以判断引用类型
 
-2. `==`：如果判断基本类型，判断的是值是否相等。
+2. `==`：如果**判断基本类型**，判断的是**值是否相等**。
 
    `int i =10; double b= 10.0;`
 
-3. `==`：如果判断引用类型，判断的是地址是否相等，即判定是不是同一个对象。
+3. `==`：如果**判断引用类型**，判断的是**地址是否相等**，即判定**是不是同一个对象**。
 
-equals方法
+`equals`方法
 
-1. equals：是Object类中的方法，只能判断引用类型。
+1. `equals`：是`Object`类中的方法，只能判断引用类型。
 
    1. 如何看jdk源码?
 
@@ -7429,11 +7430,11 @@ equals方法
 
       ![image-20230213142417448](JavaGrammar.assets/image-20230213142417448.png)
 
-      需要看某个方法源码，将光标放在该方法，输入ctrl+b。
+      需要看某个方法源码，将光标放在该方法，输入`ctrl+b`。
 
-      或者在方法上右键->go to->Delaration or Usages
+      或者在方法上右键->`go to`->`Delaration or Usages`
 
-2. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：Integer,String
+2. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：Integer`,`String`
 
 ```java
 public class Equals01 {
@@ -10534,7 +10535,7 @@ public class Exception01 {
 
    则使用`try{}-catch(){}-finally{}`。
 
-4. 可以有多个`catch`语句,捕获不同的异常(进行不同业务处理)，要求父类异常在后，子类异常在前，比如(Exception在后，NullpointerException在前)，如果发生异常，只会匹配一个catch。
+4. 可以有多个`catch`语句,捕获不同的异常(进行不同业务处理)，要求父类异常在后，子类异常在前，比如(`Exception`在后，`NullpointerException`在前)，如果发生异常，只会匹配一个catch。
 
 5. 可以进行`try-catch`配合使用，这种用法相当于没有捕获异常，因此程序会直接崩掉。
 
@@ -10542,8 +10543,516 @@ public class Exception01 {
 
 6. dsadsa
 
+##### 异常处理练习
+
+```java
+public class TryCatchExercise01 {
+    public static void main(String[] args) {
+        System.out.println(Exception01.method());//4
+    }
+}
+
+class Exception01 {
+    public static int method() {
+        try {
+            String[] names = new String[3];//创建数组
+            //names[1] = "tom";
+            if (names[1].equals("tom")) {//空指针异常
+                System.out.println(names[1]);
+            } else {
+                names[3] = "summer";
+            }
+            //System.out.println(names[3]);
+            return 1;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return 2;
+        } catch (NullPointerException e) {
+            return 3;
+        } finally {
+            return 4;
+        }
+
+    }
+}
+public class TryCatchExercise02 {
+    public static void main(String[] args) {
+        System.out.println(Exception02.method());//4
+    }
+}
+
+class Exception02 {
+    public static int method() {
+        int i = 1;
+        try {
+            i++;
+            String[] names = new String[3];//创建数组
+            if (names[1].equals("tom")) {//空指针异常
+                System.out.println(names[1]);
+            } else {
+                names[3] = "summer";
+            }
+            return 1;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return 2;
+        } catch (NullPointerException e) {
+            return ++i;
+        } finally {
+            return ++i;
+        }
+    }
+}
+public class TryCatchExercise03 {
+    public static void main(String[] args) {
+        System.out.println(Exception03.method());//i=4 3
+    }
+}
+
+class Exception03 {
+    public static int method() {
+        int i = 1;
+        try {
+            i++;//i=2
+            String[] names = new String[3];//创建数组
+            if (names[1].equals("tom")) {//空指针异常
+                System.out.println(names[1]);
+            } else {
+                names[3] = "summer";
+            }
+            return 1;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return 2;
+        } catch (NullPointerException e) {
+            return ++i;//i=3 =>保存临时变量temp=3
+        } finally {
+            ++i;//i=4
+            System.out.println("i=" + i);
+        }
+    }
+}
+```
+
+##### 小结
+
+1. 如果没有出现异常，则执行`try`块中所有语句，不执行`catch`块中语句，如果没有`finally`，最后还需要执行`finally`里面的语句。
+2. 如果出现异常，则`try`块中异常发生后，`try`块剩下的语句不再执行。将执行`catch`块中的语句，如果有`finally`，最后还需要执行`finally`里面的语句！
+
+##### 练习
+
+```java
+public class TryCatchExercise04 {
+    public static void main(String[] args) {
+//如果用户输入的不是一个整数，就提示他反复输入，直到输入一个整数为止。
+        /*
+         * 1、创建Scanner对象
+         * 2、无限循环，去接收一个输入
+         * 3、然后将该输入的值，转成一个int
+         * 4、如果在转换时，抛出异常，说明输入的内容不是一个可以转成int的内容
+         * 5、如果没有抛出异常，则break*/
+        Scanner scanner = new Scanner(System.in);
+        int num = 0;
+        String inputStr = "";
+        while (true) {
+            System.out.println("请输入一个整数:");
+            inputStr = scanner.next();
+            try {
+                num = Integer.parseInt(inputStr);//这里可能抛出异常
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("你输入不是一个整数！！");
+            }
+        }
+        System.out.println("你输入的值是：" + num);
+    }
+}
+```
+
+
+
 #### throws
 
 将发生的异常抛出，交给调用者(方法)来处理，最顶级的处理者时`JVM`。
 
 ![image-20230220181848166](JavaGrammar.assets/image-20230220181848166.png)
+
+##### 基本介绍
+
+1. 如果一个方法（中的语句执行时）可能生成某种异常，但是并不能确定如何处理这种异常，则此方法应显示地抛出异常，表明该方法将不对这些异常进行处理，而由该方法的**调用者负责处理**。
+2. 在方法声明中用`throws`语句可以声明抛出异常的列表，`throws`后面的异常类型可以是方法中产生的异常类型，也可以是它的父类。
+
+```java
+public class Throws01 {
+    public static void main(String[] args) {
+        //
+    }
+
+    public void f1() throws FileNotFoundException,NullPointerException {
+        //创建一个文件流对象
+        /*
+         * 这里的异常是一个FileNotFoundException编译异常
+         * 使用try-catch
+         * throws，抛出异常,让调用f1方法的调用者（方法）处理
+         * throws后面的异常类型可以是方法中产生的异常类型，也可以是它的父类
+         * throws关键字后也可以是 异常列表，可以抛出多个异常*/
+        FileInputStream fileInputStream = new FileInputStream("dsadsa");
+    }
+}
+```
+
+##### 注意事项和细节
+
+1. 对于编译异常，程序中必须处理，比如`try-catch`或者`throws`。
+2. 对于运行时异常，程序中如果没有抛出，默认就是`throws`的方式处理。
+3. 子类重写父类的方法时，对抛出异常的规定：子类重写的方法，所抛出的异常类型要么和父类抛出的异常一致，要么为父类抛出的异常的类型的子类型。
+4. 在`throws`过程中，如果有方法`try-catch`，就相当于处理异常，就可以不必`throws`。
+
+```java
+public class ThrowsDetail {
+    public static void main(String[] args) {
+        f2();
+    }
+
+    public static void f2() /*throws ArithmeticException*/ {
+        /*
+         * 1、对于编译异常，程序中必须处理，比如`try-catch`或者`throws`。
+         * 2、对于运行时异常，程序中如果没有抛出，默认就是`throws`的方式处理。
+         *
+         * 4、在`throws`过程中，如果有方法`try-catch`，
+         * 就相当于处理异常，就可以不必`throws`。
+         * */
+        int n1 = 10;
+        int n2 = 0;
+        double res = n1 / n2;
+    }
+    public static void f1() /*throws FileNotFoundException */{
+        /*
+        * f3()方法抛出的是一个编译异常
+        * 这时，f1()必须处理这个编译异常*/
+        try {
+            f3();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public static void f3() throws FileNotFoundException {
+        FileInputStream fis = new FileInputStream();
+    }
+    public static void f4()  {
+        /*
+        * f4()中调用f5()没问题
+        * f5()抛出的是运行异常，有默认处理机制
+        * java中并不要求程序员显示处理*/
+        f5();
+    }
+    public static void f5() throws ArithmeticException  {}
+}
+
+class Father {
+    public void method() throws RuntimeException  {
+
+    }
+}
+
+class Son extends Father {
+    /*
+     * 3、子类重写父类的方法时，对抛出异常的规定：
+     * 子类重写的方法，所抛出的异常类型要么和父类抛出的异常一致，
+     * 要么为父类抛出的异常的类型的子类型。*/
+    @Override
+    public void method() throws NullPointerException {
+
+    }
+}
+```
+
+### 自定义异常
+
+#### 基本概念
+
+当程序中出现了某些"错误"，但该错误信息并没有正在`Throwable`子类中描述处理，这个时候可以自己设计异常类，用于描述该错误信息。
+
+#### 自定义异常的步骤
+
+1. 定义类：自定义异常类名，继承`Exception`或`RuntimeException`。
+2. 如果继承Exception，属于编译异常。
+3. 如果继承RuntimeException，属于运行异常（一般来说，继承RuntimeException）。
+
+#### 应用实例
+
+```java
+public class CustomException01 {
+    public static void main(String[] args)  /*throws AgeException*/{
+        int age =130;
+        //要求范围在18-120之间，否则抛出一个自定义异常
+        if(!(age>=18 && age<=120)){
+            //这里我们可以通过构造，设置信息
+            throw new AgeException("年龄需要在18-120之间");
+        }
+        System.out.println("你的年龄范围正常！！");
+    }
+}
+//自定义异常
+/*
+* 1、一般情况下自定义异常是继承RuntimeException
+* 2、把自定义异常做成运行时异常，好处是，我们可以使用默认的处理机制
+* 3、比较方便*/
+class AgeException extends RuntimeException{
+    public AgeException(String message) {
+        //构造器
+        super(message);
+    }
+}
+```
+
+#### throw和throws区别
+
+|        | 意义                     | 位置       | 后面跟的东西 |
+| ------ | ------------------------ | ---------- | ------------ |
+| throws | 异常处理的一种方式       | 方法声明处 | 异常类型     |
+| throw  | 手动生成异常对象的关键字 | 方法体中   | 异常类型     |
+
+## 本章作业
+
+```java
+```
+
+# 第13章 常用类
+
+## 包装类
+
+### 包装类的分类
+
+1. 针对八种基本数据类型相应的引用类型------>包装类
+2. 有了类的特点,就可以调用类中的方法
+
+| 基本数据类型 | 包装类      |
+| ------------ | ----------- |
+| `boolean`    | `Boolean`   |
+| `char`       | `Character` |
+| `byte`       | `Byte`      |
+| `short`      | `Short`     |
+| `int`        | `Integer`   |
+| `long`       | `Long`      |
+| `float`      | `Float`     |
+| `double`     | `Double`    |
+
+![image-20230221140342731](JavaGrammar.assets/image-20230221140342731.png)
+
+![image-20230221140353163](JavaGrammar.assets/image-20230221140353163.png)
+
+![image-20230221140403085](JavaGrammar.assets/image-20230221140403085.png)
+
+### 包装类和基本数据的转换
+
+1. `jdk5`前的手动装箱和拆箱方式装箱:基本类型--->包装类型,反之拆箱
+2. `jdk5`以后(包含`jdk5`)的自动装箱和拆箱方法
+3. 自动装箱底层调用`valueOf()`方法,比如`IntegervalueOf()`.
+
+```java
+public class Integer01 {
+    public static void main(String[] args) {
+        //演示int<-->Integer 的装箱和拆箱
+        /*jdk5之前手动装箱int->Integer*/
+        int n1 = 100;
+        Integer integer = new Integer(n1);
+        Integer integer1 = Integer.valueOf(n1);
+        //手动拆箱
+        //Integer->int
+        int i = integer.intValue();
+        //jdk5后，就可以自动装箱和自动拆箱
+        int n2 = 200;
+        //自动装箱 int->Integer
+        Integer integer2 = n2;
+        //底层使用的是Integer.valueOf(n2)
+        //自动拆箱Integer->int
+        int n3 = integer2;
+        //底层使用的是intValue()方法
+    }
+}
+```
+
+#### 练习
+
+```java
+public class WrapperExercise01 {
+    public static void main(String[] args) {
+        Double d = 100d;//自动装箱 Double.valueOf(100d);
+        Float f = 1.5f;//自动装箱Float.valueOf(1.5f);
+        Object obj1 = true ? new Integer(1) : new Double(2.0);//精度为double(是一个整体)
+        System.out.println(obj1);//1.0
+        Object obj2;
+        if (true) {
+            obj1 = new Integer(1);
+        } else {
+            obj2 = new Double(2.0);
+        }
+//分别计算,不会提升优先级!!!
+    }
+}
+```
+
+### 包装类型和String类型的相互转换
+
+```java
+public class WrapperVsString {
+    public static void main(String[] args) {
+        //包装类(Integer)-->String
+        Integer i = 100;//自动装箱
+        //方式1
+        String str1 = i + "";//100+"="100"
+        //方式2
+        String str2 = i.toString();
+        //方式3
+        String str3 = String.valueOf(i);
+        //String-->Integer
+        String str4 = "12345";
+        //方式1
+        Integer i1 = Integer.parseInt(str4);
+        //使用自动装箱
+        Integer i2 = new Integer(str4);//构造器
+    }
+}
+```
+
+### 包装类的常用方法
+
+#### Integer类和Character类的常用方法
+
+```java
+public class WrapperMethod {
+    public static void main(String[] args) {
+        System.out.println(Integer.MIN_VALUE); //返回最小值
+        System.out.println(Integer.MAX_VALUE);//返回最大值
+        System.out.println(Character.isDigit('a'));//判断是不是数字
+        System.out.println(Character.isLetter('a'));//判断是不是字母
+        System.out.println(Character.isUpperCase('a'));//判断是不是大写
+        System.out.println(Character.isLowerCase('a'));//判断是不是小写
+        System.out.println(Character.isWhitespace('a'));//判断是不是空格
+        System.out.println(Character.toUpperCase('a'));//转成大写
+        System.out.println(Character.toLowerCase('A'));//转成小写
+    }
+}
+/*
+-2147483648
+2147483647
+false
+true
+false
+true
+false
+A
+a
+*/
+```
+
+### Integer面试题
+
+```java
+public class WrapperExercise02 {
+    public static void main(String[] args) {
+        method01();
+    }
+
+    public static void method01() {
+        Integer i = new Integer(1);
+        Integer j = new Integer(1);
+        System.out.println(i == j);//false 不是同一个对象
+        /*public static Integer valueOf(int i) {
+            if (i >= Integer.IntegerCache.low && i <= Integer.IntegerCache.high)
+                return Integer.IntegerCache.cache[i + (-Integer.IntegerCache.low)];
+            return new Integer(i);
+        }*/
+        //这里主要看范围-128~127就是直接返回
+        //如果不在-128~127就创建数组
+        Integer m = 1;//底层 Integer.valueOf(1);--->看源码
+        Integer n = 1;//底层 Integer.valueOf(1);
+        System.out.println(m == n);//true
+        //这里主要看范围-128~127就是直接返回
+        //否则就new 一个Integer(xx);
+        Integer x = 128;//底层 Integer.valueOf(1);
+        Integer y = 128;
+        System.out.println(x == y);
+    }
+}
+public class WrapperExercise03 {
+    public static void main(String[] args) {
+        //1
+        Integer i1 = new Integer(127);
+        Integer i2 = new Integer(127);
+        System.out.println(i1 == i2);//flase
+        //2
+        Integer i3 = new Integer(128);
+        Integer i4 = new Integer(128);
+        System.out.println(i3 == i4);//false
+        //3
+        Integer i5 = 127;//底层Integer.valueOf(127)
+        Integer i6 = 127;
+        System.out.println(i5 == i6);//true
+        //4
+        Integer i7 = 128;
+        Integer i8 = 128;
+        System.out.println(i7 == i8);//false
+        //5
+        Integer i9 = 127;//底层Integer.valueOf(127) ,数组里面取出来的
+        Integer i10 = new Integer(127);
+        System.out.println(i9 == i10);//false
+        //6
+        Integer i11 = 127;
+        int i12 = 127;
+        //只要有基本数据类型，判断的是值是否相等。
+        System.out.println(i11 == i12);//ture
+        //7
+        Integer i13 = 128;
+        int i14 = 128;
+        System.out.println(i13 == i14);//true
+
+    }
+}
+```
+
+## String类
+
+### String类的理解和创建对象
+
+![image-20230221153254386](JavaGrammar.assets/image-20230221153254386.png)
+
+1. `String`对象用于保存字符串，也就是一组字符序列
+2. 字符串常量对象使用双引号括起的字符序列。例如："你好"、"12.97"、"boy"等
+3. 字符串的字符使用`Unicode`字符编码，一个字符（不区分字母还是汉字）占两个字节
+4. `String`类较常用构造器方法
+   1. `String s1 = new String();`
+   2. `String s2 = new String(String original);`
+   3. `String s3= new String(char[] a);`
+   4. `String s4 = new String(char[] a,int shartindex,int count);`
+
+```java
+public class String01 {
+    public static void main(String[] args) {
+        //String对象用于保存字符串，也就是一组字符序列
+        //"姓名"是字符串常量，双引号括起的字符序列
+        /*
+        1. String s1 = new String();
+        2. String s2 = new String(String original);
+        3. String s3= new String(char[] a);
+        4. String s4 = new String(char[] a,int shartindex,int count);*/
+        //String 是final类，不能被继承。
+        //String 有属性  private final char value[];  用于存放字符串
+        //value是final类型，不可以修改（地址不能修改）,单个字符的内容可以变化
+        String name = "姓名";
+        name = "summer";
+        final char[] value = {'a', 'b', 'c'};
+        char[] v2 = {'a', 'r', 'a'};
+        value[1] = 'o';
+        //value = v2;
+    }
+}
+```
+
+#### 创建String对象的两种方式
+
+方式一：直接赋值`String s = "xyedu";`
+
+方式二：调用构造器`String s = new String("xyedu");`
+
+1. 方式一：先从常量池查看是否有"xyedu"数据空间，如果有，直接指向；如果没有则重新创建，然后指向。s最终指向的是常量池的空间地址。
+2. 方式二：先在堆中创建空间，里面维护了value属性，指向常量池的xyedu空间。如果常量池没有"xyedu"，重新创建，如果有，直接通过value指向。最终指向的是堆中的空间地址。
