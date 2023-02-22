@@ -7434,7 +7434,7 @@ public class Student extends Person {
 
       或者在方法上右键->`go to`->`Delaration or Usages`
 
-2. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：Integer`,`String`
+2. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：`Integer`,`String`
 
 ```java
 public class Equals01 {
@@ -7632,11 +7632,11 @@ class Person02 {
 
 ##### 基本介绍
 
-默认返回：全类名（包名+类名）+@+哈希值的十六进制；子类往往重写 toString 方法，用于返回对象的属性信息
+默认返回：全类名（包名+类名）+@+哈希值的十六进制；子类往往重写 `toString` 方法，用于返回对象的属性信息
 
-重写 toString 方法，打印对象或拼接对象时，都会自动调用该对象的 toString 形式。
+重写 `toString` 方法，打印对象或拼接对象时，都会自动调用该对象的 `toString` 形式。
 
-当直接输出一个对象时，toString 方法会被默认的调用
+当直接输出一个对象时，`toString` 方法会被默认的调用
 
 `System.out.println(monster)`默认调用monster.toString();
 
@@ -7647,7 +7647,7 @@ public class ToString_ {
         /*
         Object 的 toString() 方法返回一个字符串，该字符串包含了该对象的类的全限定名，
         getClass().getName() 类的全类名(包名+类名）
-        Integer.toHexString(hashCode()将对象的hashCode值转成16进制字符串
+        Integer.toHexString(hashCode()将对象的hashCode值转成16进制字符串)
         public String toString() {
             return getClass().getName() + "@" + Integer.toHexString(hashCode());
         }
@@ -7688,8 +7688,8 @@ class Monster {
 
 #### finalize方法
 
-1. 当对象被回收时，系统自动调用该对象的finalize方法。子类可以重写该方法，做一些**释放资源**的操作。
-2. 什么时候被回收：当某个对象没有任何引用时，则jvm就认为这个对象是一个垃圾对象，就会使用垃圾回收机制来销毁该对象，在销毁该对象时，会先调用finalize方法。
+1. 当对象被回收时，系统自动调用该对象的`finalize`方法。子类可以重写该方法，做一些**释放资源**的操作。
+2. 什么时候被回收：当某个对象没有任何引用时，则`jvm`就认为这个对象是一个垃圾对象，就会使用垃圾回收机制来销毁该对象，在销毁该对象时，会先调用`finalize`方法。
 3. 垃圾回收机制的调用，是由系统来决定的(即由自己的GC算法)，也可以通过`System.gc()`主动出发垃圾回收机制。
 
 ```java
@@ -11052,7 +11052,592 @@ public class String01 {
 
 方式一：直接赋值`String s = "xyedu";`
 
-方式二：调用构造器`String s = new String("xyedu");`
+方式二：调用构造器`String s2 = new String("xyedu");`
 
 1. 方式一：先从常量池查看是否有"xyedu"数据空间，如果有，直接指向；如果没有则重新创建，然后指向。s最终指向的是常量池的空间地址。
-2. 方式二：先在堆中创建空间，里面维护了value属性，指向常量池的xyedu空间。如果常量池没有"xyedu"，重新创建，如果有，直接通过value指向。最终指向的是堆中的空间地址。
+2. 方式二：先在堆中创建空间，里面维护了`value`属性，指向常量池的`xyedu`空间。如果常量池没有"xyedu"，重新创建，如果有，直接通过`value`指向。**最终指向的是堆中的空间地址**。
+
+![image-20230222094759501](JavaGrammar.assets/image-20230222094759501.png)
+
+```java
+public class StringExercise01 {
+    public static void main(String[] args) {
+        String a = "abc";
+        String b = "abc";
+        //String equals()方法被重写
+        System.out.println(a.equals(b));//true
+        System.out.println(a == b);//true
+    }
+}
+public class StringExercise02 {
+    public static void main(String[] args) {
+        String a = "edu";//指向常量池的"edu"
+        String b = new String("edu");//b指向堆中对象
+        System.out.println(a.equals(b));//true
+        System.out.println(a==b);//false
+        //intern()  返回是常量池的地址
+        //如果常量池中以存在"edu" ，则返回来自池的字符串。
+        //否则，此String对象将添加到池中，并返回对此String对象的引用.
+        System.out.println(a==b.intern());//true
+        System.out.println(b==b.intern());//false
+    }
+}
+public class StringExercise03 {
+    public static void main(String[] args) {
+        String s1 = "xyedu";//常量池中
+        String s2 = "java";
+        String s4 = "java";
+        String s3 = new String("java");
+        System.out.println(s2 == s3);//F
+        System.out.println(s2 == s4);//T
+        System.out.println(s2.equals(s3));//T
+        System.out.println(s1 == s2);//F
+    }
+}
+public class StringExercise04 {
+    public static void main(String[] args) {
+        Person p1 = new Person();
+        p1.name = "jack";
+        Person p2 = new Person();
+        p2.name = "jack";
+        System.out.println(p1.name.equals(p2.name));//T
+        System.out.println(p1.name == p2.name);//T
+        System.out.println(p1.name == "jack");//T
+        String s1 = new String("edu");
+        String s2 = new String("edu");
+        System.out.println(s1 == s2);//F
+    }
+}
+```
+
+### 字符串的特性
+
+1. String是一个final类，代表不可变的字符序列。
+2. 字符串是不可变的。一个字符串对象一旦被分配，其内容是不可变的。
+
+```java
+String s1 = "hello";
+s1 = "haha";
+//创建了2个对象
+//==========
+String a = "hello" + "abc";//编译器会优化等价于String a = "helloabc";
+//只有一个对象
+//做一个优化，判断创建的常量池对象，是否有引用指向。
+String a = "hello";//常量池创建a对象
+String b ="abc";
+/*
+1、创建一个StringBuilder sb = StringBuilder();
+2、执行 sb.append("hello");
+3、sb.append("abc");
+4、String c = sb.toString()
+最后其实是c指向堆中的对象(String)value[]->池中"helloabc"
+*/
+String c = a+b;
+//有三个对象
+//小结：String c1 = "ab"+"cd";常量相加，看的是池。
+//String c1 = a+b;变量相加，是在堆中。
+```
+
+### String类的常见方法
+
+#### 说明
+
+String类是保存字符串常量的。每次更新都需要重新开辟空间，效率较低，因此java设计者还提供了`StringBuilder`和`StringBuffer`来增强`String`的功能，并提高效率。
+
+```java
+public class StringMethod01 {
+    public static void main(String[] args) {
+        //equalsignorecase() 忽略大小写的判断内容是否相等
+        if ("join".equalsIgnoreCase("JOIN")) {
+            System.out.println("Success!");
+        } else {
+            System.out.println("Failure!");
+        }
+        //length() 获取字符的个数，字符串的长度
+        System.out.println("夏源edu".length());//5
+        //indexOf()获取字符在字符串对象中第一次出现的索引，索引从0开始，如果找不到，返回-1
+        String str1 = "wer@terwe@g";
+        int index = str1.indexOf("@");
+        System.out.println(index);//3
+        //lastIndexOf()获取字符在字符串对象中最后一次出现的索引，索引从0开始，如果找不到，返回-1.
+        String str2 = "wer@terwe@g@";
+        int index2 = str2.lastIndexOf("@");
+        System.out.println(index2);//11
+        //substring 截取指定范围的子集
+        String str3 = "wer@terwe@g";
+        //从索引3开始截取后面所有的字符
+        System.out.println(str3.substring(3));//@terwe@g
+        //从索引0开始截取，截取到(5-1)个字符
+        System.out.println(str3.substring(0, 3));//wer
+    }
+}
+public class StringMethod02 {
+    public static void main(String[] args) {
+        //toUpperCase()转换成大写
+        String s1 = "hello world";
+        System.out.println(s1.toUpperCase());
+        //toLowerCase()转换成小写
+        String s2 = "FXY";
+        System.out.println(s2.toLowerCase());
+        //concat()拼接字符串
+        String s3 = "詹姆斯";
+        s3 = s3.concat("历史得分王").concat("4个总冠军");
+        System.out.println(s3);
+        //replace()替换字符串中的字符
+        String s4 = "hello world";
+        System.out.println(s4.replace("hello", "hi"));
+        //split()分割字符串，返回数组。对于某些分割字符，我们需要转移 比如 | \\等
+        String shige = "莫等闲,白了少年头,空悲切";
+        String[] split = shige.split(",");
+        for(String s : split){
+            System.out.println(s);
+        }
+        //toCharArray()转换成字符数组
+        String s6 = "hello world";
+        char[] chars = s6.toCharArray();
+        for (char c : chars) {
+            System.out.print(c + "\t");
+        }
+        System.out.println();
+        //compareTo()比较两个字符串，
+        //如果前者大，则返回正数，
+        //后者大，则返回负数，
+        //如果相等，返回0
+        String s7 = "jack";
+        String s8 = "jchn";
+        System.out.println(s7.compareTo(s8));//返回值'a'-'c'=-2
+        //format格式字符串
+        /*
+        * 占位符有
+        * %s字符串 %c字符 %d整数 %.2f浮点数*/
+        String name = "john";
+        int age =10;
+        double score = 98.3/3;
+        char gender = '男';
+        /*String info=
+                "我的名字是："+name+"年龄是："+age+"成绩是"+score+"性别是"+gender;*/
+        /*
+        * 1、%s、%d、%.2f、%c为占位符
+        * 2、这些占位符由后面变量来替换
+        * 3、%s表示后面由字符串来替换
+        * 4、%.2f表示使用小数来替换，替换后，只会保留小数点两位
+        * */
+        String info = String.format("我的名字是%s年龄是%d,成绩是%.2f性别是%c",name,age,score,gender);
+        System.out.println(info);
+    }
+}
+```
+
+## StringBuffer类
+
+### 基本介绍
+
+1. java.lang.StringBuffer代表可变的字符序列，可以对字符串内容进行增删。
+2. 很多方法与String相同，但是StringBuffer是可变长度的。
+3. StringBuffer是一个容器。
+
+```java
+public class StringBuffer_ {
+    public static void main(String[] args) {
+        /*
+        * 1、StringBuffer的直接父类是AbstractStringBuilder
+        * 2、StringBuffer实现了Serializable ，StringBuffer的对象可以串行化
+        * 3、在父类中AbstractStringBuilder有属性 char[] value ，不是final
+        * 该value数组存放字符串内容，存放在堆中。
+        * 4、StringBuffer是一个final类，不能被继承*/
+        StringBuffer sb = new StringBuffer();
+    }
+}
+```
+
+### String VS StringBuffer
+
+1. `String`保存的是字符串常量，里面的值不能改变，每次`String`类的更新实际上就是更改地址，效率较低。//`private final char value[];`
+2. `StringBuffer`保存的是字符串变量，里面的值可以更改，每次`StringBuffer`的更新实际上可以更改新内容，不用更新地址，效率较高。//`char[] value;`//这个放在堆.
+
+### StringBuffer的构造器
+
+| 构造方法摘要                               |                                                              |
+| ------------------------------------------ | ------------------------------------------------------------ |
+| `StringBuffer()`                           | 构造一个其中不带字符的字符串缓冲区，其初始容量为16个字符。   |
+| `StringBuffer(CharSequence seq)`           | `public java.lang.StringBuile(CharSequence seq)`构造一个字符串缓冲区，包含与指定的CharSequence相同的字符。 |
+| `StringBuffer(int capcaity)`//capacity容量 | 构造一个不带字符，但具有种子顶初始容量的字符串缓冲区，即对`char[]` 大小进行指定 |
+| `StringBuffer(String str)`                 | 构造一个字符串缓冲区，将其内容初始化为指定的字符串内容。     |
+
+```java
+public class StringBuffer02 {
+    public static void main(String[] args) {
+        //构造器使用
+        /*
+         * 1、 创建一个大小为16的char[] ，用于存放字符内容*/
+        StringBuffer sb = new StringBuffer();
+
+        //通过构造器指定char[] 大小
+        StringBuffer sb2 = new StringBuffer(100);
+        //通过给一个String创建Stringbuffer
+        //str.length() + 16 把传入的字符长度加上16传给capacity
+        StringBuffer sb3 = new StringBuffer("hello");
+    }
+}
+```
+
+### String和StringBuffer相互转换
+
+```java
+public class StringAndStringBuffer {
+    public static void main(String[] args) {
+        //String---->StringBuffer
+        String str = "tom";
+        //方式1
+        //注意：返回的才是StringBuffer对象，对Str本身没有影响
+        StringBuffer sb = new StringBuffer(str);
+        //方式2  使用append方法
+        StringBuffer sb2 = new StringBuffer();
+        sb2.append(str);
+        //StringBuffer---->String
+        StringBuffer sb3 = new StringBuffer("xyedu");
+        //方式1 使用StringBuffer提供的 toString方法
+        String s = sb3.toString();
+        //方式2 使用构造器
+        String s1 = new String(sb3);
+    }
+}
+```
+
+### StringBuffer类常见方法
+
+1. 增`append`
+2. 删`delete(start,end)`
+3. 改`replace(start,end,string)`将`start`----`end`间的内容替换掉，不含`end`
+4. 查`indexOf`查找子串在字符串第1此出现的索引，如果找不到返回-1.
+5. 插`insert`
+6. 获取`length`
+
+```java
+public class StringBufferMethod {
+    public static void main(String[] args) {
+        StringBuffer sb = new StringBuffer("java");
+        //增 append
+        sb.append(",");
+        sb.append("hello");
+        sb.append("world");
+        sb.append("james");
+        System.out.println(sb);
+        //java,helloworldjames
+        //删 delete
+        sb.delete(0, 3);
+        System.out.println(sb);
+        //a,helloworldjames
+        //改 replace
+        sb.replace(0, 1, "h");
+        //h,helloworldjames
+        System.out.println(sb);
+        //查 indexOf
+        System.out.println(sb.indexOf("a"));
+        //13
+        //插 insert
+        sb.insert(0, "xy");
+        System.out.println(sb);
+        //xyh,helloworldjames
+        //获取 length
+        System.out.println(sb.length());
+        //19
+    }
+}
+```
+
+```java
+public class StringBufferExercise02 {
+    public static void main(String[] args) {
+        //输入商品名称和价格，要求打印效果示例；
+        //商品名   商品价格
+        //手机  123,654.59
+        /*
+         * 1、定义一个Scanner接收用户输入的价格(String)
+         * 使用StringBuffer 的insert，需要将String转成StringBuffer*/
+        /*Scanner scanner = new Scanner(System.in);*/
+        String price = "897654.59";
+        StringBuffer sb = new StringBuffer(price);
+
+        //找到小数点索引，然后在该位置的前3位插入,即可
+        /*int j = sb.lastIndexOf(".");
+        sb = sb.insert(j - 3, ",");*/
+        //循环处理
+        for (int i = sb.lastIndexOf(".") - 3; i > 0; i -= 3) {
+            sb = sb.insert(i , ",");
+        }
+        System.out.println(sb);
+    }
+}
+```
+
+## StringBuilder 类
+
+### 基本介绍
+
+1. 一个可变的字符序列。此类提供一个与`StringBuffer`兼容的`API`，但不保证同步(StringBuilder不是线程安全)。该类被设计用作`StringBuffer`的一个简易替换，用在**字符串缓冲区被单个线程使用**的时候。
+2. 在`StringBuilder`上的主要操作时`append`和`insert`方法，可重载这些方法，以接收任意类型的数据。
+
+### StringBuilder常用方法
+
+`StringBuilder`和`StringBuffer`均代表可变的字符序列，方法是一样的，所以使用StringBuffer一样。
+
+### String、StringBuffer和StringBuilder的比较
+
+1. StringBuilder和StringBuffer非常类似，均代表可变的字符序列，而且方法也一样。
+
+2. String：不可变字符序列，效率低，但是复用率高。
+
+3. StringBuffer：可变字符序列，效率较高（增、删）、线程安全。
+
+4. StringBuilder：可变字符序列，效率最高，线程不安全。
+
+5. String使用注意：
+
+   String s = "a";//创建了一个字符串
+
+   s += "b";实际上原来的"a"字符串对象以及丢弃了，现在又产生了一个字符串s+"b"（也就是ab）。如果多次执行这些改变串内容的操作，会导致大量副本字符串对象存留在内存中，降低效率。如果这样的操作放在循环中，会极大影响程序的性能。
+
+   结论：如果我们对String做大量修改，不要使用String。
+
+### 效率测试
+
+```java
+public class StringVsStringBufferVsStringBuilder {
+    public static void main(String[] args) {
+        String text = "";
+        long starttime = 0L;
+        long endtime = 0L;
+        StringBuffer buffer = new StringBuffer("");
+        StringBuilder builder = new StringBuilder("");
+        starttime = System.currentTimeMillis();
+        for (int i = 0; i < 20000; i++) {
+            buffer.append(String.valueOf(i));
+        }
+        endtime = System.currentTimeMillis();
+        System.out.println("StringBuffer的执行时间: " + (endtime - starttime));
+        starttime = System.currentTimeMillis();
+        for (int i = 0; i < 20000; i++) {
+            builder.append(String.valueOf(i));
+        }
+        endtime = System.currentTimeMillis();
+        System.out.println("StringBuilder的执行时间: " + (endtime - starttime));
+        starttime = System.currentTimeMillis();
+        for (int i = 0; i < 20000; i++) {
+            text += i;
+        }
+        endtime = System.currentTimeMillis();
+        System.out.println("String的执行时间: " + (endtime - starttime));
+    }
+}
+```
+
+### String、StringBuffer 和 StringBuilder 的选择
+
+1. 如果字符串存在大量的修改操作做，一般使用StringBuffer或StringBuilder。
+2. 如果字符串存在大量的修改操作，并在单线程的情况，使用StringBuilder。
+3. 如果字符串存在大量的修改操作，并在多线程的情况，使用StringBuffer。
+4. 如果我们字符串很少修改，被多个对象引用，使用String，比如配置信息。
+
+## Math类
+
+### 基本介绍
+
+Math类包含用于执行基本数学运算的方法，如初等指数、对数、平方根和三角函数。
+
+### 方法
+
+| 方法     | 描述                    |
+| -------- | ----------------------- |
+| `abs`    | 绝对值                  |
+| `pow`    | 求幂                    |
+| `ceil`   | 向上取整                |
+| `floor`  | 向下取整                |
+| `round`  | 四舍五入                |
+| `sqrt`   | 求开方                  |
+| `random` | 随机数（0.0 <= x <1.0） |
+| `max`    | 求两个数的最大值        |
+| `min`    | 求两个数的最小值        |
+
+## Arrays类
+
+`Arrays`里面包含了一系列静态方法，用于管理或操作数组
+
+1. `toString`返回数组的字符串形式。
+
+   `Arrays.toString(arr);`
+
+2. `sort`排序（自然排序和定制排序）。
+
+   `Integer arr[] = {1,-1,7,0,89};`
+
+3. `binarySearch` 通过二分搜索法进行查找，要求必须排好序。
+
+   `int index = Arrays.binarySearch(arr,3);`
+
+4. `copyOf`数组元素的复制。
+
+   `Integer[] numArr= Arrays.copyOf(arr,arr.length);;`
+
+5. `fill`数组元素的填充
+
+   `Integer[] num = new Integer[]{9,3,2};`
+
+   `Arrays.fill(num,99);`
+
+6. `equals`比较两个数组元素内容是否完全一致。
+
+   `boolean equals = Arrays.equals(arr,arr2);`
+
+7. `asList`将一组值，转换成list。
+
+   `List<Integer> asList = Arrays.asList(2,3,4,5,6,1);`
+
+   `System.out.println("asList="+asList);`
+
+```java
+public class ArraysMethod01 {
+    public static void main(String[] args) {
+        //int[] arr = {1, 2, 3, 4, 5, 6};
+        Integer[] integers = {1, 20, 90};
+        //遍历
+        /*for (int i = 0; i <integers.length ; i++) {
+            System.out.println(integers[i]);
+        }*/
+        //System.out.println(Arrays.toString(integers));
+        /*public static String toString(Object[] a) {
+            if (a == null)
+                return "null";
+
+            int iMax = a.length - 1;
+            if (iMax == -1)
+                return "[]";
+
+            StringBuilder b = new StringBuilder();
+            b.append('[');
+            for (int i = 0; ; i++) {
+                b.append(String.valueOf(a[i]));
+                if (i == iMax)
+                    return b.append(']').toString();
+                b.append(", ");
+            }
+        }*/
+        //sort方法的使用
+        Integer[] arr = {1, -1, 7, 0, 89,};
+        /*
+         * 因为数组是引用类型，所以通过sort排序后，会影响到实参arr
+         * sort重载的，也可以通过传入一个接口Comparator实现定制排序
+         * 调用定制排序时，传入两个参数1、排序的数组arr
+         * 2、实现了Comparator接口的匿名内部类，要求实现Compare方法
+         * */
+        //Arrays.sort(arr);
+        //定制排序
+        /*
+        * 体现了接口编程的方式
+        * 源码分析
+        * 1、 Arrays.sort(arr, new Comparator()
+        * 2、最总到了 TimSort类  private static <T> void binarySort(T[] a, int lo, int hi, int start,
+                                       Comparator<? super T> c)
+       *执行到  binarySort方法的代码，会根据动态绑定机制c.compare()执行我们
+       * 传入到匿名内部类compare方法
+       * while (left < right) {
+                int mid = (left + right) >>> 1;
+                if (c.compare(pivot, a[mid]) < 0)
+                    right = mid;
+                else
+                    left = mid + 1;
+            }
+            *
+        *new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                Integer i1 = (Integer) o1;//向下转型
+                Integer i2 = (Integer) o2;
+                return i2 - i1;
+            }
+        });
+        * public int compare(Object o1, Object o2) 返回的值>0还是<0会影响排序的结果
+        * */
+        Arrays.sort(arr, new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                Integer i1 = (Integer) o1;//向下转型
+                Integer i2 = (Integer) o2;
+                return i2 - i1;
+            }
+        });
+        System.out.println("排序后");
+        System.out.println(Arrays.toString(arr));
+
+    }
+}
+public class ArraysSortCustom {
+    public static void main(String[] args) {
+        int[] arr = {1, -1, 8, 0, 20};
+        //bubbleSort01(arr);
+        bubbleSort02(arr, new Comparator() {
+            @Override
+            public int compare(Object o1, Object o2) {
+                int i1 = (Integer) o1;
+                int i2 = (Integer) o2;
+                //return i1 - i2;
+                return i2 - i1;
+            }
+        });
+        System.out.println("排序后的情况");
+        System.out.println(Arrays.toString(arr));
+
+    }
+
+    //使用冒泡完成排序
+    public static void bubbleSort01(int[] arr) {
+        int temp = 0;
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                //从小到大
+                if (arr[j] > arr[j + 1]) {
+                    temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    //集合冒泡+定制
+    public static void bubbleSort02(int[] arr, Comparator c) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                //数组的排序由c.compare(arr[j], arr[j + 1])返回的值决定
+                if (c.compare(arr[j], arr[j + 1]) > 0) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+}
+```
+
+
+
+## System 类
+
+### System 类常见方法和案
+
+1. `exit`退出当前程序。
+
+2. `arrarcopy`：复制数组元素，比较适合底层调用，一般使用`Arrays.copyOf`完成数组复制。
+
+   `int[] src={1,2,3};`
+
+   `int[] dest = new int[3];`
+
+   `System.arraycopy(src,0,dest,0,3);` 
+
+3. `currentTimeMillens`：返回当前时间距离1970-1-1的毫秒数
+
+4. gc：运行垃圾回收机制`System.gc();``
+
+## BigInteger 和 BigDecimal 类
