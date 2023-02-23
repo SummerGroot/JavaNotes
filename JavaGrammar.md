@@ -7646,6 +7646,7 @@ public class ToString_ {
 
         /*
         Object 的 toString() 方法返回一个字符串，该字符串包含了该对象的类的全限定名，
+        getClass() 返回此对象运行时的Class对象
         getClass().getName() 类的全类名(包名+类名）
         Integer.toHexString(hashCode()将对象的hashCode值转成16进制字符串)
         public String toString() {
@@ -11620,7 +11621,50 @@ public class ArraysSortCustom {
 }
 ```
 
-
+```java
+public class ArraysMethod02 {
+    public static void main(String[] args) {
+        Integer[] arr = {1, 2, 3, 4, 5, 6};
+        //binarySearch通过二分搜索法进行查找
+        /*
+         * 1、使用binarySearch 二叉查找
+         * 2、要求数组时有序的，如果该数组时无序的，不能使用
+         * 3、数组中不存在该元素，则返回-1*/
+        System.out.println(Arrays.binarySearch(arr, 2));//1
+        //copyOf数组元素的复制
+        /*
+         * 1、从arr数组中拷贝arr.length这么多个到newArr数组中
+         * 多的位置为0
+         * 少则拷贝前部分
+         * 如果拷贝长度<0就抛出异常  NegativeArraySizeException*/
+        Integer[] newArr = Arrays.copyOf(arr, arr.length - 2);
+        System.out.println("=====拷贝完后=====");
+        System.out.println(Arrays.toString(newArr));
+        //fill元素的填充
+        Integer[] num = new Integer[]{9, 3, 2};
+        /*
+         * 1、使用99去填充num数组，可以理解成替换原理*/
+        Arrays.fill(num, 99);
+        System.out.println("=====填充完后=====");
+        System.out.println(Arrays.toString(num));
+        //equals  比较两个元素内容是否完全一致
+        Integer[] arr1 = {1, 2, 3, 4, 5, 6};
+        //如果arr和arr的元素一样，则返回true
+        System.out.println(Arrays.equals(arr, arr1));
+        //asList 将一组值，转换成list
+        /*
+        * 1、 asList会将(2, 3, 4, 5, 6, 1)数据转成一个List集合
+        * 2、返回的aslist编译类型 List(接口)
+        * 3、aslist运行类型 java.util.Arrays$ArrayList
+        * 4、是Arrays类的静态内部类
+        *  private static class ArrayList<E> extends AbstractList<E>
+        implements RandomAccess, java.io.Serializable*/
+        List<Integer> aslist = Arrays.asList(2, 3, 4, 5, 6, 1);
+        System.out.println("aslist=" + aslist);
+        System.out.println("aslist的运行类型"+aslist.getClass());
+    }
+}
+```
 
 ## System 类
 
@@ -11638,6 +11682,636 @@ public class ArraysSortCustom {
 
 3. `currentTimeMillens`：返回当前时间距离1970-1-1的毫秒数
 
-4. gc：运行垃圾回收机制`System.gc();``
+4. gc：运行垃圾回收机制`System.gc();`
+
+```java
+public class System01 {
+    public static void main(String[] args) {
+        //exit 退出当前程序
+        System.out.println("ok1");
+        /*
+         * 1、exit（0）表示程序退出
+         * 2、0表示一个状态，正常的状态*/
+        //System.exit(0);
+        System.out.println("ok2");
+
+        int[] src = {1, 2, 3, 4, 5, 6, 7};
+        int[] dest = new int[7];//dest 当前是{0,0,0,0,0,0,0}
+        /*
+         * 1、这5个参数的含义
+         * 源数组
+         *  @param src the source array.
+         *  srcPos： 从源数组的哪个索引位置开始拷贝
+         * @param srcPos starting position in the source array.
+         *  dest : 目标数组，即把源数组的数据拷贝到哪个数组
+         * @param dest the destination array.
+         * destPos: 把源数组的数据拷贝到 目标数组的哪个索引
+         * @param destPos starting position in the destination data.
+         *  length: 从源数组拷贝多少个数据到目标数组
+         * @param length the number of array elements to be copie*/
+        System.arraycopy(src, 0, dest, 0, src.length);
+        System.out.println("dest=" + Arrays.toString(dest));
+    }
+}
+```
 
 ## BigInteger 和 BigDecimal 类
+
+`BigInteger`适合保存比较大的整型
+
+`BigDecimal`适合保存精度更高的浮点型(小数)
+
+```java
+public class BigInteger01 {
+    public static void main(String[] args) {
+        /*
+        * 需要处理很大的整数，long不够用
+        * 可以使用BigInteger的类来搞定*/
+        long l = 12321324253243123L;
+        System.out.println(l);
+        BigInteger bigInteger1 = new BigInteger("4324325435342653246235");
+        BigInteger bigInteger2 = new BigInteger("10");
+        System.out.println(bigInteger1);
+        /*
+        * 在对BigInteger进行加减乘除的时候，需要使用对应的方法，不能直接进行
+        * 可以创建一个 要操作的BigInteger然后进行相应操作*/
+        BigInteger add = bigInteger1.add(bigInteger2);//加法
+        System.out.println(add);
+        BigInteger subtract = bigInteger1.subtract(bigInteger2);//减
+        System.out.println(subtract);
+        BigInteger multiply = bigInteger1.multiply(bigInteger2);//乘
+        System.out.println(multiply);
+        BigInteger divide = bigInteger1.divide(bigInteger2);//除
+        System.out.println(divide);
+    }
+}
+public class BigDecimal01 {
+    public static void main(String[] args) {
+        double d = 1999.11111124343253245311d;
+        System.out.println(d);
+        /*
+        * 需要保存一个精度很高的数，用BigDecimal*/
+        BigDecimal bigDecimal1 = new BigDecimal("1999.11111124343253245312");
+        System.out.println(bigDecimal1);
+        //运算用相应的方法
+        BigDecimal bigDecimal2 = new BigDecimal("1.1");
+        System.out.println(bigDecimal1.add(bigDecimal2));//加
+        System.out.println(bigDecimal1.subtract(bigDecimal2));//减
+        System.out.println(bigDecimal1.multiply(bigDecimal2));//乘
+        /*
+        * 在调用divide方法时，指定精度
+        * 如果有无限循环小数，就会保留分子的精度*/
+        System.out.println(bigDecimal1.divide(bigDecimal2,BigDecimal.ROUND_CEILING));//除  除不尽抛出异常  ArithmeticException
+
+
+    }
+}
+```
+
+## 日期类
+
+### 第一代日期类
+
+#### Date
+
+精确到毫秒，代表特定的瞬间。
+
+#### SimpleDateFormat
+
+格式和解析日期的类，`SimpleDateFormat`格式化和解析日期的具体类。它允许进行格式化(日期->文本)、解析(文本->日期)和规范化。
+
+```java
+public class Date01 {
+    public static void main(String[] args) throws ParseException {
+        /*这里Date类在java.util包
+         * 默认输出日期格式是国外的，因此需要对格式进行转换*/
+        Date d1 = new Date();//获取当前系统时间
+        System.out.println("当前日期=" + d1);//当前日期=Thu Feb 23 09:47:38 CST 2023
+        Date d2 = new Date(9234567);//通过指定毫秒数得到时间
+        System.out.println("d2的时间"+d2);//获取某个时间对应的毫秒数
+        /*
+         * 创建SimpleDateFormat对象，可以指定相应的格式
+         * 这里的格式使用的字母是规定好的*/
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年-MM月-dd日 HH:mm:ss");//格式化
+        String format = sdf.format(d1);//format：将日期转换成指定格式的字符串
+        System.out.println("当前日期=" + format);
+        /*可以包格式化的String转成对应的Date*/
+        String s = "1996年01月01日 10:20:30 星期一";
+        Date parse = sdf.parse(s);
+        System.out.println("parse="+sdf.format(parse));
+
+    }
+}
+```
+
+![image-20230223095047366](JavaGrammar.assets/image-20230223095047366.png)
+
+### 第二代日期类
+
+#### Calendar
+
+`public abstract class Calendar implements Serializable, Cloneable, Comparable<Calendar>`
+
+`Calendar`类是一个抽象类，它为特定瞬间与一组：`YEAR`、`MONTH`、`DAY_OF_MONTH`、`HOUR`等日历字段之间的转换提供了一些方法，并为操作日历字段(例如获得下星期的日期)提供了一些方法。
+
+```java
+public class Calendar01 {
+    public static void main(String[] args) {
+        /*
+         * Calendar是一个抽象类，并且构造器是private
+         * 可以通过 getInstance() 来获取实例
+         * 提供大量的方法和字段提供给程序员
+         *
+         * Calendar没有提供对应的格式化类，需要自己组合来输出
+         * 如果我们需要按照 24 小时进制来获取时间， Calendar.HOUR ==改成=> Calendar.HOUR_OF_DAY*/
+        Calendar c = Calendar.getInstance();//创建日历类对象
+        System.out.println("c" + c);
+        //获取日历对象的某个日历字段
+        System.out.println("年：" + c.get(Calendar.YEAR));
+        //Calendar返回月时，是按照0开始编号的
+        System.out.println("月：" + c.get(Calendar.MONTH) + 1);
+        System.out.println("日：" + c.get(Calendar.DAY_OF_MONTH));
+        System.out.println("小时：" + c.get(Calendar.HOUR));
+        System.out.println("分钟：" + c.get(Calendar.MINUTE));
+        System.out.println("秒：" + c.get(Calendar.SECOND));
+        //Calendar没有专门的格式化方法，需要自己组合
+        System.out.println(c.get(Calendar.YEAR) + "年" + c.get(Calendar.MONTH) + "月" + c.get(Calendar.DAY_OF_MONTH) + "日" + c.get(Calendar.HOUR) + ":" + c.get(Calendar.MINUTE) + ":" + c.get(Calendar.SECOND));
+    }
+}
+```
+
+### 第三代日期类
+
+`Calendar`存在的问题是：
+
+1. 可变性：像日期和时间这样的类应该是不可变的。
+2. 偏移性：`Date`中的年份是从1900开始的，而月份都是从0开始。
+3. 格式化：格式化只对`Date`有用，`Calendar`则不行。
+4. 此外，它们也不是线程安全；不能处理闰秒等（每隔2天，多出1s）。
+
+`LocalDate`(日期/年月日)、`LocalTime`(时间/时分秒)、`LocalDateTime`(日期时间/年月日时分秒)`JDK8`加入。
+
+`LocalDate`只包含日期，可以获取日期字段。
+
+`LocalTime`只包含时间，可以获取时间字段。
+
+`LocalDateTime`包含日期+时间，可以获取日期和时间字段。
+
+```java
+public class LocalDate01 {
+    public static void main(String[] args) {
+        /*
+         * 使用now()返回当前日期时间的对象*/
+        LocalDateTime ldt = LocalDateTime.now();
+        //LocalDate.now();
+        //LocalTime.now();
+        System.out.println(ldt);
+
+        System.out.println("年=" + ldt.getYear());
+        System.out.println("月=" + ldt.getMonthValue());
+        System.out.println("月=" + ldt.getMonth());
+        System.out.println("日=" + ldt.getDayOfMonth());
+        System.out.println("小时=" + ldt.getHour());
+        System.out.println("分钟=" + ldt.getMinute());
+        System.out.println("秒=" + ldt.getSecond());
+
+        LocalDate ld = LocalDate.now();//获取年月日
+        LocalTime lt = LocalTime.now();//获取时间
+
+    }
+}
+```
+
+#### DateTimeFormatter 格式日期类
+
+类似于`SimpleDateFormat`
+
+`DateTimeFormat dtf = DateTimeFormatter.ofPattern(格式);`
+
+`String str = dtf.format(日期对象);`
+
+```java
+public class LocalDate01 {
+    public static void main(String[] args) {
+        /*
+         * 使用now()返回当前日期时间的对象*/
+        LocalDateTime ldt = LocalDateTime.now();
+        //LocalDate.now();
+        //LocalTime.now();
+        System.out.println(ldt);
+
+        System.out.println("年=" + ldt.getYear());
+        System.out.println("月=" + ldt.getMonthValue());
+        System.out.println("月=" + ldt.getMonth());
+        System.out.println("日=" + ldt.getDayOfMonth());
+        System.out.println("小时=" + ldt.getHour());
+        System.out.println("分钟=" + ldt.getMinute());
+        System.out.println("秒=" + ldt.getSecond());
+
+        LocalDate ld = LocalDate.now();//获取年月日
+        LocalTime lt = LocalTime.now();//获取时间
+
+
+        //DateTimeFormatter对象来进行格式化
+        /*
+         * 创建DateTimeFormatter 对象*/
+        LocalDateTime ldt2 = LocalDateTime.now();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String str = dtf.format(ldt2);
+        System.out.println("格式化的日期=" + str);
+
+    }
+}
+```
+
+#### Instant 时间戳
+
+类似于`Date`
+
+提供了一系列和`Date`类转换的方法
+
+`Instant->Date：`
+
+`Date date = Date.from(instant);`
+
+`Date->Instant`
+
+`Instant instant = date.toInstant();`
+
+```java
+public class Instant01 {
+    public static void main(String[] args) {
+        /*
+        * 通过静态方法now()获取当前时间戳的对象*/
+        Instant now = Instant.now();
+        System.out.println(now);
+        /*
+         *通过from可以把Instant转成Date */
+        Date date = Date.from(now);
+        //通过date的toInstant()可以把date转成Instant对象
+        Instant instant = date.toInstant();
+    }
+}
+```
+
+# 第14章 集合
+
+## 集合的理解和好处
+
+### 数组
+
+1. 长度开始时必须指定，而且一旦指定，不能更改。
+2. 保存的必须为同一类型的元素。
+3. 使用数组进行增加/删除元素的示意代码-比较麻烦。
+
+```java
+//写出Person数组扩容示意代码
+Person[] pers = new Person[1];//大小是1
+per[0]=new Person();
+//增加新的Person对象
+Person[] newper=new Person[pers.length+1];//创建新数组
+for(){}//拷贝pers数组的元素到newper
+newper[newper.length-1]=new Person();//添加新的对象
+```
+
+### 集合
+
+1. 可以**动态保存**任意多个对象，使用比较方便！
+2. 提供了一系列方便的操作对象的方法：`add`、`remove`、`set`、`get`等。
+3. 使用集合添加，删除新的元素示意代码
+
+## 集合的框架体系
+
+`Java`的集合类很多，主要分为两大类。
+
+![image-20230223142051969](JavaGrammar.assets/image-20230223142051969.png)
+
+![image-20230223142003480](JavaGrammar.assets/image-20230223142003480.png)
+
+```java
+public class Collection_ {
+    public static void main(String[] args) {
+        //Collection
+        //Map
+        /*
+         * 1、集合主要是两组（单列集合，双列集合）
+         * 2、Collection接口有两个重要的子接口 list set，他们的实现子类都是单列集合
+         * Map接口的实现子类 是双列集合，存放的K-V*/
+        ArrayList arraylist = new ArrayList();
+        arraylist.add("jack");
+        arraylist.add("tom");
+        HashMap hashmap = new HashMap();
+        hashmap.put("no1","北京");
+        hashmap.put("no2","上海");
+    }
+}
+```
+
+## Collection接口和常用方法
+
+### Collection接口实现类的特点
+
+`public interface Collection<E> extends Iterable<E>`
+
+1. `Collection`实现这种子类可以存放多个元素，每个元素可以是`Object`。
+2. 有些`Collection`的实现类，可以存放重复的元素，有些不可以。
+3. 有些`Collection`的实现类，有些是有序的(`List`)，有些不是有序的(`Set`)。
+4. `Collection`接口没有直接的实现子类，是通过它的子接口`Set`和`List`来实现的。
+
+### Collection接口常用方法，以实现子类ArratList
+
+| 方法          | 描述                   |
+| ------------- | ---------------------- |
+| `add`         | 添加单个元素           |
+| `remove`      | 删除指定元素           |
+| `contains`    | 查找元素是否存在       |
+| `size`        | 获取元素个数           |
+| `isEmpty`     | 判断是否为空           |
+| `clear`       | 清空                   |
+| `addAll`      | 添加多个元素           |
+| `containsAll` | 查找多个元素是否都存在 |
+| `removeAll`   | 删除多个元素           |
+
+```java
+public class CollectionMethod {
+    @SuppressWarnings({"all"})
+    public static void main(String[] args) {
+        //创建ArrayList
+        List list = new ArrayList();
+        //add 添加单个元素
+        list.add("jack");
+        list.add(10);//自动装箱 listadd(new Integer(10))
+        list.add(true);
+        System.out.println("list=" + list);//list=[jack, 10, true]
+        //remove：删除指定元素
+        //list.remove(0);//删除第一个元素
+        list.remove("jack");//删除指定元素
+        System.out.println("list=" + list);//list=[10, true]
+        //contains:查找元素是否存在
+        System.out.println(list.contains("jack"));//F
+        //size：获取元素个数
+        System.out.println(list.size());//2
+        //isEmpty：判断是否为空
+        System.out.println(list.isEmpty());//F
+        //clear：清空
+        list.clear();
+        //addAll：添加多个元素
+        ArrayList list2 = new ArrayList();
+        list2.add("红楼梦");
+        list2.add("三国演绎");
+        list.addAll(list2);
+        System.out.println("list=" + list);
+        //containsAll：查找多个元素是否都存在
+        System.out.println(list.containsAll(list2));//T
+        //removeAll：删除多个元素
+        list.add("聊斋");
+        list.removeAll(list2);
+        System.out.println("list=" + list);//list=[聊斋]
+    }
+}
+```
+
+### Collection接口遍历元素方式1-使用`Iterator`（迭代器）
+
+#### 基本介绍
+
+1. `Iterator`对象称为迭代器，主要用于遍历`Collection`集合中的元素。
+2. 所有实现了`Collection`接口的集合类都有一个`iterator()`方法，用于返回一个实现了`Iterator`接口的对象，即可以返回一个迭代器。
+3. `Iterator`的结构。
+4. `Iterator`仅用与遍历集合，`Iterator`本身并不存放对象。
+
+#### 迭代器的执行原理
+
+`Iterator iterator = coll.iterator();`//得到一个集合的迭代器
+
+`hasNext();`判断是否还有下一个元素
+
+```java
+while(iterator.hasNext()){
+    //next()：作用：1、指针下移；2、将下移以后集合位置上的元素返回
+    System.out.println(iterator.next());
+}
+```
+
+#### Iterator接口的方法
+
+| `boolean`      | `hasNext()`  如果迭代具有更多元素，则返回 `true` 。          |
+| -------------- | ------------------------------------------------------------ |
+| `E`            | `next()`  返回迭代中的下一个元素。                           |
+| `default void` | `remove()`  从底层集合中删除此迭代器返回的最后一个元素（可选操作）。 |
+
+在调用`it.next()`方法之前必须要调用`it.hasNext()`方法进行检测。若不调用，且下一条记录无效，直接调用`it.next()`会抛出`NOSuchElementException`异常。`
+
+```java
+public class CollectionIterator {
+    public static void main(String[] args) {
+        Collection col = new ArrayList();
+        col.add(new Book("三国演义", "罗贯中", 10.1));
+        col.add(new Book("小李飞刀", "古龙", 5.1));
+        col.add(new Book("红楼梦", "曹雪芹", 34.6));
+        //能够遍历col集合
+        Iterator it = col.iterator();
+        while (it.hasNext()) {//判断是否还有数据
+            //返回下一个元素，类型是Object
+            Object obj = it.next();
+            System.out.println("obj" + obj);
+        }
+        //while ===>itit回车
+        //显示所有快捷键ctrl+j
+        /*
+         * 退出while循环后，这时iterator迭代器，指向最后的元素
+         * iterator.next();
+         * 再次遍历，需要重置迭代器*/
+        it = col.iterator();
+        System.out.println("再次遍历");
+        while (it.hasNext()) {//判断是否还有数据
+            //返回下一个元素，类型是Object
+            Object obj = it.next();
+            System.out.println("obj" + obj);
+        }
+        //System.out.println("col" + col);
+    }
+}
+
+class Book {
+    private String name;
+    private String author;
+    private double price;
+
+    public Book(String name, String author, double price) {
+        this.name = name;
+        this.author = author;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", price=" + price +
+                '}';
+    }
+}
+```
+
+### Collection接口遍历对象方式2-for循环增强
+
+增强for循环，可以代替iterator迭代器，特点：增强for就是简化版的iterator，本质一样。只能用于遍历集合或数组。
+
+#### 基本语法
+
+```java
+for(元素类型 元素名:集合名或数组名){
+    访问元素
+}
+```
+
+```java
+public class CollectionExercise {
+    @SuppressWarnings("all")
+    public static void main(String[] args) {
+        //创建3个Dog{name,age }对象，放入到ArrayList中，赋给List引用
+        //用迭代器和增强for循环两种方式来遍历
+        //重写Dog的toString方法，输出name和age
+        List list = new ArrayList();
+        list.add(new Dog("Tom", 2));
+        list.add(new Dog("Jerry", 3));
+        list.add(new Dog("Jack", 4));
+        //iterator遍历
+        Iterator iterator = list.iterator();//通过list拿到迭代器
+        while (iterator.hasNext()) {
+            Object dog = iterator.next();
+            System.out.println("dog" + dog);
+        }
+        //增强for
+        for (Object dog : list) {
+            System.out.println("dog" + dog);
+        }
+
+    }
+}
+
+class Dog {
+    private String name;
+    private int age;
+
+    public Dog(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Dog{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+## List接口和常用方法
+
+### List接口基本介绍
+
+`List`接口时`Collection`接口的子接口。
+
+1. `List`集合类中元素有序（即添加顺序和取出顺序一致）、且可重复
+2. `List`集合中的每个元素都有其对应的顺序索引，即支持索引。
+3. `List`容器冲的元素都对应一个整数型的序号记载其在容器中的位置，可以更具序号存取容器中的元素。
+4. `JDK API`中`List`接口的实现类有：
+   1. 常用的有：`ArrayList`、`LinkedList`和`Vector`
+
+### List接口的常用方法
+
+1. `void add(int index,Object ele)`：在`index`位置插入`ele`元素。
+2. `boolean addAll(int iondex,Collection eles)`：从`index`位置开始将`eles`中的所有元素添加进来。
+3. `Object get(int index)`：获取指定`index`位置的元素。
+4. `int indexOf(Object obj)`：返回`obj`在当前集合中首次出现的位置。
+5. `int lastIndexOf(Object obj)`：返回`obj`在当前集合中末次出现的位置。
+6. `Object remove(int index)`：移除指定`index`位置的元素，并返回此元素。
+7. `Object set(int index,Object ele)`：设置指定`index`位置的元素为`ele`，相当于是替换。
+8. `List subList(int fromIndex,int toIndex)`：返回从`fromIndex`到`toIndex`位置的子集合。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 第15章 泛型
+
+# 第17章 多线程基础
+
+# 第19章 IO流
+
+# 第21章 网络编程
+
+# 第23章 反射（reflection）
+
+# 第24章 MySQL
+
+# 第25章 JDBC和数据库连接池
+
+# 第27章 正则表达式
