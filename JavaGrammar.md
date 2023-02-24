@@ -12274,11 +12274,204 @@ class Dog {
 7. `Object set(int index,Object ele)`：设置指定`index`位置的元素为`ele`，相当于是替换。
 8. `List subList(int fromIndex,int toIndex)`：返回从`fromIndex`到`toIndex`位置的子集合。
 
+```java
+public class ListMethod {
+    @SuppressWarnings({"all"})
+    public static void main(String[] args) {
+        List list = new ArrayList();
+        //1. void add(int index,Object ele)：在index位置插入ele元素。
+        list.add("张三丰");
+        list.add("贾宝玉");
+        //在index=1的位置插入一个对象
+        list.add(1, "summer");
+        System.out.println("list" + list);
+        //2. boolean addAll(int iondex,Collection eles)：从index位置开始将eles中的所有元素添加进来。
+        List list2 = new ArrayList();
+        list2.add("jack");
+        list2.add("james");
+        list.addAll(1, list2);
+        System.out.println("list" + list);//list[张三丰, jack, james, summer, 贾宝玉]
+        //3. Object get(int index)：获取指定index位置的元素。
+        //4. int indexOf(Object obj)：返回obj在当前集合中首次出现的位置。
+        System.out.println(list.indexOf("jack"));//2
+        //5. int lastIndexOf(Object obj)：返回obj在当前集合中末次出现的位置。
+        list.add("jack");
+        System.out.println(list.lastIndexOf("jack"));//5
+        //6. Object remove(int index)：移除指定index位置的元素，并返回此元素。
+        System.out.println(list.remove(5));//jack
+        System.out.println("list" + list);//list[张三丰, jack, james, summer, 贾宝玉]
+        //7. Object set(int index,Object ele)：设置指定index位置的元素为ele，相当于是替换。
+        list.set(1, "tom");
+        System.out.println("list" + list);//list[张三丰, tom, james, summer, 贾宝玉]
+        //8. List subList(int fromIndex,int toIndex)：返回从fromIndex到toIndex位置的子集合。
+        List list1 = list.subList(0, 2);
+        //返回的子集合 fromIndex<=sublist<toIndex
+        System.out.println("list1" + list1);
+    }
+}
+```
 
+### List的三种遍历方式
 
+`[ArrayList,LinkedList,Vector]`
 
+```java
+public class ListFor {
+    public static void main(String[] args) {
+        //List接口的实现子类Vector LinkedList
+        //List list = new ArrayList();
+        //List list = new Vector();
+        List list = new LinkedList();
+        list.add("jack");
+        list.add("tom");
+        list.add("夏源");
+        list.add("冒菜");
+        //遍历
+        //iterator
+        System.out.println("====迭代器=====");
+        Iterator iterator = list.iterator();//获取迭代器方法
+        while (iterator.hasNext()) {
+            Object obj = iterator.next();
+            System.out.println(obj);
+        }
+        //增强for
+        System.out.println("====增强for=====");
+        for (Object o : list) {
+            System.out.println("o=" + o);
+        }
+        //普通for循环
+        System.out.println("====普通for循环=====");
+        for (int i = 0; i < list.size(); i++) {
+            System.out.println("对象=" + list.get(i));
+        }
+    }
+}
+```
 
+### 练习
 
+```java
+public class ListExercise02 {
+    public static void main(String[] args) {
+        List list = new ArrayList();
+        list.add(new Book("红楼梦", "曹雪芹", 100));
+        list.add(new Book("西游记", "吴承恩", 10));
+        list.add(new Book("水浒传", "施耐庵", 9));
+        list.add(new Book("三国演义", "罗贯中", 80));
+        //如何对集合进行排序
+
+        //遍历
+        for (Object o : list) {
+            System.out.println(o);
+        }
+        //冒泡排序
+        sort(list);
+        System.out.println("====排序后====");
+        for (Object o : list) {
+            System.out.println(o);
+        }
+    }
+
+    public static void sort(List list) {
+        //遍历
+        //int listsize = list.size();
+        //价格从小到大
+        for (int i = 0; i < list.size() - 1; i++) {
+            for (int j = 0; j < list.size() - 1 - i; j++) {
+                //取出对象Book
+                Book book1 = (Book) list.get(j);
+                Book book2 = (Book) list.get(j + 1);
+                if (book1.getPrice() > book2.getPrice()) {//交换
+                    list.set(j, book2);
+                    list.set(j + 1, book1);
+                }
+            }
+        }
+    }
+}
+
+class Book {
+    private String name;
+    private String author;
+    private double price;
+
+    public Book(String name, String author, double price) {
+        this.name = name;
+        this.author = author;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "名称:" + name + "\t\t 价格：" + price + "\t\t 作者：" + author;
+    }
+}
+
+```
+
+### ArrayList底层结构和源码分析
+
+1. `permits all elements,including null,ArrayList`可以加入`null`，并且多个
+2. `ArrayList`是由数组来实现数组存储的。
+3. `ArrayList`基本等同于`Vector`，除了`ArrayList`是线程不安全（执行效率高），在多线程情况下，不建议使用`ArrayList`。
+
+```java
+public class ArrayListDetail {
+    public static void main(String[] args) {
+        //ArrayList 是线程不安全的，没有synchronized
+        /*public boolean add(E e) {
+            ensureCapacityInternal(size + 1);  // Increments modCount!!
+            elementData[size++] = e;
+            return true;
+        }*/
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(null);
+        arrayList.add("jack");
+        arrayList.add(null);
+        System.out.println(arrayList);//[null, jack, null]
+    }
+}
+```
+
+### ArrayList的底层操作机制源码分析
+
+1. `ArrayList`中维护了一个`Object`类型的数组`elementData`。
+
+   `transient Object[] elementData;`//`transient`表瞬间、短暂的，表示该属性不会被序列化。
+
+2. 当创建对象时，如果使用的是无参构造器，则初始`elementData`容量为`0`(`JDK7`是10).
+
+3. 当添加元素时：先判断是否需要扩容，如果需要扩容，则调用`grow`方法，否则直接添加元素到合适位置。
+
+4. 如果使用的无参构造器，如果第一次添加，需要扩容的话，则扩容`elementData`为10，如果需要再次扩容的话，则扩容`elementData`为1.5倍。
+
+5. 如果使用的是指定容量`capacity`的构造器，则初始`elementData`容量为`capacity`。
+
+6. 如果使用的是指定容量`capacity`的构造器，如果需要扩容，则直接扩容`elementData`为1.5倍。
 
 
 
