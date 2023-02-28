@@ -11631,11 +11631,12 @@ public class ArraysMethod02 {
          * 2、要求数组时有序的，如果该数组时无序的，不能使用
          * 3、数组中不存在该元素，则返回-1*/
         System.out.println(Arrays.binarySearch(arr, 2));//1
-        //copyOf数组元素的复制
+        //copyOf
         /*
-         * 1、从arr数组中拷贝arr.length这么多个到newArr数组中
-         * 多的位置为0
-         * 少则拷贝前部分
+         * /1. 从 arr 数组中，拷贝 arr.length 个元素到 newArr 数组中
+            2. 如果拷贝的长度 > arr.length 就在新数组的后面 增加 null
+            3. 如果拷贝长度 < 0 就抛出异常 NegativeArraySizeException
+            4. 该方法的底层使用的是 System.arraycopy(
          * 如果拷贝长度<0就抛出异常  NegativeArraySizeException*/
         Integer[] newArr = Arrays.copyOf(arr, arr.length - 2);
         System.out.println("=====拷贝完后=====");
@@ -12473,9 +12474,39 @@ public class ArrayListDetail {
 
 6. 如果使用的是指定容量`capacity`的构造器，如果需要扩容，则直接扩容`elementData`为1.5倍。
 
+### Vector底层结构和源码解析
 
+#### Vector的基本介绍
 
+1. `Vector`类的定义说明
 
+   ```java
+   public class Vector<E>
+       extends AbstractList<E>
+       implements List<E>, RandomAccess, Cloneable, java.io.Serializable
+   ```
+
+2. `Vector`底层也是一个对象数组，`protected Object[] elementData;`
+
+3. `Vector`是线程同步的，即线程安全，`Vector`类的操作方法带有`synchronized`
+
+   ```java
+   public synchronized boolean add(E e) {
+           modCount++;
+           ensureCapacityHelper(elementCount + 1);
+           elementData[elementCount++] = e;
+           return true;
+       }
+   ```
+
+4. 在开发中，需要线程同步安全时，考虑使用`Vector`。
+
+#### Vector底层结构和ArrayList的比较
+
+|           | 底层结构 | 版本                 | 线程安全（synchronized）效率 | 扩容倍数                                                     |
+| --------- | -------- | -------------------- | ---------------------------- | ------------------------------------------------------------ |
+| ArrayList | 可变数组 | jdk1.2               | 不安全，效率高               | 如果有参构造1.5倍<br />无参构造<br />1、第一次10<br />2、从第二次开始1.5扩容 |
+| Vector    | 可变数组 | jdk1.0<br />Object[] | 安全，效率不高               | 如果是无参，默认10，满后，就按2倍扩容<br />如果指定大小，则每次直接按2倍扩容。 |
 
 
 
