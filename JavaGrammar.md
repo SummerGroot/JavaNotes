@@ -12458,7 +12458,7 @@ public class ArrayListDetail {
 }
 ```
 
-### ArrayList的底层操作机制源码分析
+#### ArrayList的底层操作机制源码分析
 
 1. `ArrayList`中维护了一个`Object`类型的数组`elementData`。
 
@@ -12508,15 +12508,240 @@ public class ArrayListDetail {
 | ArrayList | 可变数组 | jdk1.2               | 不安全，效率高               | 如果有参构造1.5倍<br />无参构造<br />1、第一次10<br />2、从第二次开始1.5扩容 |
 | Vector    | 可变数组 | jdk1.0<br />Object[] | 安全，效率不高               | 如果是无参，默认10，满后，就按2倍扩容<br />如果指定大小，则每次直接按2倍扩容。 |
 
+```java
+public class Vector_ {
+    @SuppressWarnings({"all"})
+    public static void main(String[] args) {
+        //无参构造
 
+        Vector vector = new Vector();
+        for (int i = 0; i < 10; i++) {
+            vector.add(i);
+        }
+        vector.add(101);
+        /*
+         * 1、new Vector()底层
+         * public Vector(){
+         * this(10);
+         * }
+         * vector.add(i)
+        //下面这个方法就是添加数据到vector集合
+        * public synchronized boolean add(E e) {
+        modCount++;
+        ensureCapacityHelper(elementCount + 1);
+        elementData[elementCount++] = e;
+        return true;
+        }
+         //确定是否需要扩容  条件(minCapacity - elementData.length > 0
+        private void ensureCapacityHelper(int minCapacity) {
+        // overflow-conscious code
+        if (minCapacity - elementData.length > 0)
+        grow(minCapacity);
+        }
+        //如果 需要的数组大小不够用，就扩容
+        int newCapacity = oldCapacity + ((capacityIncrement > 0) ?
+                                         capacityIncrement : oldCapacity);
+        private void grow(int minCapacity) {
+        // overflow-conscious code
+        int oldCapacity = elementData.length;
+        int newCapacity = oldCapacity + ((capacityIncrement > 0) ?
+                                         capacityIncrement : oldCapacity);
+        if (newCapacity - minCapacity < 0)
+            newCapacity = minCapacity;
+        if (newCapacity - MAX_ARRAY_SIZE > 0)
+            newCapacity = hugeCapacity(minCapacity);
+        elementData = Arrays.copyOf(elementData, newCapacity);
+        }
+    * */
+    }
+}
+```
 
+### LinkedList底层结构
 
+1. `LinkedList`实现了双向列表和双端队列特点。
+2. 可以添加任意元素（元素可以重复），包括`null`。
+3. 线程不安全，没有显示同步。
 
+#### LinkedList的底层操作机制
 
+1. `LinkedList`底层维护了一个双向链表。
+2. `LinkedList`中维护了两个属性`first`和`last`分别指向首节点和尾节点。
+3. 每个节点（node对象），里面又维护了`prev`、`next`、`item`三个属性，其中通过`prev`指向前一个，通过`next`指向后一个节点。最终实现双向链表。
+4. 所以`LinkedList`的元素添加和删除，不是通过数组完成的，相对来说效率较高。
 
+```java
+public class LinkedList01 {
+    public static void main(String[] args) {
+        //模拟双向链表
+        Node jack = new Node("jack");
+        Node tom = new Node("tom");
+        Node summer = new Node("夏天");
+        //连接三个节点，形成双向链表
+        //jacl->tom->summer
+        jack.next = tom;
+        tom.next = summer;
+        //summer->tom->jack
+        summer.prev = tom;
+        tom.prev = jack;
+        //让first引用指向jack，就是双向链表的头节点
+        Node first = jack;
+        //让last引用指向summer，尾节点
+        Node last = summer;
 
+        //从头到尾遍历
+        System.out.println("====从头到尾遍历====");
+        while (true) {
+            if (first == null) {
+                break;
+            }
+            //输出first信息
+            System.out.println(first);
+            first = first.next;//first.next == jack.next
+        }
+        //从尾到头的遍历
+        System.out.println("====从尾到头的遍历====");
+        while (true) {
+            if (last == null) {
+                break;
+            }
+            System.out.println(last);
+            last = last.prev;
+        }
+        //双链表添加对象/数据
+        //在tom和summer之间添加spring对象
+        //1、创建Node节点 name 春天
+        Node spring = new Node("春天");
+        //spring加入到双向链表
+        /*spring.next = summer;
+        spring.prev = tom;
+        summer.prev = spring;
+        tom.next = spring;*/
+        spring.next = tom.next;
+        spring.prev = summer.prev;
+        tom.next = spring;
+        summer.prev = spring;
+        first = jack;//重置first
+        System.out.println("====插入后的遍历====");
+        while (true) {
+            if (first == null) {
+                break;
+            }
+            System.out.println(first);
+            first = first.next;
+        }
+    }
+}
 
+//定义一个Node类，Node对象 表示双向链表的一个节点。
+class Node {
+    public Object item;//真正存放数据
+    public Node next;//指向下一个节点
+    public Node prev;//指向上一个节点
 
+    public Node(Object name) {
+        this.item = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Node name = " + item;
+    }
+}
+```
+
+#### LinkedList的增删改查
+
+```java
+public class LinkedListCRUD {
+    public static void main(String[] args) {
+        LinkedList ll = new LinkedList();
+        ll.add(1);
+        ll.add(2);
+        ll.add(3);
+        System.out.println("ll=" + ll);
+
+        //删除节点
+        ll.remove();//默认删除第一个节点
+        System.out.println("ll=" + ll);
+        /*
+        1、LinkedList ll = new LinkedList();
+        public LinkedList() {}
+        2、这时ll的属性first=null last = null
+        3、执行
+            public boolean add(E e) {
+            linkLast(e);
+            return true;
+            }
+        4、将新的节点，加入到双向链表的最后
+            void linkLast(E e) {
+            final Node<E> l = last;
+            final Node<E> newNode = new Node<>(l, e, null);
+            last = newNode;
+            if (l == null)
+                first = newNode;
+            else
+                l.next = newNode;
+            size++;
+            modCount++;
+        }
+        */
+        /*
+        * ll.remove();
+        * 1、执行removeFirst()
+        *   public E remove() {
+            return removeFirst();
+            }
+            * 2、执行
+            public E removeFirst() {
+            final Node<E> f = first;
+            if (f == null)
+                throw new NoSuchElementException();
+            return unlinkFirst(f);
+            }
+        * 3、执行
+        *private E unlinkFirst(Node<E> f) {
+        // assert f == first && f != null;
+        final E element = f.item;
+        final Node<E> next = f.next;
+        f.item = null;
+        f.next = null; // help GC
+        first = next;
+        if (next == null)
+            last = null;
+        else
+            next.prev = null;
+        size--;
+        modCount++;
+        return element;
+    }
+             */
+    }
+}
+```
+
+#### ArrayList和LinkedList的比较
+
+|            | 底层结构 | 增删效率           | 改查的效率 |
+| ---------- | -------- | ------------------ | ---------- |
+| ArrayList  | 可变数组 | 较低<br />数组扩容 | 较高       |
+| LinkedList | 双向链表 | 较高，通过链表追加 | 较低       |
+
+#### 如何选择ArrayList和LinkedList
+
+1. 如果改查的操作多，选择ArrayList。
+2. 如果增删的操作多，选择LinkedList。
+3. 一般来说，在程序中，大部分情况下会选择ArrayList。
+
+## Set接口和常用方法
+
+### Set接口基本介绍
+
+1. 无序（添加和取出的顺序不一致），没有索引。
+2. 不允许重复元素，所以最多包含一个null。
+3. JDK API 中Set接口的实现类有
+
+![image-20230301113124296](JavaGrammar.assets/image-20230301113124296.png)
 
 
 
