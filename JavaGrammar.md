@@ -12743,6 +12743,116 @@ public class LinkedListCRUD {
 
 ![image-20230301113124296](JavaGrammar.assets/image-20230301113124296.png)
 
+#### Set接口的常用方法
+
+和List接口一样，Set接口也是Collection的子接口，因此，常用方法和Collection接口一样。
+
+#### Set接口的遍历方法
+
+同Collection的遍历方式一样，因为Set接口是Collection接口的子接口。
+
+1. 可以使用迭代器
+2. 增强for
+3. 不能使用索引的方式获取
+
+```java
+public class SetMethod {
+    public static void main(String[] args) {
+        /*
+         * 1、以Set接口的实现类 HashSet来讲解Set接口的方法
+         *2、set接口的实现类的对象，不能存放重复的元素，可以添加一个null
+         *3、set对象存放数据是无序（即添加的顺序和取出的顺序不一致）
+         * 4、注意：取出的顺序是固定的，虽然不是添加的顺序
+         * */
+        Set set = new HashSet();
+        set.add("join");
+        set.add("lucy");
+        set.add("join");
+        set.add("jack");
+        set.add(null);
+        set.add(null);
+        /*for (int i = 0; i < 10; i++) {
+            System.out.println("set=" + set);
+        }*/
+        System.out.println("set=" + set);
+        //遍历
+        //1、迭代器
+        System.out.println("===迭代器===");
+        Iterator iterator = set.iterator();
+        while (iterator.hasNext()) {
+            Object obj = iterator.next();
+            System.out.println("obj=" + obj);
+        }
+        //增强for
+        System.out.println("===增强for===");
+        for (Object obj : set) {
+            System.out.println("obj=" + obj);
+        }
+        //set接口对象不能通过索引遍历
+    }
+}
+```
+
+### HashSet的全面说明
+
+1. HashSet实现了Set接口
+
+2. HashSet实际上是HashMap，看源码
+
+   ```java
+   public HashSet() {
+           map = new HashMap<>();
+       }
+   ```
+
+3. 可以存放null值，但是只能有一个null
+
+4. HashSet不保证元素是有序的，取决与hash后，再确定索引的结果。(不保证存放元素的顺序和取出顺序一致)
+
+5. 不能有重复元素/对象。
+
+### Set接口实现类-HashSet
+
+#### HashSet底层机制说明
+
+分析HashSet底层是HashMap，HashMap底层是（数组+链表+红黑树）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
