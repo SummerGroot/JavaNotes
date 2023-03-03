@@ -4968,9 +4968,9 @@ class PersonVar {
 
 ### 基本介绍
 
-构造方法又叫构造器（constructor)，是类的一种特殊的方法，它的主要作用是完成对**新对象的初始化**。
+构造方法又叫构造器（`constructor`)，是类的一种特殊的方法，它的主要作用是完成对**新对象的初始化**。
 
-1. 方法名和类目相同。
+1. 方法名和类名相同。
 2. 没有返回值。
 3. 在创建对象时，系统会自动的调用该类的构造器**完成对象的初始化**。
 
@@ -5712,7 +5712,7 @@ public class Pkg {
 ### 使用的注意事项
 
 1. 修饰符可以用来修饰类中的属性，成员方法以及类。
-2. 只有默认和public次啊能修饰类，并且遵循以上访问权限的特点。
+2. 只有默认和`public`才能修饰类，并且遵循以上访问权限的特点。
 3. 学完继承再说.....
 4. 成员方法的访问规则和属性完全一样。
 
@@ -6272,7 +6272,7 @@ public class ExtendsExercise01 {
 
 class A {
     A() {
-        System.out.println("a");
+        System.out.println("a");//1
     }
 
     A(String name) {
@@ -6283,12 +6283,12 @@ class A {
 class B extends A {
     B() {
         this("abc");
-        System.out.println("b");
+        System.out.println("b");//3
     }
 
     B(String name) {
         //super();默认调用
-        System.out.println("b name");
+        System.out.println("b name");//2
     }
 }
 ```
@@ -6451,7 +6451,6 @@ public class super01 {
         b.test();
     }
 }
-
 class Base {//父类是Object
     //属性
     public int n1 = 888;
@@ -6465,7 +6464,6 @@ class Base {//父类是Object
         System.out.println("Base类的eat（）方法");
     }
 }
-
 class A extends Base {//父类是Base
     //4个属性
     public int n1 = 100;
@@ -6474,45 +6472,30 @@ class A extends Base {//父类是Base
     private int n4 = 400;
 	//构造器
     public A() {
-
     }
-
     public A(String name) {
-
     }
-
     public A(String name, int age) {
-
     }
 	//方法
     public void test100() {
     }
-
     protected void test200() {
     }
-
     void test300() {
     }
-
     private void test400() {
     }
-
     public void cal() {
         System.out.println("A类的cal（）方法...");
     }
-
-
 }
-
 class B extends A {
-
     public int n1 = 999;
-
     //访问父类的属性，但不能访问父类的private属性
     public void hai() {
         System.out.println(super.n1 + " " + super.n2 + " " + super.n3);
     }
-
     //访问父类的方法，不能访问父类private方法
     public void ok() {
         super.test100();
@@ -6520,14 +6503,12 @@ class B extends A {
         super.test300();
         //super.test400();
     }
-
     //访问父类的构造器
     public B() {
         //super();
         //super("summer");
         super("summer", 24);
     }
-
     public void sum() {
         System.out.println("B类的sum（）方法");
         //希望调用父类A的cal（）方法
@@ -6548,7 +6529,6 @@ class B extends A {
         System.out.println(this.n1);
         System.out.println(super.n1);
     }
-
     public void cal() {
         System.out.println("B类的cal方法");
     }
@@ -6557,8 +6537,6 @@ class B extends A {
         super.cal();
     }
 }
-
-
 ```
 
 1. 访问父类的属性，但不能访问父类的`private`属性
@@ -6610,24 +6588,18 @@ public class PolyMethod {
         b.say();//B say()方法被调用
     }
 }
-
 class B {//父类
-
     public void say() {
         System.out.println("B say()方法被调用");
     }
 }
-
 class A extends B {//子类
-
     public int sum(int n1, int n2) {//和下面的sum重载
         return n1 + n2;
     }
-
     public int sum(int n1, int n2, int n3) {
         return n1 + n2 + n3;
     }
-
     public void say() {
         System.out.println("A say()方法被调用");
     }
@@ -6803,7 +6775,7 @@ public class Cat extends Animal {
 
 1. 语法：`子类类型 引用名 = （子类类型）父类引用;`
 2. 只能强转父类的引用，不能强转父类的对象。
-3. 要求父类的引用必须指向的是当前目标类型的对象。
+3. 要求父类的引用必须**指向的是当前目标类型的对象**。
 4. 当向下转型后，就可以调用子类类型中所有的成员。
 
 ```java
@@ -7123,7 +7095,7 @@ public class Teacher extends Person {
     }
 
     @Override
-    //从写父类say方法
+    //重写父类say方法
     public String say() {
         return super.say() + " salary=" + salary;
     }
@@ -7153,11 +7125,11 @@ public class Polyparameter {
     }
 
     //实现获取任何员工对象的年工资，并在main方法中调用该方法
-    public void showEmpAnnual(Employee e) {
+    public void showEmpAnnual(Employee e) {//Employee e = new Worker
         System.out.println(e.getAnnual());
     }
 
-    public void testWork(Employee e) {
+    public void testWork(Employee e) {//Employee e = new Worker
         if (e instanceof Worker) {
             ((Worker) e).work(); //向下转型操作
         } else if (e instanceof Manager) {
@@ -7313,7 +7285,7 @@ class Sub extends Base {//子类
 
 2. 子类方法的返回类型和父类方法返回类型一致，或者是父类返回类型的子类。
 
-   比如：父类返回类型是Object，子类方法返回类型是String
+   比如：父类返回类型是`Object`，子类方法返回类型是`String`
 
    `public Object getInfo(){}`
 
@@ -7336,7 +7308,8 @@ class Sub extends Base {//子类
 public class OverrideExercise {
     public static void main(String[] args) {
         /*
-        * 分别创建Person和Student对象，调用say方法输出自我介绍*/
+        *分别创建Person和Student对象，调用say方法输出自我介绍
+        */
         Person summer = new Person("summer",24);
         System.out.println(summer.say());//名字=summer 年龄24
         Student student = new Student("summer",25,123,98);
@@ -7408,7 +7381,9 @@ public class Student extends Person {
 
 ## Object类详解
 
-### `==`和equals对比
+### equals方法
+
+#### `==`和equals对比
 
 `==`是比较运算符
 
@@ -7422,19 +7397,19 @@ public class Student extends Person {
 
 `equals`方法
 
-1. `equals`：是`Object`类中的方法，只能判断引用类型。
+4. `equals`：是`Object`类中的方法，**只能判断引用类型**。
 
-   1. 如何看jdk源码?
+1. 如何看jdk源码?
 
-      ![image-20230213142343678](JavaGrammar.assets/image-20230213142343678.png)
+   ![image-20230213142343678](JavaGrammar.assets/image-20230213142343678.png)
 
-      ![image-20230213142417448](JavaGrammar.assets/image-20230213142417448.png)
+   ![image-20230213142417448](JavaGrammar.assets/image-20230213142417448.png)
 
-      需要看某个方法源码，将光标放在该方法，输入`ctrl+b`。
+   需要看某个方法源码，将光标放在该方法，输入`ctrl+b`。
 
-      或者在方法上右键->`go to`->`Delaration or Usages`
+   或者在方法上右键->`go to`->`Delaration or Usages`
 
-2. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：`Integer`,`String`
+5. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：`Integer`,`String`
 
 ```java
 public class Equals01 {
@@ -7626,7 +7601,7 @@ class Person02 {
    }
    ```
 
-6. hashCo的如果需要，会重写。
+6. hashCode的如果需要，会重写。
 
 #### toString方法
 
@@ -12817,19 +12792,555 @@ public class SetMethod {
 
 分析HashSet底层是HashMap，HashMap底层是（数组+链表+红黑树）
 
+```java
+public class HashSetStrcture {
+    public static void main(String[] args) {
+        //模拟一个HashSet（HashMap）的底层结构
+        /*
+         * 1、创建数组，数组的类型是Node[]
+         * 2、直接把Node[]数组称为表*/
+        Node[] table = new Node[16];
+        //System.out.println("table" + table);
+        //3、创建结点
+        Node john = new Node("john", null);
+        table[2] = john;
+        Node jack = new Node("jack", null);
+        john.next = jack;//将jack节点挂载到john
+        Node rose = new Node("rose", null);
+        jack.next = rose;//将rose节点挂在到jack
+        Node lucy = new Node("lucy", null);
+        table[3] = lucy;//把lucy放到table表的索引为3的位置
+        System.out.println("table" + table);
+    }
+}
+
+class Node {//节点，存储数据，可以指向下一个结点，从而形成链表
+    Object item;//存放数据
+    Node next;//指向下一个结点
+
+    public Node(Object item, Node next) {
+        this.item = item;
+        this.next = next;
+    }
+}
+```
+
+#### 分析HashSet的添加元素底层是如何实现（hash()+equals())
+
+|                                                              |                                                              |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 先获取元素的哈希值（HashCode方法）。<br />对哈希值进行运算，得出一个索引值即为要存放在哈希表中的位置号。<br />如果该位置上没有其他元素，则直接存放。<br />如果该位置上已经有其他元素，则需要进行equals判断，如果相等，则不再添加，如果不相等，则以链表的方式添加。 | `HashSet`底层是`HashMap`。 <br />添加一个元素时，先得到`hash`值：会转成->索引值。 <br />找到存储数据表`table`，看这个索引位置是否已经存放的有元素。 <br />如果没有，直接加入 <br />如果有，调用`equals`比较，如果相同，就放弃添加，如果不相同，则添加到最后。 <br />在`java8`中，如果一条链表的元素个数到达`TREEIFY_THRESHOLD`（默认是8），并且`table`的大小>=`MIN_TREEIFY_CAPACITY`(默认64)，就会进行树化（红黑树）。 |
+
+```java
+public class HashSetSource {
+    public static void main(String[] args) {
+
+        HashSet sh = new HashSet();
+        sh.add("java");
+        sh.add("fxy");
+        sh.add("java");
+        System.out.println("sh=" + sh);
+        /*
+        * 源码解读
+        * 1、执行无参构造器
+        public HashSet() {
+        map = new HashMap<>();
+        }
+        *2、执行add()方法
+        public boolean add(E e) {//e="java
+        return map.put(e, PRESENT)==null;//PRESENT=private static final Object PRESENT = new Object();
+        }
+        3、执行put()方法  该方法会执行Hash（key）得到key对应的hash值 算法=return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+        public V put(K key, V value) {//key="java" value=PRESENT 共享
+        return putVal(hash(key), key, value, false, true);
+        }
+        4、执行putVal()方法
+        final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                   boolean evict) {
+        Node<K,V>[] tab; Node<K,V> p; int n, i;//定义了辅助变量
+        //transient Node<K,V>[] table;  table就是HashMap的一个数组，类型是Node[]
+        * if语句表示如果当前table 是null，或者大小=0
+        * 就是第一次扩容，到16个空间
+        if ((tab = table) == null || (n = tab.length) == 0)
+            n = (tab = resize()).length;
+            * 根据key，得到hash去计算key应该存放到table表的哪个索引位置
+            * 并把这个位置的对象 赋给p
+            * 判断p是否为null
+            * 如果p为null，表示还没有存放元素，就创建一个Node(Node=“java",value=PRESENT)
+            * 就放在该位置tab[i] = newNode(hash, key, value, null);
+        if ((p = tab[i = (n - 1) & hash]) == null)
+            tab[i] = newNode(hash, key, value, null);
+        else {
+            Node<K,V> e; K k;
+            //如果当前索引位置对应的链表的第一个元素和准备添加的key的hash值一样
+            //并且满足
+            准备加入的key和p指向的Node结点的key 是同一个对象。
+            指向的Node结点的key 的equals()和准备加入的key比较后相同
+            就不能加入
+            if (p.hash == hash &&
+                ((k = p.key) == key || (key != null && key.equals(k))))
+                e = p;
+            再判断p 是不是一颗红黑树，如果是红黑树，就调用 putTreeVal，来进行添加
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+            else {
+            如果当前table对应索引位置，已经是一个链表，就使用for循环比较
+            * 依次和该链表的每个元素比较后，都不相同，则加入到该链表的最后
+            *   在把元素添加到链表后，立即判断该链表是否已经达到8个结点
+            *   就调用treeifyBin()对当前链表进行树化（转成红黑树）
+            *   在转成红黑树时，要进行判断
+            * if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
+                    resize();
+            * 如果上面条件成立，对table扩容
+            * 只有上面条件不成立时，才进行转成红黑树
+            * 比较过程中，有相同的情况，就直接break
+                for (int binCount = 0; ; ++binCount) {
+                    if ((e = p.next) == null) {
+                        p.next = newNode(hash, key, value, null);
+                        if (binCount >= TREEIFY_THRESHOLD（9） - 1) // -1 for 1st
+                            treeifyBin(tab, hash);
+                        break;
+                    }
+                    if (e.hash == hash &&
+                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        break;
+                    p = e;
+                }
+            }
+            if (e != null) { // existing mapping for key
+                V oldValue = e.value;
+                if (!onlyIfAbsent || oldValue == null)
+                    e.value = value;
+                afterNodeAccess(e);
+                return oldValue;
+            }
+        }
+        ++modCount;
+        if (++size > threshold)
+            resize();
+        afterNodeInsertion(evict);//让其子类去实现不同的功能
+        return null;
+        }
+        * */
+    }
+}
+```
+
+1. `HashSet`底层时`HashMap`，第一次添加时，`table`数组扩容到16，临界值（`threshold`）是16*加载因子(`loadFactor`)是0.75 =12。
+2. 如果`table`数组使用到了临界值12，就会扩容到`16*2=32`,新的临界值就是`32*0.75=24`，依次类推。
+3. 在`java8`中，如果一条链表的元素个数到达`TREEIFY_THRESHOLD`（默认是8），并且`table`的大小>=`MIN_TREEIFY_CAPACITY`（默认64），就会进行树化（红黑树）。否则仍然采用数组扩容机制。
+
+```java
+public class HashSetIncrement {
+    public static void main(String[] args) {
+        HashSet hs = new HashSet();
+        /*for (int i = 0; i <= 100; i++) {
+            hs.add(i);
+        }*/
+        for (int i = 0; i <= 12; i++) {
+            hs.add(new A(i));
+        }
+        //当向hs增加一个元素->Node->加入table，就算是增加了一个
+        System.out.println("hs=" + hs);
+    }
+
+}
+
+class A {
+    private int n;
+
+    public A(int n) {
+        this.n = n;
+    }
+
+    @Override
+    public int hashCode() {
+        return 100;
+    }
+}
+```
+
+```java
+public class HashSetExercise {
+    public static void main(String[] args) {
+        //创建3个Employee放入HashSet中
+        HashSet hs = new HashSet();
+        hs.add(new Employee("jack", 24));
+        hs.add(new Employee("summer", 25));
+        hs.add(new Employee("jack", 24));
+        //当name和age的值相同时，认为是相同员工，不能添加到HashSet集合中
+        System.out.println("hs=" + hs);
+    }
+}
+
+class Employee {
+    //两个私有属性
+    private String name;
+    private int age;
+
+    public Employee(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
 
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public int getAge() {
+        return age;
+    }
 
+    public void setAge(int age) {
+        this.age = age;
+    }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+    //如果name和age的值相同，则放回相同的hash值
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return age == employee.age && Objects.equals(name, employee.name);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
+}
+```
 
+### Set接口实现类-LinkedHashSet
 
+#### LinkedHashSet的全面说明
 
+1. LinkedHashSet是HashSet的子类
+2. LinkedHashSet底层是一个LinkedHashMap，底层维护了一个数组+双向链表
+3. LinkedHashSet根据元素的hashCode值来决定元素的存储位置，同时使用链表维护元素的次序（图），这使得元素看起来是插入顺序保存的。
+4. LinkedHashSet不允许添加重复元素。
 
+![image-20230303140346536](JavaGrammar.assets/image-20230303140346536.png)
 
+```java
+public class LinkedHashSetSource {
+    public static void main(String[] args) {
+        /*
+         * 说明：
+         * 1、在LinkedHashSet中维护了一个hash表和双向链表（LinkedHashSet有head和tail）
+         * 2、每一个结点有pre和next属性，这样可以形成双向链表
+         * 3、在添加元素时，先求hash值，在求索引。确定该元素在hashtable的位置，然后将添加的元素
+         * 加入到双向链表（如果已经存在，不添加[原则和hashset一样]
+         * tail.next= newElement;
+         * newElement.pre= tail;
+         * tail=newElement;
+         * 4、这样的话，我们遍历LinkedHashSet也能确保插入顺序和遍历顺序一致
+         * */
+        Set set = new LinkedHashSet();
+        set.add(new String("AA"));
+        set.add(456);
+        set.add(456);
+        set.add(new Customer("夏", 1001));
+        set.add(123);
+        set.add("FXY");
+        System.out.println("set" + set);
+        /*
+        * 1、添加顺序和取出顺序一致
+        * 2、LinkedHashSet底层维护的是一个LinkedHashMap（是HashMap的子类）
+        * 3、底层结构（数组+双向链表）
+        * 4、第一次添加时，直接将数组table扩容到16，存放的结点类型是LinkedHashMap$Entry
+        * 5、数组是HashMap$Node[]存放的元素/数组是LinkedHashMap$Entry
+        *
+             static class Entry<K,V> extends HashMap.Node<K,V> {
+            Entry<K,V> before, after;
+            Entry(int hash, K key, V value, Node<K,V> next) {
+                super(hash, key, value, next);
+            }
+            }
+        * */
 
+    }
+}
+
+class Customer {
+    private String name;
+    private int id;
+
+    public Customer(String name, int id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+}
+
+```
+
+```java
+public class LinkedHashSetExercise {
+    public static void main(String[] args) {
+        LinkedHashSet lhs = new LinkedHashSet();
+        lhs.add(new Car("BMW", 20000));
+        lhs.add(new Car("奥迪", 300000));
+        lhs.add(new Car("奔驰", 400000));
+        lhs.add(new Car("保时捷", 500000));
+        lhs.add(new Car("BMW", 20000));
+        System.out.println("lhs = " + lhs);
+    }
+}
+
+class Car {
+    //两个属性
+    private String name;
+    private double price;
+
+    public Car(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "\nCar{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                '}';
+    }
+    //重写equals方法，和hashCode
+    //当name和price相同时，就返回同的hashcode值，equals返回T
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return Double.compare(car.price, price) == 0 && Objects.equals(name, car.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, price);
+    }
+}
+```
+
+## Map接口和常用方法
+
+### Map接口实现类的特点
+
+1. `Map`与`Collection`并列存在。用于保存具有映射关系的数据：`Key-Value`（双列元素)
+2. `Map`中的`Key`和`value`可以是任何引用类型的数据，会封装到`HashMap$Node`对象中。
+3. `Map`中的`key`不允许重复，原因和`HashSet`一样。
+4. `Map`中的`value`可以重复。
+5. Map的key可以为`null`，`value`也可以为`null`，注意`key`为`null`，只能有一个，`value`为`null`，可以多个。
+6. 常用`String`类作为`Map`的`key`
+7. `key`和`value`之间存在单向一对一关系，即通过指定key总能找到对应的`value`。
+8. Map存放数据的Key-value示意图，一对k-v是放在一个HashMap$Node中的，因为Node实现了Entry接口。
+
+```java
+public class MapSource {
+    public static void main(String[] args) {
+        Map map = new HashMap();
+        map.put("no1", "夏源");//k-v
+        map.put("no2", "玩耍");
+        map.put(new Car(),new Person());
+        /*
+        * 1、k-v最后是 HashMap$Node node = newNpde(hash,key,value,null)
+        * 2、k-v 为了方便程序员的遍历，还会创建EntrySet集合，该集合存放的元素的类型，
+        * 而一个Entry对象就有K,V EntrySet<Entry<K,v>> 即 transient Set<Map.Entry<K,V>> entrySet
+        * 3、entrySet 中 定义的类型是Map.Entry,但实际上存放的还是HashMao$Node
+        * 这时因为 static class Node<K,V> implements Map.Entry<k,v>
+        4、放把HashMap$Node对象存放到entrSet就方便我们的遍历，因为Map.Entry提供了重要方法。
+        *  K getKey(); V getValue();*/
+        Set set = map.entrySet();
+        System.out.println(set.getClass());
+        for(Object obj : set){
+            //为了从HashMap$Node 取出K-V
+            //1、先做一个向下转型
+            Map.Entry entry = (Map.Entry)obj;
+            System.out.println(entry.getKey()+"-"+entry.getValue());
+        }
+    }
+}
+class Car{}
+class Person{}
+```
+
+### Map接口和常用方法
+
+#### Map接口常用方法
+
+```java
+public class MapMethod {
+    public static void main(String[] args) {
+        Map map = new HashMap();
+        //1.put：添加
+        map.put("邓超", new Book("", 100));
+        map.put("邓超", "玛丽");
+        map.put("王宝强", "pgone");
+        map.put("rapper", "pgone");
+        map.put(null, "刘亦菲");
+        map.put("me", "迪丽热巴");
+        System.out.println("map=" + map);//map={邓超=玛丽, null=刘亦菲, 王宝强=pgone, me=迪丽热巴, rapper=pgone}
+        //2.remove：根据键删除映射关系
+        map.remove("me");
+        //3. get：根据键获取值
+        System.out.println(map.get("邓超"));//玛丽
+        System.out.println(map);//{邓超=玛丽, null=刘亦菲, 王宝强=pgone, rapper=pgone}
+        //4. size：获取元素个数
+        System.out.println(map.size());//4
+        //5. isEmpty：判断个数是否为0
+        System.out.println(map.isEmpty());//false
+        //6.clear：清除
+        //7. containsKey：查找键是否存在
+        System.out.println(map.containsKey(null));//true
+        System.out.println(map.containsValue("刘亦菲"));//true
+    }
+}
+
+class Book {
+    private String name;
+    private double price;
+
+    public Book(String name, double price) {
+        this.name = name;
+        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+}
+```
+
+#### Map接口遍历方式
+
+1. containsKey：查找键是否存在
+2. keySet：获取所有的键
+3. entrySet：获取所有关系
+4. values：获取有的值
+
+```java
+public class MapFor {
+    public static void main(String[] args) {
+        Map map = new HashMap();
+        map.put("邓超", new Book("", 100));
+        map.put("邓超", "玛丽");
+        map.put("王宝强", "pgone");
+        map.put("rapper", "pgone");
+        map.put(null, "刘亦菲");
+        map.put("me", "迪丽热巴");
+        //取出所有的key，通过key，取出对应的value
+        System.out.println("第一种方式");
+        Set keyset = map.keySet();
+        for (Object key : keyset) {
+            System.out.println(key + "-" + map.get(key));
+        }
+        //迭代器
+        System.out.println("第二种方式");
+        Iterator iterator = keyset.iterator();
+        while (iterator.hasNext()) {
+            Object key = iterator.next();
+            System.out.println(key + "-" + map.get(key));
+        }
+        //把所有的values取出
+        System.out.println("===取出所有的value===");
+        Collection values = map.values();
+        //这里可以使用所有Collection的遍历方法
+        for (Object value : values) {
+            System.out.println(value);
+        }
+        //迭代器
+        Iterator iterator1 = values.iterator();
+        while (iterator1.hasNext()) {
+            Object value = iterator1.next();
+            System.out.println(value);
+        }
+        //通过EntrySet来获取k-v
+        System.out.println("===使用entryset===");
+        Set entrySet = map.entrySet(); //EntrySert<Map.Entry<K,V>>
+        for (Object entry : entrySet) {
+            //将entry转成Map.Entry
+            Map.Entry m = (Map.Entry) entry;
+            System.out.println(m.getKey() + "-" + m.getValue());
+        }
+        //迭代器
+        Iterator iterator2 = entrySet.iterator();
+        while (iterator2.hasNext()) {
+            Object entry = iterator2.next();
+            //System.out.println(next.getClass());
+            //向下转型
+            Map.Entry m = (Map.Entry) entry;
+            System.out.println(m.getKey() + "-" + m.getValue());
+        }
+    }
+}
+```
+
+#### HashMap小结
+
+1. Map接口的常用实现类：HashMap、Hashtable和Properties。
+2. HashMap是Map接口使用频率最高的实现类。
+3. HashMap是以key-value对的方式来存储数据（HashMap$Node类型）。
+4. key不能重复，但是值可以重复，允许使用null键和null值。
+5. 如果添加相同的key，则会覆盖原来的key-value，等同于修改。（key不会替换，value会替换）。
+6. 与HashSet一样，不保证映射的顺序，因为底层是以hash表的方式来存储的。
+7. HashMap没有实现同步，因此是线程不安全的。
 
 
 
