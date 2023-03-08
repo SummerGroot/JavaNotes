@@ -13804,13 +13804,258 @@ public class Collections02 {
 
 
 
-
-
-
-
 # 第15章 泛型
 
+## 泛型的理解和好处
 
+```java
+public class Generic01 {
+    public static void main(String[] args) {
+        List list = new ArrayList();
+        //传统的方法
+        list.add(new Dog("火锅", 3));
+        list.add(new Dog("旺财", 2));
+        list.add(new Dog("小黄", 5));
+
+        //假如，添加了一只猫
+        list.add(new Cat("招财", 1));//ClassCastException 类型转换异常
+
+        //遍历
+        for (Object obj : list) {
+            //向下转型Object -->Dog
+            Dog dog = (Dog) obj;
+            System.out.println("名字：" + dog.getName() + "\t年纪： " + dog.getAge());
+        }
+    }
+}
+
+/*
+ * 编写程序，在ArrayList中，添加3个Dog对象
+ * Dog对象含有name和age，并输出name，和age（要求使用getXXX（））*/
+class Dog {
+    private String name;
+    private int age;
+
+    public Dog(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+
+class Cat {//Cat类
+    private String name;
+    private int age;
+
+    public Cat(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+### 使用传统方法的问题分析
+
+1. 不能对加入到集合`ArrayList`中的数据类型进行约束（不安全）。
+2. 遍历的时候，需要进行类型转换，如果集合中的数据类型较大，对效率有影响。
+
+### 泛型快速体验
+
+```java
+public class Generic02 {
+    public static void main(String[] args) {
+        //泛型解决
+        /*
+         *1、当我们 ArrayList<Dog> 表示存放ArrayList集合中的元素是Dog类型
+         * 2、如果编译器发现添加的类型，不满足要求，就会报错
+         * 3、在遍历的时候，可以直接取出Dog类型而不是Object
+         * 4、public class ArrayList<E>{} E称为泛型，那么Dog->E */
+        ArrayList<Dog> list = new ArrayList<Dog>();
+        list.add(new Dog("火锅", 3));
+        list.add(new Dog("旺财", 2));
+        list.add(new Dog("小黄", 5));
+
+        //假如，添加了一只猫
+        //list.add(new Cat("招财", 1));//ClassCastException 类型转换异常
+        //遍历
+        System.out.println("===使用泛型===");
+        for (Dog dog : list) {
+            System.out.println("名字：" + dog.getName() + "\t年纪： " + dog.getAge());
+        }
+    }
+}
+
+//泛型
+class Dog {
+    private String name;
+    private int age;
+
+    public Dog(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+
+class Cat {//Cat类
+    private String name;
+    private int age;
+
+    public Cat(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+### 泛型的好处
+
+1. 编译时，检测添加元素的类型，提高了安全性。
+2. 减少了类型转换的次数，提高效率。
+   1. 不适用泛型：`Dog加入->Object取出->Dog`//放入到`ArrayList`会先转成`Object`，在取出时，还需要转换成`Dog`。
+   2. 使用泛型：`Dog->Dog->Dog`//放入时，和取出时，不需要类型转换，提高效率。
+3. 不再提示编译警告
+
+## 泛型介绍
+
+`int a = 10;`
+
+泛型(广泛的类型)=>`Integer,String,Dog`
+
+1. 泛型又称参数化类型，时`jdk5.0`出现的新特性，解决数据类型的安全性问题。
+2. 在类声明或实例化时只要指定号需要的具体的类型即可。
+3. `Java`泛型可以保证如果程序在编译时没有发出警告，运行时就不会产生`ClasscastException`异常。同时，代码更改简洁、健壮。
+4. 泛型的作用是：可以在类声明时通过一个标识表示类中某个属性的类型，或者是某个方法返回值的类型，或者是参数类型。
+
+```java
+public class Generic03 {
+    public static void main(String[] args) {
+        //注意：E该数据类型在定义Person对象的时候指定,在编译期间，就确定E是什么类型
+        Person<String> person = new Person<String>("夏天");
+        person.show();//class java.lang.String
+        /*
+        * 1、上面的Person类
+         class Person {
+            String s;
+            public Person(String s) {//E也可以是参数类型
+                this.s = s;
+            }
+            public String f(){//返回类型使用E
+                return s;
+            }
+            }
+* */
+        Person<Integer> person01 = new Person<Integer>(100);
+        person01.show();//class java.lang.Integer
+        /*class Person<Integer> {
+            Integer s;
+
+            public Person(Integer s) {//E也可以是参数类型
+                this.s = s;
+            }
+            public Integer f(){//返回类型使用E
+                return s;
+            }
+        }*/
+    }
+}
+
+//泛型的作用是：可以在类声明时通过一个标识表示类中某个属性的类型，
+//或者是某个方法返回值的类型，或者是参数类型.
+class Person<E> {
+    E s;//E表示s的数据类型，该数据类型在定义Person对象的时候指定,在编译期间，就确定E是什么类型
+
+    public Person(E s) {//E也可以是参数类型
+        this.s = s;
+    }
+    public E f(){//返回类型使用E
+        return s;
+    }
+    public void show(){
+        System.out.println(s.getClass());//显示s的允许类型
+    }
+}
+```
+
+## 泛型的语法
+
+### 泛型的声明
+
+`interface 接口<T>{}和class 类<K,V>{}`
+
+比如：`List、ArrayList`
+
+1. 其中，`T,K,V`不代表值，而是表示类型。
+2. 任何字母都可以。常用T表示是`Type`的缩写。
+
+### 泛型实例化
+
+要在类名后面指定类型参数的值（类型）。如：
+
+1. `List<String> strList = new ArrayList<String>();`
+2. `Iterator<Customer> iterator = customers.iterator();`
 
 # 第17章 多线程基础
 
