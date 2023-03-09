@@ -6759,7 +6759,7 @@ public class Cat extends Animal {
 
 ### 多态的注意事项和细节
 
-多态的**前提是**：两个对象（类）存在继承关系。
+多态的**前提是**：两个对象（类）**存在继承关系**。
 
 #### 多态的向上转型
 
@@ -6767,15 +6767,15 @@ public class Cat extends Animal {
 2. 语法：`父类类型 引用名 =  new 子类类型();`
 3. 特点：
    1. 编译类型看左边，运行类型看右边。
-   2. 可以调用父类中的所有成员（遵守访问权限）不能调用子类中特有成员。
-   3. 最终运行效果看子类（运行类型）的具体实现，调用方法时，从子类开始查找方法！！！
+   2. 可以调用父类中的所有成员（遵守访问权限）**不能调用子类中特有成员**。
+   3. 最终运行效果看子类（运行类型）的具体实现，调用方法时，**从子类开始查找方法**！！！
 
 
 #### 多态的向下转型
 
 1. 语法：`子类类型 引用名 = （子类类型）父类引用;`
-2. 只能强转父类的引用，不能强转父类的对象。
-3. 要求父类的引用必须**指向的是当前目标类型的对象**。
+2. 只能**强转父类的引用**，不能强转父类的对象。
+3. 要求**父类的引用**必须**指向的是当前目标类型的对象**。
 4. 当向下转型后，就可以调用子类类型中所有的成员。
 
 ```java
@@ -6865,7 +6865,7 @@ class Sub extends Base {//子类
 }
 ```
 
-`instanceOf`比较操作符，用于判断**对象的运行类型**是否为XX类型或XX类型的子类型。（后面的类型`>=`对象的运行类型）
+`instanceOf`比较操作符，用于判断**对象的运行类型**是否为XX类型或XX类型的子类型。（后面的类型**是否包含**对象的运行类型）
 
 ```java
 public class PolyDetail03 {
@@ -6926,11 +6926,11 @@ public class DynamicBinding {
     public static void main(String[] args) {
         //a的编译类型A，运行类型B
         A a = new B();//向上转型
-        System.out.println(a.sum());
+        System.out.println(a.sum());//30
         //40 从B类开始查找sum方法
         //注销子类的sum
         //30
-        System.out.println(a.sum1());
+        System.out.println(a.sum1());//20
         //30 从B类开始查找sum方法
         //注销子类sum1
         //20
@@ -6993,7 +6993,7 @@ public class PolyArray {
          * 2个Student对象和2个Teacher对象，统一放在数组中，并调用say方法。
          * */
         Person[] persons = new Person[5];//创建Person类型的数组
-        persons[0] = new Person("summer", 20);//创建对象
+        persons[0] = new Person("summer", 20);
         persons[1] = new Student("lisi", 18, 100);
         persons[2] = new Student("james", 20, 98);
         persons[3] = new Teacher("吉泽明步", 30, 8000);
@@ -7008,14 +7008,13 @@ public class PolyArray {
             if (persons[i] instanceof Student) {
                 //判断persons[i]是不是Student
                 Student student = (Student) persons[i];//向下转型
-                student.say();
+                student.study();
                 //((Student) persons[i]).study();
             } else if (persons[i] instanceof Teacher) {
-                //判断persons[i]是不是Teacher
                 Teacher teacher = (Teacher) persons[i];//向下转型
                 teacher.teach();
             } else if (persons[i] instanceof Person) {
-
+                //System.out.println(persons[i].say());
             } else {
                 System.out.println("你的类型有误，请自己检查");
             }
@@ -7114,11 +7113,11 @@ public class Teacher extends Person {
 ```java
 public class Polyparameter {
     public static void main(String[] args) {
-        Worker tom = new Worker("tom", 6125.2);//创建对象
+        Worker tom = new Worker("tom", 6125.2);
         Manager jack = new Manager("jack", 10000, 20000);
         Polyparameter polyparameter = new Polyparameter();
-        polyparameter.showEmpAnnual(tom);
-        polyparameter.showEmpAnnual(jack);
+        polyparameter.showEmpAnnual(tom);//73502.4
+        polyparameter.showEmpAnnual(jack);//140000.0
 
         polyparameter.testWork(tom);//普通员工：tom正在工作
         polyparameter.testWork(jack);//经理：jack正在管理
@@ -7139,6 +7138,7 @@ public class Polyparameter {
         }
     }
 }
+
 public class Employee {
     private String name;
     private double salary;
@@ -7399,7 +7399,13 @@ public class Student extends Person {
 
 4. `equals`：是`Object`类中的方法，**只能判断引用类型**。
 
-1. 如何看jdk源码?
+   ```java
+   public boolean equals(Object obj) {
+           return (this == obj);//判断是否为同一个对象
+       }
+   ```
+
+5. 如何看jdk源码?
 
    ![image-20230213142343678](JavaGrammar.assets/image-20230213142343678.png)
 
@@ -7409,7 +7415,7 @@ public class Student extends Person {
 
    或者在方法上右键->`go to`->`Delaration or Usages`
 
-5. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：`Integer`,`String`
+6. 默认判断的是地址是否相等，子类中往往重写该方法，用于判断内容是否相等。比如：`Integer`,`String`
 
 ```java
 public class Equals01 {
@@ -7436,6 +7442,7 @@ public class Equals01 {
         }
         if (anObject instanceof String) {//判断类型
             String anotherString = (String)anObject;//向下转型
+            // private final char value[];
             int n = value.length;
             if (n == anotherString.value.length) {//如果长度相同
                 char v1[] = value;
@@ -7571,7 +7578,7 @@ class Person02 {
 }
 ```
 
-#### hashCode方法
+### hashCode方法
 
 1. 提高具有哈希结构的容器的效率！
 
@@ -7603,9 +7610,30 @@ class Person02 {
 
 6. hashCode的如果需要，会重写。
 
-#### toString方法
 
-##### 基本介绍
+#### hashcode是什么？
+
+##### 1、hash和hash表是什么？
+
+hash是一个函数，该函数中的实现就是一种算法，就是通过一系列的算法来得到一个hash值。这个时候，我们就需要知道另一个东西，hash表，通过hash算法得到的hash值就在这张hash表中，也就是说，hash表就是所有的hash值组成的，有很多种hash函数，也就代表着有很多种算法得到hash值。
+
+#### 2、hashcode
+
+每个对象都有一个hashcode，对象的hashcode怎么得来的？
+
+首先一个对象肯定有物理地址，对象的物理地址和hashcode地址不一样，hashcode代表对像的地址说的是对象在hash表中的地址，物理地址说的对象存放在内存中的地址。
+
+那么对象如何得到hashcode呢？
+
+通过对象的内部地址（也就是物理地址）转换成一个整数，然后该整数通过hash函数的算法得到了hashcode。
+
+1、如果两个对象的equals相等，那么这两个对象的hashcode一定相等。
+
+2、如果两个对象的hashcode相等，不代表两个对象就相等，只能说明这两个对象在散列存储结构中，存放于同一个位置。
+
+### toString方法
+
+#### 基本介绍
 
 默认返回：全类名（包名+类名）+@+哈希值的十六进制；子类往往重写 `toString` 方法，用于返回对象的属性信息
 
@@ -7613,7 +7641,7 @@ class Person02 {
 
 当直接输出一个对象时，`toString` 方法会被默认的调用
 
-`System.out.println(monster)`默认调用monster.toString();
+`System.out.println(monster)`默认调用`monster.toString();`
 
 ```java
 public class ToString_ {
@@ -7662,11 +7690,11 @@ class Monster {
 }
 ```
 
-#### finalize方法
+### finalize方法
 
 1. 当对象被回收时，系统自动调用该对象的`finalize`方法。子类可以重写该方法，做一些**释放资源**的操作。
 2. 什么时候被回收：当某个对象没有任何引用时，则`jvm`就认为这个对象是一个垃圾对象，就会使用垃圾回收机制来销毁该对象，在销毁该对象时，会先调用`finalize`方法。
-3. 垃圾回收机制的调用，是由系统来决定的(即由自己的GC算法)，也可以通过`System.gc()`主动出发垃圾回收机制。
+3. 垃圾回收机制的调用，是由系统来决定的(即由自己的`GC`算法)，也可以通过`System.gc()`主动出发垃圾回收机制。
 
 ```java
 //演示finalize使用
