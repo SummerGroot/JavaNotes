@@ -14057,6 +14057,850 @@ class Person<E> {
 1. `List<String> strList = new ArrayList<String>();`
 2. `Iterator<Customer> iterator = customers.iterator();`
 
+### 泛型语法的使用
+
+```java
+public class GenericExercise {
+    public static void main(String[] args) {
+        //使用泛型方式给HashSet放入3个学生对象
+        HashSet<Student> students = new HashSet<Student>();
+        students.add(new Student("jack", 18));
+        students.add(new Student("summer", 24));
+        students.add(new Student("luka", 26));
+        for (Student sdt : students) {
+            //System.out.println(sdt);
+        }
+        //使用泛型方式给HashMap放入3个学生对象
+        HashMap<String, Student> hm = new HashMap<String, Student>();
+        /*
+        public class HashMap<K,V>{}
+        */
+        hm.put("1", new Student("jack", 18));
+        hm.put("2", new Student("summer", 24));
+        hm.put("3", new Student("luka", 26));
+        //迭代器遍历  EntrySet
+        /*public Set<Map.Entry<K,V>> entrySet() {
+            Set<Map.Entry<K,V>> es;
+            return (es = entrySet) == null ? (entrySet = new HashMap.EntrySet()) : es;
+        }*/
+        Set<Map.Entry<String, Student>> entries = hm.entrySet();
+        /*public final Iterator<Map.Entry<K,V>> iterator() {
+            return new HashMap.EntryIterator();
+        }*/
+        Iterator<Map.Entry<String, Student>> iterator = entries.iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, Student> student = iterator.next();
+            System.out.println(student.getKey() + "-" + student.getValue());
+        }
+    }
+}
+
+/*
+ * 1、创建3个学生对象
+ * 2、放入到HashSet中学生对象
+ * 3、放入到HashMap中，要求K是String name，V是学生对象
+ * 4、使用两种方式遍历*/
+class Student {
+    private String name;
+    private int age;
+
+    public Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+}
+```
+
+### 泛型使用的注意实现和细节
+
+1. `interface List<T> {}` ,`public class HashSet<E>{}`等等。
+
+   说明：T，E只能是**引用类型**
+
+2. 在给泛型指定泛型具体类型后，可以传入该类型或者子类类型。
+
+3. 泛型使用格式
+
+   `List<Integer> list1 = new ArrayList<Integer>();`
+
+   `List<Integer> list2 =new ArrayList<>();`
+
+4. 如果我们这样写 `List list3 = new ArrayList();`默认给它的泛型是`[<E> E就是Object]`
+
+## 泛型练习
+
+```java
+public class GenericExercise02 {
+    public static void main(String[] args) {
+        ArrayList<Employee> employees = new ArrayList<>();
+        //创建3个对象
+        employees.add(new Employee("tom", 10000, new MyDate(2020, 6, 10)));
+        employees.add(new Employee("jack", 12000, new MyDate(2001, 12, 12)));
+        employees.add(new Employee("tom", 10000, new MyDate(2020, 10, 10)));
+        System.out.println(employees);
+        //排序方式：调用AyyayList的sort方法，传入Comparator对象（使用泛型），
+        System.out.println("===对员工进行排序===");
+        employees.sort(new Comparator<Employee>() {
+            @Override
+            public int compare(Employee emp01, Employee emp02) {
+                //先按照name排序，如果name相同，则按照生日日期的先后排序
+                //先对传入的参数验证
+                if (!(emp01 instanceof Employee && emp02 instanceof Employee)) {
+                    System.out.println("类型不匹配");
+                    return 0;
+                }
+                //比较name
+                int i = emp01.getName().compareTo(emp02.getName());
+                if (i != 0) {
+                    return i;
+                }
+                //下面是在borthday比较
+                //如果name相同，就比较birthday----year
+                /*int yearMinus = emp01.getBirthday().getYear() - emp02.getBirthday().getYear();
+                if (yearMinus != 0) {
+                    return yearMinus;
+                }
+                //如果year相同，就比较---month
+                int monthMinus = emp01.getBirthday().getMonth() - emp02.getBirthday().getMonth();
+                if(monthMinus!= 0){
+                    return monthMinus;
+                }
+                //如果month相同，就比较---day
+                return emp01.getBirthday().getDay() - emp02.getBirthday().getDay();*/
+                return emp01.getBirthday().compareTo(emp02.getBirthday());
+            }
+        });
+        System.out.println("===排序后的结果===");
+        System.out.println(employees);
+    }
+}
+
+//定义Employee类
+class Employee {
+    //private 成员变量name sal，birthday，其中birthday为MyDate类的对象
+    private String name;
+    private double sal;
+    private MyDate birthday;
+
+    public Employee(String name, double sal, MyDate birthday) {
+        this.name = name;
+        this.sal = sal;
+        this.birthday = birthday;
+    }
+
+    //为每个属性定义getter setter方法
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getSal() {
+        return sal;
+    }
+
+    public void setSal(double sal) {
+        this.sal = sal;
+    }
+
+    public MyDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(MyDate birthday) {
+        this.birthday = birthday;
+    }
+
+    //重写toString方法，输出name，sal，birthday
+
+    @Override
+    public String toString() {
+        return "\nEmployee{" +
+                "name='" + name + '\'' +
+                ", sal=" + sal +
+                ", birthday=" + birthday +
+                '}';
+    }
+}
+
+class MyDate implements Comparable<MyDate> {
+    //private 成员变量 month，day，year
+    private int year;
+    private int month;
+    private int day;
+
+    //为每个属性定义getter setter方法
+
+
+    public MyDate(int year, int month, int day) {
+        this.year = year;
+        this.month = month;
+        this.day = day;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    @Override
+    public String toString() {
+        return "MyDate{" +
+                "year=" + year +
+                ", month=" + month +
+                ", day=" + day +
+                '}';
+    }
+
+    @Override
+    public int compareTo(MyDate o) {//把对year-month-day比较放这里
+        int yearMinus = year - o.getYear();
+        if (yearMinus != 0) {
+            return yearMinus;
+        }
+        //如果year相同，就比较---month
+        int monthMinus = month - o.getMonth();
+        if (monthMinus != 0) {
+            return monthMinus;
+        }
+        //如果month相同，就比较---day
+        return day - o.getDay();
+    }
+}
+```
+
+## 自定义泛型
+
+### 自定义泛型类
+
+#### 基本语法
+
+```java
+class 类名<T,R...>{//也可以是接口
+    //...表示可以多个泛型
+    成员
+}
+```
+
+#### 注意细节
+
+1. 普通成员可以使用泛型（属性、方法）。
+2. 使用泛型的数组，不能初始化。
+3. 静态方法中不能使用类的泛型。
+4. 泛型类的类型，是在创建对象时确定的（因为创建对象时，需要指定确定类型）。
+5. 如果在创建对象时，没有指定类型，默认`Object`。
+
+#### 案例
+
+```java
+public class CoustomGeneric {
+    public static void main(String[] args) {
+
+    }
+}
+
+//定义泛型类
+/*
+ * 1、Tiget后面泛型，所有把Tiger称为自定义泛型类
+ * 2、T，R，M泛型标识符，一般是大写字母。
+ * 3、泛型的标识符可以多个*/
+class Tiger<T, R, M> {
+    //普通成员可以使用泛型（属性、方法）
+    String name;//属性使用到泛型
+    R r;
+    M m;
+    T t;
+    //使用泛型的数组，不能初始化
+    //T[] ts = new T[8];
+    //数组在new，不能确定T的类型，就无法在内存开空间
+    T[] ts;//可以定义
+
+    public Tiger(String name, R r, M m, T t) {//构造器使用泛型
+        this.name = name;
+        this.r = r;
+        this.m = m;
+        this.t = t;
+    }
+    //静态方法不能使用泛型
+    //public static void f(M m){}
+    //静态是和类相关的，在类加载时，对象还没创建。所以，静态方法和静态属性使用了泛型，JVM就无法完成初始化。
+
+    //方法使用泛型
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public R getR() {
+        return r;
+    }
+
+    public void setR(R r) {
+        this.r = r;
+    }
+
+    public M getM() {
+        return m;
+    }
+
+    public void setM(M m) {
+        this.m = m;
+    }
+
+    public T getT() {
+        return t;
+    }
+
+    public void setT(T t) {
+        this.t = t;
+    }
+}
+```
+
+#### 练习
+
+```java
+public class CoustomGeneric {
+    public static void main(String[] args) {
+        //T=Double R=String M=Integer
+        Tiger<Double, String, Integer> g = new Tiger("john");
+        g.setT(10.9);//T
+        //g.getT("yy");//F
+        System.out.println(g);
+        Tiger g2 = new Tiger("john~~");//默认给的Object
+        g2.setT("yy");//T  T是Objcet “yy”是String 是Objcet的子类
+        System.out.println("g2="+g2);
+    }
+}
+
+//定义泛型类
+/*
+ * 1、Tiget后面泛型，所有把Tiger称为自定义泛型类
+ * 2、T，R，M泛型标识符，一般是大写字母。
+ * 3、泛型的标识符可以多个*/
+class Tiger<T, R, M> {
+    //普通成员可以使用泛型（属性、方法）
+    String name;//属性使用到泛型
+    R r;
+    M m;
+    T t;
+    //使用泛型的数组，不能初始化
+    //T[] ts = new T[8];
+    //数组在new，不能确定T的类型，就无法在内存开空间
+    T[] ts;//可以定义
+
+    public Tiger(String name) {
+        this.name = name;
+    }
+
+    public Tiger(R r, M m, T t) {//构造器使用泛型
+        this.r = r;
+        this.m = m;
+        this.t = t;
+    }
+    //静态方法不能使用泛型
+    //public static void f(M m){}
+    //静态是和类相关的，在类加载时，对象还没创建。所以，静态方法和静态属性使用了泛型，JVM就无法完成初始化。
+
+    //方法使用泛型
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public R getR() {
+        return r;
+    }
+
+    public void setR(R r) {
+        this.r = r;
+    }
+
+    public M getM() {
+        return m;
+    }
+
+    public void setM(M m) {
+        this.m = m;
+    }
+
+    public T getT() {
+        return t;
+    }
+
+    public void setT(T t) {
+        this.t = t;
+    }
+
+    @Override
+    public String toString() {
+        return "Tiger{" +
+                "name='" + name + '\'' +
+                ", r=" + r +
+                ", m=" + m +
+                ", t=" + t +
+                ", ts=" + Arrays.toString(ts) +
+                '}';
+    }
+}
+```
+
+### 自定义泛型接口
+
+#### 基本语法
+
+```java
+interface 接口名<T,R...>{
+    
+}
+```
+
+#### 注意细节
+
+1. 接口中，静态成员也不能使用泛型（这个和泛型类规定一样）。
+2. 泛型接口的类型，在**继承接口**或者**实现接口**的确定。
+3. 没有指定类型，默认Object。
+
+#### 案例
+
+```java
+public class CoustomInterfaceGeneric {
+    public static void main(String[] args) {
+
+    }
+}
+
+//自定义泛型接口
+interface IUsb<U, R> {
+    int n = 10;
+
+    //U name;//不能这样使用
+    //普通方法中，可以使用接口泛型
+    R get(U u);
+
+    void hi(R r);
+
+    void run(R r1, R r2, U u1, U u2);
+
+    //在jdk8中，可以在接口中，使用默认方法
+    default R method(U u) {
+        return null;
+    }
+}
+
+//在继承接口时， 指定泛型接口的类型
+//当我们去实现IA接口时，IA在继承IUsb接口时，指定了U为String，R为Double
+//在实现IUsb方法时，使用String替换U，Double替换R
+interface IA extends IUsb<String, Double> {
+
+}
+
+class AA implements IA {
+
+    @Override
+    public Double get(String s) {
+        return null;
+    }
+
+    @Override
+    public void hi(Double aDouble) {
+
+    }
+
+    @Override
+    public void run(Double r1, Double r2, String u1, String u2) {
+
+    }
+}
+
+//实现接口时，直接指定泛型接口的类型
+//给U 指定了Integer，R指定了Float
+//当我们实现IUsb方法时，使用Integer替换U，Float替换R
+class BB implements IUsb<Integer, Float> {
+
+    @Override
+    public Float get(Integer integer) {
+        return null;
+    }
+
+    @Override
+    public void hi(Float aFloat) {
+
+    }
+
+    @Override
+    public void run(Float r1, Float r2, Integer u1, Integer u2) {
+
+    }
+}
+
+//没有指定类型，默认为Object
+class CC implements IUsb {//等价 class CC implements IUsb<Object,Object>{}
+
+    @Override
+    public Object get(Object o) {
+        return null;
+    }
+
+    @Override
+    public void hi(Object o) {
+
+    }
+
+    @Override
+    public void run(Object r1, Object r2, Object u1, Object u2) {
+
+    }
+}
+```
+
+### 自定义泛型方法
+
+#### 基本语法
+
+```java
+修饰符<T,R...>返回类型 方法名(参数列表){
+    
+}
+```
+
+#### 注意细节
+
+1. 泛型方法，可以定义在普通类中，也可以定义在泛型类中。
+2. 当泛型方法被调用时，类型会确定。
+3. `public void eat(E e){}`，修饰符后没有<T,R...>eat方法不是泛型方法，而是使用了泛型。
+
+```java
+public class CoustomMethodGeneric {
+    public static void main(String[] args) {
+        Car car = new Car();
+        car.fly("宝马", 100);
+        System.out.println("================================");
+        car.fly(1, 1.1);//当调用方法时，传入参数，编译器，就会确定类型
+        System.out.println("================================");
+        //T--->String R--->ArrayList
+        Fish<String, ArrayList> fish = new Fish<>();
+        fish.hello(new ArrayList(),11.11F);
+
+    }
+}
+
+//泛型方法，可以定义在普通类中，也可以定义在泛型类中。
+class Car {//普通类
+
+    public void run() {
+        //普通方法
+    }
+
+    /*
+     *1、<T,R>就是泛型
+     * 2、是提供fly使用的
+     * */
+    public <T, R> void fly(T t, R r) {
+        //泛型方法
+        System.out.println(t.getClass());//class java.lang.String
+        System.out.println(r.getClass());//class java.lang.Integer
+    }
+}
+
+class Fish<T, R> {
+    //泛型类
+    public void run() {
+        //普通方法
+    }
+
+    public <U, M> void eat(U u, M m) {
+        //泛型方法
+    }
+    //hi（）不是泛型方法，hi方法使用了类声明的泛型
+    public void hi(T t){
+
+    }
+    //泛型方法可以使用类声明的泛型，也可以使用自己声明的泛型
+    public<K> void hello(R r,K k){
+        System.out.println(r.getClass());//class java.util.ArrayList
+        System.out.println(k.getClass());//class java.lang.Float
+    }
+}
+```
+
+## 泛型的继承和通配符
+
+### 泛型的继承和通配符说明
+
+#### 泛型不具备继承性
+
+1. `List<Object> list = new ArrayList<String>();`   //错误！！！
+2. `<?>`：支持任意泛型类型。
+3. `<? extends A>`：支持A类以及A类的子类，规定了泛型的上限。
+4. `<? super A>`：支持A类以及A类的父类，不限于直接父类，规定了泛型的下限。
+
+```java
+public class GenericExtends {
+    public static void main(String[] args) {
+        Object o = new String("hello");
+        //泛型没有继承性
+        //List<Object> list = new ArrayList<String>();
+        //说明
+        List<Object> list01 = new ArrayList<>();
+        List<String> list02 = new ArrayList<>();
+        List<AA> list03 = new ArrayList<>();
+        List<BB> list04 = new ArrayList<>();
+        List<CC> list05 = new ArrayList<>();
+        //如果是 List<?> c 可以接收任意的泛型类型
+        printCollection1(list01);
+        printCollection1(list02);
+        printCollection1(list03);
+        printCollection1(list04);
+        printCollection1(list05);
+        //List<? extends AA> c
+        //printCollection2(list01);//F
+        //printCollection2(list02);//F
+        printCollection2(list03);//T
+        printCollection2(list04);//T
+        printCollection2(list05);//T
+        //List<? super AA> c
+        printCollection3(list01);//T
+        //printCollection3(list02);//F
+        printCollection3(list03);//T
+        //printCollection3(list04);//F
+        //printCollection3(list05);//F
+    }
+
+    //编写方法
+    //List<?>任意泛型类型都可以接收
+    public static void printCollection1(List<?> c) {
+        for (Object object : c) {
+            //通配符，取出时，就是Object
+            System.out.println(object);
+        }
+    }
+
+    //? extends AA表示上限，可以接收AA或者AA子类
+    public static void printCollection2(List<? extends AA> c) {
+        for (Object object : c) {
+            System.out.println(object);
+        }
+    }
+
+    //? super 子类类名AA :支持AA类以及AA类的父类，不限于直接父类，规定了泛型的下限
+    public static void printCollection3(List<? super AA> c) {
+        for (Object object : c) {
+            System.out.println(object);
+        }
+    }
+
+}
+
+class AA {
+
+}
+
+class BB extends AA {
+
+}
+
+class CC extends BB {
+
+}
+```
+
+## JUnit
+
+1. 一个类有很多功能代码需要测试，为了测试，就需要写入到main方法中。
+2. 如果有多个功能代码测试，就需要来回注销，切换麻烦。
+3. 如果可以直接运行一个方法，就方便很多，并且可以给出相关信息。
+
+### 基本介绍
+
+1. JUnit是一个Java语言的单元测试框架。
+2. 多数Java的开发环境都已经继承了JUnit作为单元测试的工具
+
+```java
+public class JUnit_ {
+    public static void main(String[] args) {
+
+    }
+    @Test
+    public void m1(){
+        System.out.println("m1方法被调用");
+    }
+    @Test
+    public void m2(){
+        System.out.println("m2方法被调用");
+    }
+}
+```
+
+## 本章练习
+
+```java
+public class Homework01 {
+    public static void main(String[] args) {
+
+    }
+
+    @Test
+    public void testList() {
+        //给T指定的类型是 User
+        Dao<User> dao = new Dao<>();
+        dao.save("001", new User(1, 10, "jack"));
+        dao.save("002", new User(2, 18, "king"));
+        dao.save("003", new User(3, 24, "harden"));
+
+        List<User> list = dao.list();
+        System.out.println(list);
+        dao.update("003",new User(3, 24, "kiven"));
+        System.out.println("====修改后====");
+        list= dao.list();
+        System.out.println(list);
+    }
+
+}
+
+class Dao<T> {
+    //定义个泛型类Dao<T>，在其中定义一个Map成员变量，Map的键为String类型，值为T类型/
+    private Map<String, T> map = new HashMap<>();
+
+    public void save(String id, T entity) {
+        //保存T类型的对象到Map成员变量中
+        map.put(id, entity);
+    }
+
+    public T get(String id) {
+        //从map中获取id对应的对象
+        return map.get(id);
+    }
+
+    public void update(String id, T entity) {
+        //替换map中key为id的内容，改为entity对象
+        map.put(id, entity);
+    }
+
+    public List<T> list() {
+        //返回map中存放的所以T对象
+        //遍历map,将map所有的value(T entity)，封装到ArrayList返回
+        //创建ArrayList
+        List<T> list = new ArrayList<>();
+        //遍历map
+        Set<String> keySet = map.keySet();
+        for (String key : keySet) {
+            //list.add(map.get(key));
+            //mao.get(key 返回就是User对象---->ArrayList
+            list.add(get(key));//可以直接使用本类的get方法
+        }
+        return list;
+    }
+
+    public void delete(String id) {
+        //删除指定id对象
+        map.remove(id);
+    }
+}
+
+class User {
+    //定义User类
+    //定义三个属性
+    private int id;
+    private int age;
+    private String name;
+
+    public User(int id, int age, String name) {
+        this.id = id;
+        this.age = age;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "\nUser{" +
+                "id=" + id +
+                ", age=" + age +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}
+```
+
+
+
 # 第17章 多线程基础
 
 
