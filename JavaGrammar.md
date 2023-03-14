@@ -325,31 +325,67 @@ String name = "johnny";
 
 ## final关键字
 
-final（最终的，最后的）可以修饰类、属性、方法和局部变量。
+`final`（最终的，最后的）可以修饰类、属性、方法和局部变量。
 
-1. 当不希望类被继承时，可以用final修饰。
-2. 当不希望父类的某个方法被子类覆盖/重写(override)时，可以用final关键字修饰。
-3. 当不希望类的某个属性的值被修改，可以使用final修饰。
-4. 当不希望某个局部变量被修改，可以使用final修饰
+1. 当不希望类被继承时，可以用`final`修饰。
+2. 当不希望父类的某个方法被子类覆盖/重写(`override`)时，可以用`final`关键字修饰。
+3. 当不希望类的某个属性的值被修改，可以使用`final`修饰。
+4. 当不希望某个局部变量被修改，可以使用`final`修饰
+
+```java
+public class Final01 {
+    public static void main(String[] args) {
+        E e = new E();
+        //e.TAX_RATE=0.09;
+        System.out.println(e.TAX_RATE);
+        A a = new A();
+    }
+}
+
+//如果要求A类不能被其他类继承，
+//使用final修饰A类
+final class A {
+}
+
+/*class B extends A {
+}*/
+class C {
+    //如果我们要求hi不能被子类重写
+    //使用final修饰hi方法
+    //public final void hi(){}
+}
+
+class D extends C {
+   /* @Override
+    //重写了C类的hi方法
+    public void hi() {
+        super.hi();
+    }*/
+}
+
+class E {
+    public final double TAX_RATE = 0.08;
+}
+```
 
 ### final注意事项和细节
 
-1. final修饰的属性又叫常量，一般用全大写命名。
-2. final修饰的属性在定义时，必须赋初值，并且以后不能再修改，赋值可以再如下位置之一。
-   1. 定义时：如public final double TAX_RATE=0.08;
+1. `final`修饰的属性又叫常量，一般用全大写命名。
+2. `final`修饰的属性在定义时，必须赋初值，并且以后不能再修改，赋值可以再如下位置之一。
+   1. 定义时：如`public final double TAX_RATE=0.08;`
    2. 在构造器中。
    3. 在代码块中。
-3. 如果final修饰的属性是静态的，则初始化的位置只能是
+3. 如果`final`修饰的属性是静态的，则初始化的位置只能是
    1. 定义时
    2. 在静态代码块，不能再构造器中赋值
-4. final类不能继承，但是可以实例化对象
-5. 如果类不是final类，但是含有final方法，则该方法虽然不能重写，但是可以被继承。
+4. `final`类不能继承，但是可以实例化对象
+5. 如果类不是`final`类，但是含有`final`方法，则该方法虽然不能重写，但是可以被继承。
 
 ```java
 public class FinalDetail_ {
     public static void main(String[] args) {
         CC cc = new CC();
-        new EE().cal();
+        new EE().cal();//cal方法
     }
 }
 
@@ -389,10 +425,10 @@ class EE extends DD{
 }
 ```
 
-6. 一般来说，如果一个类已经是final类了，就没必要再将方法修饰成final方法。
-7. final不能修饰构造方法（即构造器）
-8. final和static往往搭配使用，效率更高，不会导致类加载。底层编译器做了优化处理。
-9. 包装类（Integer、Double、Float、Boolean等都是final），String也是final类。
+6. 一般来说，如果一个类已经是`final`类了，就没必要再将方法修饰成`final`方法。
+7. `final`不能修饰构造方法（即构造器）
+8. `final`和`static`往往搭配使用，效率更高，不会导致类加载。底层编译器做了优化处理。
+9. 包装类（`Integer、Double、Float、Boolean`等都是`final`），`String`也是`final`类。
 
 ```java
 public class FinalDetail02 {
@@ -3798,8 +3834,6 @@ public class HomeWork01 {
 
 ##  类与对象
 
-
-
 ```java
 public class Object01 {
     public static void main(String[] args) {
@@ -4024,23 +4058,175 @@ System.out.println(b.age);//出现异常
 
 ## 类加载时机
 
-1. 创建对象
-2. 调用类的静态成员
-3. 加载子类
+类加载的原则：延迟加载，能不加载就不加载。
 
-### 类在实例化后的内存分配
+触发加载的集中情况：
 
-1. 每次创建对象时，都需要进行**加载**和**创建**2个操作：
-   1. 先去判断需要的类是否已经加载，如果已经加载，则无需再加载，如果没有加载，则需要通过类加载器加载类信息到方法区。
-   2. 在堆中创建新对象。
-2. 栈、堆、方法区的存储
-   1. 栈：**对象的引用**、**局部变量**
-   2. 堆：**对象**和**全局变量**（属性）
-   3. 方法区：类信息、属性信息、方法信息。
-3. 方法的调用机制
-   1. 每次调用方法，伴随着"**方法入栈**"操作，也就是栈中为该方法分配了一块空间，用于保存该方法涉及到的变量。
-   2. 每次方法调用结束，伴随着"方法出栈"操作，也就是栈中分配的空间被释放了。
-   3. 在类的方法调用过程中，首先判断方法区是否存在该方法，存在则方法入栈，调用结束后出栈。
+1. 调用静态成员时，会加载静态成员真正所在的类及其父类。
+
+   通过子类调用父类的静态成员，只会加载父类而不会加载子类。
+
+2. 第一次new对象的时候加载（第二次再new 同一个对象，不需要加载）。
+
+3. 加载子类会先加载父类。（重写父类方法时所抛出的异常不能超过父类定义的范围）
+
+   如果静态属性有final修饰时，则不会加载，当成常量使用。
+
+   如果编译时不能确定其值的话，则运行时加载。
+
+## Java类和对象在内存中的表现形式，栈区（stack）、堆区（heap）、方法区（Method Area）、常量池
+
+栈：存放基本数据类型和对象的引用变量的数据，但对象本身不存放在栈中，而是存放在堆中（`new` 出来的对象）。
+
+堆：存放用`new`产生的对象数据，每个对象包含了一个与之对应的`class`类的信息。
+
+方法区（又称为静态区）：存放对象中用`static`定义的静态成员。
+
+常量池：通常用来存放常量数据、静态变量、类的加载信息等。
+
+### 栈区
+
+在方法中定义的一些基本类型的变量或者对象的引用变量在栈内存中分配。
+
+当在一段代码块定义一个变量时，`Java`就在栈中为这个变量分配内存空间，当该变量退出该作用域后，`Java`会自动释放掉为该变量所分配的内存空间，该内存空间可以立即被另作他用。栈中的数据大小和生命周期是可以确定的，当没有引用指向数据时，这个数据就会消失。
+
+每个方法（`Method`）执行时，都会创建一个方法栈区，**用于存储局部变量表、操作数栈、动态链接、方法出口信息等**
+
+栈中所存储的**变量和引用**都是**局部的（即：定义在方法体中的变量或者引用），局部变量和引用都在栈中（包括final的局部变量）**
+
+八种基本数据类型（`byte、short、int、long、float、double、char、boolean`）的**局部变量（定义在方法体中的基本数据类型的变量）在栈中存储的是它们对应的值**
+
+每个线程包含一个栈区，栈中只保存基本数据类型的变量和引用数据类型的变量，每个栈中的数据(基本数据类型和对象的引用)都是私有的，其它栈是无法进行访问的。栈分为3个部分：基本类型变量区、执行环境上下文、操作指令区(存放操作指令)。
+
+栈中还存储**局部的对象的引用（定义在方法体中的引用类型的变量）**，**对象的引用**并不是对象本身，而是对象在**堆中的地址**，换句话说，**局部的对象的引用**所指对象在**堆中的地址**在存储在了栈中。当然，如果对象的引用没有指向具体的对象，**对象的引用**则是`null`
+
+栈的优势是，存取速度比堆要快，仅次于寄存器，栈数据可以共享。但缺点是，存在栈中的数据大小与生存期必须是确定的，缺乏灵活性。
+
+栈有一个很重要的特殊性，就是存在栈中的数据可以共享。
+
+### 堆区
+
+**堆内存用来存放由`new`创建的对象和数组**。在堆中分配的内存，由`Java`虚拟机的自动垃圾回收器来管理。
+
+堆内存是被所有线程共享的一块内存区域，在虚拟机启动时创建。`Java`堆（`Java Heap`）唯一目的就是存放对象实例。**所有的对象实例及数组**都要在**`Java`堆（`Java Heap`）**上分配内存空间。
+
+在堆中产生了一个数组或对象后，在栈中定义一个特殊的变量，让栈中这个变量的取值等于数组或对象在堆内存中的首地址，栈中的这个变量就成了数组或对象的引用变量。引用变量就相当于是为数组或对象起的一个名称，以后就可以在程序中使用栈中的引用变量来访问堆中的数组或对象。引用变量就相当于是为数组或者对象起的一个名称。
+
+引用变量是普通的变量，定义时在栈中分配，引用变量在程序运行到其作用域之外后被释放。而数组和对象本身在堆中分配，即使程序运行到使用`new`产生数组或者对象的语句所在的代码块之外，数组和对象本身占据的内存不会被释放，数组和对象在没有引用变量指向它的时候，才变为垃圾，不能在被使用，但仍然占据内存空间不放，在随后的一个不确定的时间被垃圾回收器收走（释放掉），这也是`Java`比较占内存的原因。
+
+实际上，栈中的变量指向堆内存中的变量，这就是`Java`中的指针！
+
+`Java`的堆是一个运行时数据区,类的对象从中分配空间。对象一般通过`new` 来创建，例如`new Date()`，它们不需要程序代码来显式的释放。堆是由垃圾回收来负责的，堆的优势是可以动态地分配内存大小，生存期也不必事先告诉编译器，因为它是在运行时动态分配内存的，`Java`的垃圾收集器会自动收走这些不再使用的数据。但缺点是，由于要在运行时动态分配内存，存取速度较慢。
+
+### 方法区
+
+**方法区跟堆一样，又被称为静态区，通常存放常量数据。它存储已被`Java`虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等,它跟堆一样，被所有的线程共享。**
+
+#### 存储的类信息
+
+对每个加载的类型（类`class`、接口`interface`、枚举`enum`、注解`annotation`），`JVM`必须在方法区中存储以下类型信息：
+
+- 这个类型的完整有效名称（全名=包名.类名）
+- 这个类型直接父类的完整有效名称(` java.lang.Object`除外，其他类型若没有声明父类，默认父类是`Object`)
+- 这个类型的修饰符(`public`、`abstract`、`final`的某个子集)
+- 这个类型直接接口的一个有序列表
+
+**除此之外还方法区（Method Area）存储类信息还有**
+
+- 类型的常量池( `constant pool`)
+- 域(`Field`)信息
+- 方法(`Method`)信息
+- 除了常量外的所有静态(`static`)变量
+
+#### 存储的常量
+
+`static final`修饰的成员变量都存储于 方法区（`Method Area`）中
+
+#### 存储的静态变量
+
+- 静态变量又称为类变量，类中被static修饰的成员变量都是静态变量（类变量）
+- 静态变量之所以又称为类变量，是因为静态变量和类关联在一起，随着类的加载而存在于方法区（而不是堆中）
+- 八种基本数据类型（`byte、short、int、long、float、double、char、boolean`）的静态变量会在方法区开辟空间，并将对应的值存储在方法方法区，对于引用类型的静态变量如果未用`new`关键字为引用类型的静态变量分配对象（如：`static Object obj;`），那么对象的引用obj会存储在方法区中，并为其指定默认值`null`;若对于引用类型的静态变量如果用`new`关键字为引用类型的静态变量分配对象（如：`static Cat cat = new Cat();`）,那么对象的引用`cat`会存储在方法区中，并且该对象在堆中的地址也会存储在方法区中（**注意此时静态变量只存储了对象的堆地址，而对象本身仍在堆内存中**）;当然这个过程还涉及到静态变量初始化问题。
+
+#### 存储的方法（Method）
+
+程序运行时会加载类编译生成的字节码，这个过程中静态变量（类变量）和静态方法及普通方法对应的字节码加载到方法区。
+
+方法区中没有实例变量，这是因为，类加载先于对应类对象的产生，而实例变量是和对象关联在一起的，没有对象就不存在实例变量，类加载时没有对象，所以方法区中没有实例变量。
+
+静态变量（类变量）和静态方法及普通方法在方法区（`Method Area`）存储方式是有区别的
+
+### 常量池
+
+**常量池指的是在编译期被确定，并被保存在已编译的.class文件中的一些数据。**
+
+除了包含代码中所定义的各种基本类型（如`int、long`等等）和对象型（如`String`及数组）的常量值(`final`)还包含一些以文本形式出现的符号引用，比如：类和接口的全限定名；字段的名称和描述符；方法和名称和描述符。
+
+虚拟机必须为每个被装载的类型维护一个常量池。常量池就是该类型所用到常量的一个有序集和，包括直接常量（`string,integer`和`floating point`常量）和对其他类型，字段和方法的符号引用。对于`String`常量，它的值是在常量池中的。而`JVM`中的常量池在内存当中是以表的形式存在的，对于`String`类型，有一张固定长度的`CONSTANT_String_info`表用来存储文字字符串值，注意：该表只存储文字字符串值，不存储符号引用。说到这里，对常量池中的字符串值的存储位置应该有一个比较明了的理解了。在程序执行的时候,常量池会储存在方法区（`Method Area`）,而不是堆中。
+
+### 画图分析类实例化及操作时在内存中的变化及表现形式
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        //实例化一个Cat对象
+        Cat cat = new Cat();
+        //给成员变量赋值
+        cat.name = "招财";
+        cat.age = 2;
+        cat.weight = 2.02;
+        //打印
+        System.out.println("小猫的名字："+cat.name + " 小猫的年龄："+cat.age);
+        //调用成员方法
+        cat.say();
+    }
+}
+class Cat {
+    /**
+     * 成员变量 name
+     */
+    String name;
+    /**
+     * 成员变量 age
+     */
+    int age;
+    /**
+     * 成员变量 weight
+     */
+    double weight;
+ 
+    public void say()
+    {
+        System.out.println("喵喵~~");
+    }
+}
+```
+
+在`main()` 函数里实例化对象 `cat`, 内存中在堆区内会给实例化对象 `cat` 分配一个内存地址，然后我们给对象 `cat`进行了赋值并且打印了一些信息，最后调用了成员方法 `say()` ，程序执行完毕。
+
+1. 在程序的执行过程中，首先`Main`类中的成员属性和成员方法会加载到方法区
+
+   ![image-20230310155040621](JavaGrammar.assets/image-20230310155040621.png)
+
+2. 程序执行类`Main`的`main()` 方法时，`main()`函数方法体会进入栈区，这一过程叫做进栈(压栈)。
+
+   ![image-20230310155228593](JavaGrammar.assets/image-20230310155228593.png)
+
+3. 程序执行到 `Cat cat = new Cat();` 时，首先会把`Cat`类的成员属性和成员方法加载到方法区,此时方法的内存空间地址为`0x22`，同时在在堆内存开辟一块内存空间`0x111`，用于存放`Cat`实例对象，并给成员属性及成员方法分配对应的地址空间，比如下图的`0x000001~0x000004`即为对象分配的堆内存地址，但此时成员属性都是默认值,比如`int`类型默认值为`0，String`类型默认值为`null`，成员方法地址值为方法区对应成员方法体的内存地址值；然后在栈内存中会给变量`cat`分配一个栈地址`0x123`，用来存放`Cat`实例对象的引用地址的值`0x111`。
+
+   ![image-20230310162505325](JavaGrammar.assets/image-20230310162505325.png)
+
+4. 接下来对 cat 对象进行赋值
+
+   先在栈区找到引用变量`cat`，然后根据地址值找到 `new Cat()` 对象的内存地址，并对里面的属性进行赋值操作。由于成员属性`name`的类型为`String`，为引用数据类型，所以此时会在常量池开辟一块地址空间`0x234`，存放`招财`这个值，而`age`的类型为`int`，`weight`的类型为`double`，都为基本数据类型，所以值直接存放堆中。
+
+   ![image-20230310162834257](JavaGrammar.assets/image-20230310162834257.png)
+
+5. 当程序执行到 `cat.say() ;`方法时，会先到栈区找到`cat`这个引用变量（这个变量存的是对象的引用地址），然后根据该地址值在堆内存中找到 `new Cat()` 对象里面的`say()`方法进行调用，在调用`say()`方法时，会在栈区开辟一块空间进行运行。
+
+   ![image-20230310163054124](JavaGrammar.assets/image-20230310163054124.png)
+
+6. 在方法体`void say()`被调用完成后，就会立刻马上从栈内弹出（出站 )，最后，在main()函数完成后，main()函数也会出栈
 
 ## 成员方法
 
@@ -4365,6 +4551,8 @@ class AA2{
 
 方法的传参机制是**非常重要**，一定要搞清楚。
 
+赋值的只是值，互不影响。
+
 ![image-20230131115201519](JavaGrammar.assets/image-20230131115201519.png)
 
 **基本数据结构，传递的是值（值拷贝）**，形参的任何改变不影响实参！！！
@@ -4415,7 +4603,7 @@ class AAA {
 
 ![image-20230131165254563](JavaGrammar.assets/image-20230131165254563.png)
 
-引用类型传递的是地址（**传递也是值，但是值是地址**），可以**通过形参影响实参**！
+引用类型传递的是**地址**（**传递也是值，但是值是地址**），可以**通过形参影响实参**！
 
 ### 方法的递归调用
 
@@ -7693,7 +7881,7 @@ class Monster {
 ### finalize方法
 
 1. 当对象被回收时，系统自动调用该对象的`finalize`方法。子类可以重写该方法，做一些**释放资源**的操作。
-2. 什么时候被回收：当某个对象没有任何引用时，则`jvm`就认为这个对象是一个垃圾对象，就会使用垃圾回收机制来销毁该对象，在销毁该对象时，会先调用`finalize`方法。
+2. 什么时候被回收：当某个对象没有任何引用时，则`jvm`就认为这个对象是一个垃圾对象，就会使用垃圾回收机制来销毁该对象，**在销毁该对象时，会先调用**`finalize`方法。
 3. 垃圾回收机制的调用，是由系统来决定的(即由自己的`GC`算法)，也可以通过`System.gc()`主动出发垃圾回收机制。
 
 ```java
@@ -7733,25 +7921,25 @@ class Car {
 
 断点调试快捷键：
 
-F7(跳入)：跳入方法内
+(Step Into)F7(跳入)：跳入方法内
 
-F8(跳过)：逐行执行代码
+(Step Over)F8(跳过)：逐行执行代码
 
-shift+F8(跳出)：跳出方法
+(Step Out)shift+F8(跳出)：跳出方法
 
-F9(resume，执行到下一个断点)
+(Run to Corsor)F9(resume，执行到下一个断点)
 
-### 项目-零钱通
+## 项目-零钱通
 
-#### 项目需求
+### 项目需求
 
-使用java开发零钱通项目，可以完成收益入账，消费，查看明细，退出系统等功能。
+使用`java`开发零钱通项目，可以完成收益入账，消费，查看明细，退出系统等功能。
 
-#### 项目页面
+### 项目页面
 
 ![image-20230213165531617](JavaGrammar.assets/image-20230213165531617.png)
 
-#### 项目代码实现
+### 项目代码实现
 
 ```java
 package com.basic.www.conpter08.smallchange;
@@ -7849,7 +8037,7 @@ public class SmallChangeSys {
 }
 ```
 
-#### 项目改进
+### 项目改进
 
 ```java
 package com.basic.www.conpter08.smallchange;
@@ -8188,7 +8376,7 @@ class Child {
 }
 ```
 
-**static变量是同一个类的所有对象共享**，随着类加载而产生。（不用实例化即可访问）
+**static变量是同一个类的所有对象共享**，随着类加载而产生。（**不用实例化即可访问**）
 
 #### 什么是类变量
 
@@ -8304,7 +8492,7 @@ class Student {
 
 #### 类方法使用注意事项和细节
 
-1. 类方法和普通方法都是随着类的加载而加载，将结构信息存储在方法区：
+1. 类方法和普通方法都是随着类的加载而加载，将结构信息**存储在方法区**：
 
    类方法中无`this`的参数
 
@@ -8320,7 +8508,7 @@ class Student {
 
 6. 普通成员方法，即可以访问普通变量（方法），也可以访问静态变量（方法）。
 
-小结：静态方法：只能访问静态的成员；非静态的方法：可以访问静态成员或非静态成员。（必须遵守访问权限）
+小结：**静态方法：只能访问静态的成员；非静态的方法：可以访问静态成员或非静态成员。（必须遵守访问权限）**
 
 ```java
 public class StaticMethodDetail {
@@ -8333,7 +8521,7 @@ public class StaticMethodDetail {
 
 class D {
     private int n1 = 100;
-    private static int n2 = 200;
+    private static int n2 = 200;//静态变量
 
     public void say() {
         //非静态方法
@@ -8390,13 +8578,13 @@ public class StaticExeecise02 {
     public static void main(String[] args) {
         System.out.println("Number of total is:" + Person.getTotalPerson());//0
         Person p1 = new Person();//走构造器
-        System.out.println("Number of total is:" + Person.getTotalPerson());
+        System.out.println("Number of total is:" + Person.getTotalPerson());//1
     }
 }
 
 class Person {
     private int id;
-    private static int total = 0;
+    private static int total = 0;//静态变量
 
     public static int getTotalPerson() {
         //id++;//静态方法无法访问非静态属性
@@ -8425,6 +8613,8 @@ class Person {
 
 ![image-20230215142529356](JavaGrammar.assets/image-20230215142529356.png)
 
+### 提示
+
 1. 在`main()`方法中，我们可以直接调用`main`方法所在类的静态方法或静态属性。
 2. 但是，不能直接访问该类中的非静态成员，必须创建该类的一个实例对象后，才能通过这个对象去访问类中的非静态成员。
 
@@ -8447,13 +8637,12 @@ public class Main01 {
 
     public static void main(String[] args) {
         //静态方法可以访问本类的静态成员
-        System.out.println("name" + Main01.name);
-        hi();
+        System.out.println("name=" + Main01.name);//name=summersdu
+        hi();//Main01的hi方法
         //静态方法mian无法访问本类的非静态
         Main01 main01 = new Main01();
-        System.out.println("n1=" + main01.n1);
-        main01.say();
-
+        System.out.println("n1=" + main01.n1);//n1=10000
+        main01.say();//非静态方法的say方法
     }
 }
 ```
@@ -8468,16 +8657,16 @@ public class Main01 {
 
 ### 基本介绍
 
-代码块又称为**初始化块**，属于类中的成员【即 是类的一部分】，类似于方法，将逻辑语句封装在方法体中，通过`{}`包围起来。
+代码块又称为**初始化块**，属于类中的成员【即是类的一部分】，类似于方法，将逻辑语句封装在方法体中，通过`{}`包围起来。
 
-但和方法不同，没有方法名，没有放回，没有参数，只有方法体，而且不用通过对象或类显式调用，而是**加载类时，或创建对象时隐式调用**。
+但和方法不同，没有方法名，没有返回，没有参数，只有方法体，而且不用通过对象或类显式调用，而是**加载类时，或创建对象时隐式调用**。
 
 ### 基本语法
 
 ```java
-[修饰符]{
+[修饰符]{//修饰符只能是static
     //代码
-};
+};//;可要可不要
 ```
 
 注意：
@@ -8543,7 +8732,7 @@ class Moive {
 
 1. `static`代码块也叫静态代码块，作用就是对类进行初始化，而且它随着**类的加载**而执行，并且**只会执行一次**。如果是**普通代码块，每创建一个对象，就执行**。
 2. 类什么时候被加载[重要]
-   1. 创建对象实例时（`new`）
+   1. 创建对象实例时（`new`）。
    2. 创建子类对象实例时，父类也会被加载。
    3. 使用类的静态成员时（静态属性，静态方法），而且父类先被加载，子类后被加载。
 3. 普通的代码块，在创建对象实例时，会被隐式的调用。被创建一次，就会调用一次。如果只是使用类的静态成员时，普通代码块并不会执行。
@@ -8553,6 +8742,75 @@ class Moive {
    3. 调用构造方法。
 
 ```java
+public class CodeBlockDetail01 {
+    public static void main(String[] args) {
+        //创建对象实例时(new)
+        AA aa = new AA();//AA静态代码块1被执行
+        //创建子类对象实例时，父类也会被加载。而且父类先被加载，子类后被加载
+        //BB bb = new BB();
+        /*
+        AA静态代码块1被执行
+        BB静态代码块1被执行
+        */
+        //使用类的静态成员时（静态属性，静态方法）
+        //System.out.println(Cat.n1);
+        /*
+        Animal静态代码块1被执行
+        Cat静态代码块1被执行
+        999
+        */
+        //static代码块，是在类加载时，执行的，只会执行一次。
+        //CC cc01 = new CC();//CC静态代码块1被执行
+        //普通的代码块，在创建对象实例时，会被隐式的调用。
+        //被创建一次，就会调用一次。
+        //如果只是使用类的静态成员时，普通代码块并不会执行。
+        //DD dd01 = new DD();//DD普通代码块1被执行
+        //System.out.println(DD.n2);//100
+
+    }
+}
+
+class AA {
+    //静态代码块
+    static {
+        System.out.println("AA静态代码块1被执行");
+    }
+}
+
+class BB extends AA {
+    //静态代码块
+    static {
+        System.out.println("BB静态代码块1被执行");
+    }
+}
+
+class CC{
+    static {
+        System.out.println("CC静态代码块1被执行");
+    }
+}
+class DD{
+    public static int n2=100;
+    {
+        //创建对象时被调用，而且每创建一个对象，则调用一次
+        System.out.println("DD普通代码块1被执行");
+    }
+}
+class Animal {
+    static {
+        System.out.println("Animal静态代码块1被执行");
+    }
+}
+
+class Cat extends Animal {
+    public static int n1 = 999;
+
+    //静态代码块
+    static {
+        System.out.println("Cat静态代码块1被执行");
+    }
+}
+//============================
 public class CodeBlockDetail02 {
     public static void main(String[] args) {
         A a = new A();
@@ -8601,8 +8859,7 @@ class A {
 }
 ```
 
-5. 构造器的最前面其实隐含了super()和调用普通代码块。静态相关的代码块，属性初始化，在类加载时，就执行完毕，因此是优先于构造器和普通代码块执行的。
-
+5. 构造器的最前面其实隐含了`super()`和调用普通代码块。静态相关的代码块，属性初始化，在类加载时，就执行完毕，因此是优先于构造器和普通代码块执行的。
 6. 我们看一下创建一个子类时（继承关系），他们的静态代码块，静态属性初始化，普通代码块，普通属性初始化，构造方法的调用顺序如下：
    1. 父类的静态代码块和静态属性（优先级一样，按定义顺序执行）
    2. 子类的静态代码块和静态属性（优先级一样，按定义顺序执行）
@@ -8610,7 +8867,45 @@ class A {
    4. 父类的构造方法
    5. 子类的普通代码块和普通属性初始化（优先级一样，按定义顺序执行）
    6. 子类的构造方法
-7. 静态代码块只能直接调用静态成员（静态属性和静态方法），普通代码块可以调用任意成员。
+7. **静态代码块只能直接调用静态成员（静态属性和静态方法），普通代码块可以调用任意成员**。
+
+```java
+public class CodeBlockDetail03 {
+    public static void main(String[] args) {
+        new BBB();
+        /*
+        * AAA的普通代码块
+        * AAA()被调用
+          BBB的普通代码块
+          BBB()被调用
+          * */
+    }
+}
+
+class AAA {
+    {
+        System.out.println("AAA的普通代码块");
+    }
+
+    public AAA() {
+        //super();//隐藏
+        //调用本类的普通代码块
+        System.out.println("AAA()被调用");
+    }
+}
+
+class BBB extends AAA {
+    {
+        System.out.println("BBB的普通代码块");
+    }
+
+    public BBB() {
+        //super();//隐藏
+        //调用本类的普通代码块
+        System.out.println("BBB()被调用");
+    }
+}
+```
 
 #### 小结
 
@@ -8662,32 +8957,6 @@ class A04 {//父类
         System.out.println("A04的构造方法");//7
     }
 }
-
-class C04 {
-    private int n1 = 100;
-    private static int n2 = 200;
-
-    public void m1() {
-    }
-
-    private static void m2() {
-    }
-
-    static {
-        //静态代码块，只能调用静态成员
-        System.out.println(n2);
-        m2();
-    }
-
-    {
-        //普通代码块，可以使用任意成员
-        System.out.println(n1);
-        System.out.println(n2);
-        m1();
-        m2();
-    }
-}
-
 class B04 extends A04 {//B04继承了A04
     private static int n3 = getN3();
 
@@ -8710,6 +8979,30 @@ class B04 extends A04 {//B04继承了A04
 
     public B04() {
         System.out.println("B04的构造器");//9
+    }
+}
+class C04 {
+    private int n1 = 100;
+    private static int n2 = 200;
+
+    public void m1() {
+    }
+
+    private static void m2() {
+    }
+
+    static {
+        //静态代码块，只能调用静态成员
+        System.out.println(n2);
+        m2();
+    }
+
+    {
+        //普通代码块，可以使用任意成员
+        System.out.println(n1);
+        System.out.println(n2);
+        m1();
+        m2();
     }
 }
 ```
@@ -8757,10 +9050,12 @@ class Test {
 
 ### 什么是单例模式
 
-1. 所谓类的单例设计模式，就是采取一定的方法保证在整个的软件系统种，对某个类只能存在一个对象实例，并且该类只提供一个取得其对象实例的方法
+1. 所谓类的单例设计模式，就是采取一定的方法保证在整个的软件系统中，对某个类只能存在一个对象实例，并且该类只提供一个取得其对象实例的方法
 2. 单例设计模式有两种方式：
    1. 饿汉式
    2. 懒汉式
+
+### 饿汉式
 
 饿汉式步骤：
 
@@ -8813,6 +9108,8 @@ class Girlfriend {
 }
 ```
 
+### 懒汉式
+
 ```java
 public class SingleTon02 {
     public static void main(String[] args) {
@@ -8864,9 +9161,9 @@ class Cat {
 饿汉式VS懒汉式
 
 1. 二者最主要的区别在于创建对象的**时机**不同：饿汉式是在类加载就创建了对象实例，而懒汉式是在使用时才创建。
-2. 饿汉式不存在线程安全问题，懒汉式存在线程安全问题。
+2. **饿汉式不存在线程安全问题，懒汉式存在线程安全问题**。
 3. 饿汉式存在资源浪费的可能。因为如果程序员一个对象实例都没有使用，那么饿汉式创建的对象就浪费了，懒汉式是使用时才创建，就不存在这个问题。
-4. 在javaSE标准类种，`java.lang.Runtime`就是经典的单例模式。
+4. 在`javaSE`标准类种，`java.lang.Runtime`就是经典的单例模式。
 
 ## 抽象类
 
@@ -8888,14 +9185,14 @@ class Cat {
 
 ### 抽象类使用注意和细节
 
-1. 抽象类不能被实例化
-2. 抽象类不一定要包含abstract方法。也就是说，抽象类可以没有abstract方法
-3. 一旦包含了abstract方法，则这个类必须声明为abstract
-4. abstract只能**修饰类和方法**，不能修饰属性和其他的。
+1. **抽象类不能被实例化**。
+2. 抽象类不一定要包含`abstract`方法。也就是说，抽象类可以没有`abstract`方法
+3. 一旦包含了`abstract`方法，则这个类必须声明为`abstract`。
+4. `abstract`**只能修饰类和方法**，不能修饰属性和其他的。
 5. 抽象类可以有任意成员[抽象类本质还是类]，比如：非抽象方法、构造器、静态属性等
-6. 抽象方法不能有主体，即不能实现
-7. 如果一个类继承了抽象类，则它必须实现抽线类的所有抽线方法，除非它自己也声明为abstract类。
-8. 抽象方法不能使用private、final和static来修饰，因为这些关键字都是和重写相违背。
+6. 抽象方法不能有主体，即不能实现。
+7. 如果一个类继承了抽象类，则它必须实现抽线类的所有抽象方法，除非它自己也声明为`abstract`类。
+8. 抽象方法不能使用`private、final`和`static`来修饰，因为这些关键字都是和重写相违背。
 
 ### 练习
 
@@ -8907,79 +9204,63 @@ public class AbstractExercise01 {
         m1.work();
         CommonEmployee james = new CommonEmployee("james", 02, 9000);
         james.work();
-
-
     }
 }
-
-abstract class Employee {
+abstract class Employee {//抽象类
     //三个属性
     private String name;
     private int id;
     private double salary;
-
+    //构造器
     public Employee(String name, int id, double salary) {
         this.name = name;
         this.id = id;
         this.salary = salary;
     }
-
+    //抽象方法
     abstract void work();
-
+    //普通方法
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
-
     public double getSalary() {
         return salary;
     }
-
     public void setSalary(double salary) {
         this.salary = salary;
     }
 }
-
 class Manager extends Employee {
     //奖金属性
     private double bonus;
-
     public double getBonus() {
         return bonus;
     }
-
     public void setBonus(double bonus) {
         this.bonus = bonus;
     }
-
-    public Manager(String name, int id, double salary) {
+    public Manager(String name, int id, double salary) {//构造器
         super(name, id, salary);
         this.bonus = bonus;
-
     }
-
     @Override
     void work() {
         System.out.println("经理：" + getName() + "正在工作");
     }
 }
-
 class CommonEmployee extends Employee {
     public CommonEmployee(String name, int id, double salary) {
         super(name, id, salary);
     }
-
     @Override
     void work() {
         System.out.println("普通员工：" + getName() + "正在工作");
@@ -9055,7 +9336,7 @@ public interface UsbInteface {//接口
 }
 public class Computer {
     //编写一个方法
-    public void work(UsbInteface usbInteface) {
+    public void work(UsbInteface usbInteface) {//UsbInteface usbInteface = new Phone();
         //通过接口调用方法
         usbInteface.start();
         usbInteface.stop();
@@ -9118,7 +9399,6 @@ public class Interface02 {
 interface AInterface02{
     //属性
     public int n1=10;
-
     //写方法
     //在接口中，抽象方法，可以省略abstract关键字
     public void hi();
@@ -9187,19 +9467,19 @@ public class OracleDB implements DBInterface {
 
 ### 注意事项和细节
 
-1. 接口不能被实例化
+1. 接口不能被实例化。
 
 2. 接口中所有的方法是`public`方法，接口中抽象方法，可以不用`abstract`修饰
 
    `void aaa();<====>abstract void aaa();`
 
-3. 一个普通类实现接口，就必须将该接口的所有方法都实现。（alt+enter快速实现）
+3. 一个普通类实现接口，就必须将该接口的所有方法都实现。（`alt+enter`快速实现）
 
 4. 抽象类实现接口，可以不用实现接口的方法。
 
 5. 一个类同时可以实现多个接口。
 
-6. 接口中的属性，只能是final的，而且是`public static final`修饰符。
+6. 接口中的属性，只能是`final`的，而且是`public static final`修饰符。
 
    `int a = 1;`实际上是`public static final int a = 1;`必须初始化。
 
@@ -9209,7 +9489,7 @@ public class OracleDB implements DBInterface {
 
    `interface A extends B,C{}`
 
-9. 接口的修饰符只能是public和默认，这点和类的修饰符是一样的。
+9. 接口的修饰符只能是`public`和默认，这点和类的修饰符是一样的。
 
 ```java
 public class InterfaceDetail01 {
@@ -9237,6 +9517,7 @@ class Cat implements IA{
     }
 }
 abstract class Tiger implements IA{}
+//===================================
 public class InterfaceDetail02 {
     public static void main(String[] args) {
         //接口中属性是public static final
@@ -9356,12 +9637,12 @@ class LittleMonkey extends Monkey implements Fishable, Birdable {
 
 1. 接口和继承解决的问题不同
 
-   1. 继承的价值主要在于：解决代码的复用性和可维护性。
-   2. 几口的加载主要在于：设计，设计好各种规范（方法），让其他类去实现这些方法
+   1. 继承的价值主要在于：解决代码的**复用性和可维护性**。
+   2. 接口的价值主要在于：设计，设计好各种规范（方法），让其他类去实现这些方法
 
 2. 接口比继承更加灵活
 
-   接口比继承更加灵活，继承是满足is-a的关系，而接口只需满足like-a的关系。
+   接口比继承更加灵活，继承是满足`is-a`的关系，而接口只需满足`like-a`的关系。
 
 3. 接口在一定程度上实现代码解耦（接口规范性+动态绑定）
 
@@ -9390,7 +9671,7 @@ public class InterfacePolyArr {
     }
 }
 
-interface Usb {
+interface Usb {//接口
     void work();
 }
 
@@ -9428,6 +9709,16 @@ public class InterfacePolyPass {
         IH ih = new Teacher();
     }
 }
+
+interface IH {
+
+}
+
+interface IG extends IH {
+}
+
+class Teacher implements IG {
+}
 ```
 
 ```java
@@ -9451,7 +9742,7 @@ class CE02 extends BE02 implements AE02 {
         //可以明确的指定 x
         //访问接口的 x 就使用 A.x
         //访问父类的 x 就使用 super.x
-        System.out.println(AE02.x + " " + super.x);
+        System.out.println(AE02.x + " " + super.x);//0 1
     }
 
     public static void main(String[] args) {
@@ -9464,7 +9755,7 @@ class CE02 extends BE02 implements AE02 {
 
 ### 基本介绍
 
-一个类的内部又完整的嵌套了另一个类结构。被嵌套的类型称为内部类(inner class)，嵌套其他类的类称为外部类(outer class)。是我们类的第五大成员（属性、方法、构造器、代码块、内部类），内部类最大的特点就是可以直接访问私有属性，并且可以体现类与类之间的包含关系。
+一个类的内部又完整的嵌套了另一个类结构。被嵌套的类型称为内部类(`inner class`)，嵌套其他类的类称为外部类(`outer class`)。是我们类的第五大成员（属性、方法、构造器、代码块、内部类），内部类最大的特点就是可以直接访问私有属性，并且可以体现类与类之间的包含关系。
 
 ### 基本语法
 
@@ -9515,21 +9806,21 @@ class Outer {//外部类
 
 ### 内部类的分类
 
-定义在外部类局部位置上（比如方法内）：
+定义在外部类**局部**位置上（比如方法内）：
 
 1. 局部内部类（有类名）
 2. 匿名内部类（没有类名，重点!!!!!!）
 
-定义在外部类的成员位置上
+定义在外部类的**成员**位置上
 
-1. 成员内部类（没有static修饰）
-2. 静态内部类（使用static修饰）
+1. 成员内部类（没有`static`修饰）
+2. 静态内部类（使用`static`修饰）
 
 #### 局部内部类的使用
 
 说明：局部内部类是定义在外部类的局部位置，比如方法中，并且有类名。
 
-1. 可以直接访问外部类的所有成员，包含私有的。
+1. 可以直接访问**外部类的所有成员，包含私有的**。
 
 2. 不能添加访问修饰符，因为它的地位就是一个局部变量。局部变量是不能用修饰符的。但是可以使用`final`修饰符，因为局部变量也可以使用`final`。
 
@@ -9541,7 +9832,7 @@ class Outer {//外部类
 
 6. 外部其他类---不能访问---->局部内部类（因为 局部内部类地位是一个局部变量）
 
-7. 如果外部类和局部内部类的成员重名时，默认遵循就近原则，如果想访问外部类的成员，则可以使用（外部类名.this.成员）去访问。
+7. 如果外部类和局部内部类的成员重名时，默认遵循就近原则，如果想访问外部类的成员，则可以使用（`外部类名.this.成员`）去访问。
 
    `System.out.println("外部类的n2="+外部类名.this.n2);`
 
@@ -9563,7 +9854,7 @@ class Outer02 {//外部类
     }//私有方法
 
     public void m1() {//方法
-        //局部内部类是定义正在外部类的局部位置，通常在方法中。
+        //局部内部类是定义在外部类的局部位置，通常在方法中。
         //不能添加访问修饰符。但是可以使用final修饰符，
         //作用域：仅仅在定义它的方法或代码块中。
         /* final*/
@@ -9577,7 +9868,7 @@ class Outer02 {//外部类
                 //如果外部类和局部内部类的成员重名时，默认遵循就近原则，
                 //如果想访问外部类的成员，
                 //则可以使用（外部类名.this.成员）去访问。
-                System.out.println("n1：" + n1+"外部类n1="+Outer02.this.n1);
+                 System.out.println("局部内部类n1：" + n1+"外部类n1="+Outer02.this.n1);//局部内部类n1：800外部类n1=100
                 //Outer02.this外部类的对象，即哪个对象调用了m1，Outer02.this就是哪个对象
                 System.out.println("Outer02.this hashCode()="+Outer02.this.hashCode());///Outer02.this hashCode()=460141958
                 m2();//Outer02
@@ -9648,7 +9939,7 @@ class Outer02 {//外部类
                    System.out.println("老虎在叫...");
                }
            };
-           System.out.println("tiger的运行类型=" + tiger.getClass());
+           System.out.println("tiger的运行类型=" + tiger.getClass());//class com.basic.www.chapter10.innerclass_.Outer03$1
            tiger.cry();
            tiger.cry();
            tiger.cry();
@@ -9672,8 +9963,8 @@ class Outer02 {//外部类
                    System.out.println("匿名内部类重写了test方法");
                }
            };
-           System.out.println("father的运行类型=" + father.getClass());//Outer03$2
-           father.test();
+           System.out.println("father的运行类型=" + father.getClass());//class com.basic.www.chapter10.innerclass_.Outer03$2
+           father.test();//匿名内部类重写了test方法
            /*
             * 基于抽象类的匿名内部类
             * */
@@ -9723,7 +10014,7 @@ class Outer02 {//外部类
 
 2. 匿名内部类的语法比较奇特，因为匿名内部类即是一个类的定义，同时它本身也是一个对象，因此从语法上看，它既有定义类的特征，也有创建对象的特征，因此可以调用匿名内部类方法。
 
-3. 可以直接访问外部类的所有成语那，包含私有的。
+3. 可以直接访问外部类的所有成员，包含私有的。
 
 4. 不能添加访问修饰符，因为它的地位就是一个局部变量。
 
@@ -9758,9 +10049,9 @@ class Outer04 {
 
             @Override
             public void hi() {
-                System.out.println("匿名内部类重写了hi方法 n1=" + n1);
+                System.out.println("匿名内部类重写了hi方法 n1=" + n1);//88
                 //Outer04.this就是调用 f1的 对象
-                System.out.println("外部类的 n1=" + Outer04.this.n1);
+                System.out.println("外部类的 n1=" + Outer04.this.n1);//99
             }
         };
         p.hi();//动态绑定
@@ -9800,14 +10091,14 @@ class Person {//类
 public class InnerClassExercise01 {
     public static void main(String[] args) {
         //匿名内部类当作实参直接传递。
-        /*f1(new IB(){
+        f1(new IC(){
             @Override
             public void show() {
                 System.out.println("匿名内部类当作实参直接传递");
             }
-        });*/
+        });
         //传统方式
-        f1(new ID());
+        //f1(new ID());
     }
 
     //静态方法，形参时接口类型
@@ -14927,9 +15218,207 @@ class User {
 }
 ```
 
-
-
 # 第17章 多线程基础
+
+## 线程相关概念
+
+### 程序（Program）
+
+是为完成特定任务、用某种语言编写的一组指令的集合。（就是我们写的代码）
+
+### 进程
+
+1. 进程是指运行中的程序，比如我们使用QQ，就启动了一个程序，操作系统就会为该进程分配内存空间。当我们使用迅雷，又启动了一个进程，操作系统将为迅雷分配新的内存空间。
+2. 进程是程序的一次执行过程，或是正在运行的一个进程。是动态过程：有它自身的产生、存在和消亡的过程。
+
+### 什么是线程
+
+1. 线程由进程创建的，是进程的一个实体
+2. 一个进程可以拥有多个线程。
+
+### 其他相关概念
+
+1. 单线程：同一个时刻，只允许执行一个线程。
+
+2. 多线程：同一个时刻，可以执行多个线程，比如：一个qq进程，可以同时打开多个聊天窗口，一个迅雷进程，可以同时下载多个文件。
+
+3. 并发：同一个时刻，多个任务交替执行，造成一种“貌似同时”的错觉，简单的说，单核cpu实现的多任务就是并发。
+
+   ![image-20230314144726801](JavaGrammar.assets/image-20230314144726801.png)
+
+4. 并行：同一个时刻，多个任务同时执行。多核cpu可以实现并行。并发和并行
+
+   ![image-20230314145648218](JavaGrammar.assets/image-20230314145648218.png)
+
+## 线程基本使用
+
+### 创建线程的两种方式
+
+在`java`中线程来使用有两种方法：
+
+1. 继承`Thread`类，重写`run`方法。
+2. 实现`Runnable`接口，重写`run`方法。
+
+![image-20230314151130550](JavaGrammar.assets/image-20230314151130550.png)
+
+#### 线程应用案例1-继承Thread类
+
+使用Jconsole监控线程执行情况。
+
+![image-20230314161151222](JavaGrammar.assets/image-20230314161151222.png)
+
+![image-20230314161515070](JavaGrammar.assets/image-20230314161515070.png)
+
+```java
+public class Thread01 {
+    public static void main(String[] args) throws InterruptedException {
+        //通过继承Tread类创建线程
+        //创建Cat对象，可以当作线程使用
+        Cat cat = new Cat();
+        /*
+        * 1、
+        public synchronized void start() {
+            start0();
+        }
+        2、
+        * start0();是本地方法，是JVM调用，底层是C/C++实现
+        * 真正实现多线程的效果，是start0（），而不是run方法
+        private native void start0();
+         */
+        cat.start();//启动线程---->最终会执行Cat的run方法
+
+        //cat.run();//run方法就是一个普通方法，并没有真正的启动一个线程，就会把run方法执行完毕才向下执行
+        //当main线程启动一个子线程 Thread-0，主线程不会阻塞，会继续执行。
+        //这时，主线程和子线程是交替执行。
+        System.out.println("主线程继续执行" + Thread.currentThread().getName());//名字main
+        for (int i = 0; i < 60; i++) {
+            System.out.println("主线程 i" + i);
+            //让主线程休眠
+            Thread.sleep(1000);
+        }
+
+    }
+}
+/*
+* 1、当一个类继承了Thread类，该类就可以当作线程使用
+* 2、会重写run方法，写上自己的业务代码
+* 3、Thread类实现了Runnable接口的run方法
+    @Override
+    public void run() {
+        if (target != null) {
+            target.run();
+        }
+    }
+*/
+
+class Cat extends Thread {
+    @Override
+    public void run() {//重写Thread的run方法，写上自己的业务逻辑
+
+        int times = 0;
+        while (true) {
+            //开启一个线程，该线程每隔1秒。在控制台输出“喵喵，我是小猫咪”
+            System.out.println("喵喵，我是小猫咪" + (++times) + "\t线程名=" + Thread.currentThread().getName());
+            //让该线程休眠1秒
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (times == 80) {
+                //当times 到80 就退出while循环，线程也就退出
+                break;
+            }
+        }
+    }
+}
+```
+
+![image-20230314165026497](JavaGrammar.assets/image-20230314165026497.png)
+
+`start()`方法调用`start0()`方法后，该线程并不一定会立马执行，只是将线程变成了可允许状态。具体什么时候执行，取决于`cpu`，由`cpu`统一调度。
+
+#### 线程应用-实现Runnable接口
+
+1. `java`是单继承的，在某些情况下一个类可能已经继承了某个父类，这时再用继承`Thread`类方法来创建线程显然不可能了。
+2. `java`设计者们提供了另外一个方式创建线程，就是通过实现`Runnable`接口来创建线程。
+3. 这里底层使用了设计模式（代理模式）。
+
+```java
+public class Thread02 {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        //dog.start();
+        //这里不能调用start
+        //创建Thread对象，把dog对象（实现Runnable），放入Thread
+        Thread thread = new Thread(dog);
+        thread.start();
+
+
+        Tiger tiget = new Tiger();
+        ThreadProxy threadProxy = new ThreadProxy(tiger);
+        threadProxy.start();
+
+    }
+}
+
+class Animal {
+}
+
+class Tiger extends Animal implements Runnable {
+
+    @Override
+    public void run() {
+        System.out.println("老虎叫。。。");
+    }
+}
+
+//线程代理类，模拟了一个极简的Thread类
+class ThreadProxy implements Runnable {//可以把Proxy类当作ThreadProxy
+    private Runnable target = null;//属性，类型是Runnable
+
+    @Override
+    public void run() {
+        if (target != null) {
+            target.run();//动态绑定（运行乐星Tiger）
+        }
+    }
+
+    public ThreadProxy(Runnable target) {
+        this.target = target;
+    }
+
+    public void start() {
+        start0();//这个方法是真正实现多线程的方法
+    }
+
+    public void start0() {
+        run();
+    }
+}
+
+//通过实现接口Runnable来开发线程
+class Dog implements Runnable {
+    int count = 0;
+
+    @Override
+    public void run() {
+        while (true) {
+            System.out.println("火锅在叫。。。" + (++count) + Thread.currentThread().getName());
+
+            //休眠1秒
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (count == 10) {
+                break;
+            }
+        }
+    }
+}
+```
 
 
 
