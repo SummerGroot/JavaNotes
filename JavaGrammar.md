@@ -15420,6 +15420,314 @@ class Dog implements Runnable {
 }
 ```
 
+### 线程使用——多线程执行
+
+```java
+public class Thread03 {
+    public static void main(String[] args) {
+        //main线程启动两个子线程
+        T1 t1 = new T1();
+        T2 t2 = new T2();
+        Thread thread1 = new Thread(t1);//第一个线程
+        Thread thread2 = new Thread(t2);//第二个线程
+        thread1.start();
+        thread2.start();
+    }
+}
+
+class T1 implements Runnable {
+    int count = 0;
+
+    @Override
+    public void run() {
+        while (true) {
+            //每隔1秒钟输出“hello world”，输出10次
+            System.out.println("hello world" + (++count) + "\t" + Thread.currentThread().getName());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (count == 10) {
+                break;
+            }
+        }
+    }
+}
+
+class T2 implements Runnable {
+    int count = 0;
+
+    @Override
+    public void run() {
+        while (true) {
+            //每隔1秒钟输出“hi”，输出5次
+            System.out.println("hi" + (++count) + "\t" + Thread.currentThread().getName());
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if (count == 5) {
+                break;
+            }
+        }
+    }
+}
+```
+
+### 线程如何理解
+
+![image-20230316093516512](JavaGrammar.assets/image-20230316093516512.png)
+
+![image-20230316093939699](JavaGrammar.assets/image-20230316093939699.png)
+
+### 继承Thread VS 实现Runnable的区别
+
+1. 从`java`的设计来看，通过继承`Thread`或者实现`Runnable`接口来创建线程本质上没有区别，从jdk帮助文档我们可以看到Thread类本身就实现了`Runnable`接口。start()---->start0()
+2. 实现`Runnable`接口方式跟家适合多个线程共享一个资源的情况，并且避免了单继承的限制。
+
+```java
+public class SellTicket {
+    public static void main(String[] args) {
+        //测试
+        /*SellTicket01 sellTicket01 = new SellTicket01();
+        SellTicket01 sellTicket02 = new SellTicket01();
+        SellTicket01 sellTicket03 = new SellTicket01();
+        sellTicket01.start();//启动售票线程
+        sellTicket02.start();
+        sellTicket03.start();*/
+        System.out.println("===使用接口的方式来售票===");
+        SellTicket02 sellTicket02 = new SellTicket02();
+        new Thread(sellTicket02).start();//第1个线程
+        new Thread(sellTicket02).start();//第2个线程
+        new Thread(sellTicket02).start();//第3个线程
+
+
+    }
+}
+
+//使用Thread方式
+class SellTicket01 extends Thread {
+    //模拟三个售票窗口100，分别使用Thread和实现Runnable方式
+    //使用多线程，模拟三个窗口同时售票100张
+    private static int ticketNum = 100;//让多个线程共享ticketNum
+
+    @Override
+    public void run() {
+        while (true) {
+            //三个线程同时进入就会出现超卖
+            if (ticketNum <= 0) {
+                System.out.println("票已售罄");
+                break;
+            }
+            //休眠50毫秒,模拟
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("窗口\t" + Thread.currentThread().getName() + "售出一张票" + "\t剩余票数" + (--ticketNum));
+        }
+    }
+}
+//实现接口的方式
+class SellTicket02 implements Runnable {
+    private int ticketNum = 100;//让多个线程共享ticketNum
+    @Override
+    public void run() {
+        while(true){
+            if(ticketNum <= 0){
+                System.out.println("票已售罄,欢迎下次再来！！！");
+                break;
+            }
+            //休眠50毫秒
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("窗口\t" + Thread.currentThread().getName() + "售出一张票" + "\t剩余票数" + (--ticketNum));
+        }
+    }
+}
+```
+
+## 线程终止
+
+### 基本说明
+
+1. 当线程完成任务时，会自动退出。
+2. 还可以通过**使用变量**来控制`run`方法退出的方式停止线程，即通知方式。
+
+```java
+public class ThreadExit {
+    public static void main(String[] args) {
+        //启动一个线程t，要求在main线程中去停止线程t。
+        T t1 = new T();
+        t1.start();
+        //希望mian线程去控制t1线程的终止，必须可以修改loop变量
+        //让t1退出run方法，从而终止t1线程->通知方式
+        //让main线程休眠10秒，再通知t1线程退出
+        System.out.println("main线程休眠5秒");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        t1.setLoop(false);
+        System.out.println(Thread.currentThread().getName() + "线程退出");
+    }
+}
+
+class T extends Thread {
+    int count = 0;
+    //设置一个控制变量
+    private boolean loop = true;
+
+    @Override
+    public void run() {
+        while (loop) {
+            try {
+                Thread.sleep(50);//让线程休眠50毫秒
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(Thread.currentThread().getName() + "\t线程运行中" + (++count));
+        }
+    }
+
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+}
+```
+
+## 线程常用方法
+
+| 方法          | 描述                                                         |
+| ------------- | ------------------------------------------------------------ |
+| `setName`     | 设置线程名称，使之与参数`name`相同                           |
+| `getName`     | 返回该线程的名称                                             |
+| `start`       | 使该线程开始执行；`Java`虚拟机底层调用该线程的`start()`方法  |
+| `run`         | 调用线程对象run方法                                          |
+| `setPriority` | 更改线程的优先级                                             |
+| `getPriority` | 获取线程的优先级                                             |
+| `sleep`       | 在指定的毫秒数内让当前正在执行的线程休眠（暂停执行）         |
+| `interrupt`   | 中断线程                                                     |
+| `yield`       | 线程的礼让。让出`cpu`，让其他线程执行，但礼让的时间不确定，所以也不一定礼让成功。 |
+| `join`        | 线程的插队。插队的线程一旦插队成功，则肯定先执行完插入的线程所有的任务。 |
+
+![image-20230316164118346](JavaGrammar.assets/image-20230316164118346.png)
+
+### 注意事项和细节
+
+1. `start`底层会创建新的线程，调用`run`，`run`就是一个简单的方法调用，不会启动新线程。
+
+2. 线程优先级的范围。
+
+   | 类型         | 描述                                            |
+   | ------------ | ----------------------------------------------- |
+   | `static int` | ``MAX_PRIORITY` `线程可以拥有的最大优先级。  10 |
+   | `static int` | ``MIN_PRIORITY` `线程可以拥有的最小优先级。 1   |
+   | `static int` | ``NORM_PRIORITY` `分配给线程的默认优先级。  5   |
+
+3. `Interrupt`中断线程，但并没有真正的结束线程。所以一般用于中断正在休眠线程。
+
+4. `sleep`：线程的静态方法，使当前线程休眠。
+
+
+```java
+public class ThreadMethod01 {
+    public static void main(String[] args) {
+        //测试相关方法
+        T t = new T();
+        t.setName("summer");
+        t.setPriority(Thread.MIN_PRIORITY);
+        t.start();//启动子线程
+
+        //main线程打印5个hi，然后就中断子线程的休眠
+        for (int i = 0; i < 5; i++) {
+            try {
+                Thread.sleep(1000);//休眠1秒
+                System.out.println("hi" + i);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println(t.getName() + "\t线程优先级=" + t.getPriority());//summer	线程优先级=1
+        t.interrupt();//当执行到这里时就会中断t线程的休眠
+    }
+}
+
+class T extends Thread {//自定义的线程类 继承了Thread
+
+    @Override
+    public void run() {
+        while (true) {
+            for (int i = 0; i < 100; i++) {
+                //Thread.currentThread().getName()获取当前线程的名称
+                System.out.println(Thread.currentThread().getName() + "吃包子~~~~" + i);
+            }
+            try {
+                System.out.println(Thread.currentThread().getName() + "休眠中~~~~");
+                Thread.sleep(20000);//休眠20秒
+            } catch (InterruptedException e) {
+                //当线程执行到一个interrupt方法时，就会catch一个异常，可以加入自己的业务代码
+                //InterruptedException是铺货一个中断异常
+                System.out.println(Thread.currentThread().getName() + "被interrupt了");
+            }
+        }
+    }
+}
+```
+
+```java
+public class ThreadMethod02 {
+    public static void main(String[] args) {
+        /*
+         * mian线程创建一个子线程，每隔1秒输出hello，输出20次，主线程每隔1秒，输出hi，输出20次。
+         * 要求：两个线程同时执行，当主线程输出5次后，就让子线程运行完毕，主线再执行*/
+        T2 t2 = new T2();
+        t2.start();
+        for (int i = 0; i < 20; i++) {
+            try {
+                Thread.sleep(1000);
+                System.out.println(Thread.currentThread().getName() + "线程输出第" + i + "个\thi");
+                if (i == 5) {
+                    System.out.println("主线程让子线程先输出");
+                    //join线程插队，一定成功
+                    //t2.join();//相当于让t2线程先执行
+                    Thread.yield(); //yield礼让，不一定成功
+                    System.out.println("子线程输出完毕，主线程接着输出");
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
+
+class T2 extends Thread {
+    @Override
+    public void run() {
+        for (int i = 0; i < 20; i++) {
+            try {
+                Thread.sleep(1000);//休眠1秒
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(Thread.currentThread().getName() + "线程输出第" + i + "个\thello");
+        }
+    }
+}
+```
+
+### 练习
+
+```java
+```
+
 
 
 # 第19章 IO流
