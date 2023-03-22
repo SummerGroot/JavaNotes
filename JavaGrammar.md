@@ -15085,8 +15085,8 @@ class CC extends BB {
 
 ### 基本介绍
 
-1. JUnit是一个Java语言的单元测试框架。
-2. 多数Java的开发环境都已经继承了JUnit作为单元测试的工具
+1. `JUnit`是一个`Java`语言的单元测试框架。
+2. 多数Java的开发环境都已经继承了`JUnit`作为单元测试的工具
 
 ```java
 public class JUnit_ {
@@ -15726,7 +15726,185 @@ class T2 extends Thread {
 ### 练习
 
 ```java
+public class ThreadMethodExercise {
+    public static void main(String[] args) throws InterruptedException {
+        /*
+         * 1、主线程每隔1秒，输出hi，一共10次
+         * 2、当输出到hi 5时，启动子线程（要求实现Runnable），每隔1秒输出hello，等该线程输出10次hello后，退出
+         * 3、主线程继续输出hi，直到主线程退出
+         */
+        //创建子线程
+        Thread t3 = new Thread(new T3());
+        for (int i = 0; i < 10; i++) {
+            System.out.println(Thread.currentThread().getName() + i + "\t次hi");
+            Thread.sleep(1000);
+            if (i == 5) {
+                //主线程输出了5次hi，让子线程输出
+                System.out.println("主线程让子线程输出");
+                t3.start();//启动子线程 输出hello
+                t3.join();//立即t3子线程插入到主线程，让t3先执行
+                System.out.println("子线程输出完毕");
+            }
+        }
+    }
+}
+
+class T3 implements Runnable {
+    @Override
+    public void run() {
+        //子线程输出10次hello
+        for (int i = 0; i < 10; i++) {
+            System.out.println(Thread.currentThread().getName() + i + "\t次hello");
+            //休眠1秒
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
 ```
+
+### 用户线程和守护线程
+
+1. 用户线程：也叫工作线程，当线程的任务执行完或通知方式结束。
+2. 守护线程：一般是为工作线程服务的，当所有的用户线程结束，守护线程自动结束。
+3. 常见的守护线程：垃圾回收机制。
+
+```java
+public class ThreadMethod03 {
+    public static void main(String[] args) {
+        MyDaemonTread myDaemonTread = new MyDaemonTread();
+        //希望当主线程结束后，子线程可以自动退出
+        //把子线程设为守护线程
+        //先设置为守护线程，再启动
+        myDaemonTread.setDaemon(true);
+        myDaemonTread.start();
+        for (int i = 0; i < 10; i++) {//main主线程
+            System.out.println("宝强不知青" + i);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+}
+
+class MyDaemonTread extends Thread {
+    @Override
+    public void run() {
+        for (; ; ) {//无限循环
+            try {
+                Thread.sleep(50);//休眠50毫秒
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("pgone&马蓉在开房");
+        }
+    }
+}
+```
+
+## 线程的生命周期
+
+### JDK中用Thread.State枚举表示了线程的几种状态
+
+| 状态            | 描述                                                         |
+| --------------- | ------------------------------------------------------------ |
+| `NEW`           | 尚未启动的线程处于此状态。                                   |
+| `RUNNABLE`      | 在Java虚拟机中执行的线程处于此状态。                         |
+| `BLOCKED`       | 被阻塞等待监视器锁定的线程处于此状态。                       |
+| `WAITNG`        | 正在等待另一个线程执行特定动作的线程处于此状态。             |
+| `TIMED_WAITING` | 正在等待另一个线程执行动作达到指定等待时间的线程处于此状态。 |
+| `TERMINATED`    | 已退出的线程处于此状态。                                     |
+
+![image-20230322161629234](JavaGrammar.assets/image-20230322161629234.png)
+
+```java
+public class ThreadState_ {
+    public static void main(String[] args) {
+        T t = new T();
+        System.out.println(t.getName() + "\t状态\t" + t.getState());
+        t.start();
+        while (Thread.State.TERMINATED != t.getState()) {//t线程没有终止就打印
+            System.out.println(t.getName() + "\t状态\t" + t.getState());
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        System.out.println(t.getName() + "\t状态\t" + t.getState());
+    }
+}
+
+//线程状态
+class T extends Thread {
+    @Override
+    public void run() {
+        while (true) {
+            for (int i = 0; i < 10; i++) {
+                System.out.println("hi" + i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            break;
+        }
+    }
+}
+```
+
+## 线程同步
+
+### Synchronized
+
+#### 线程同步机制
+
+1. 在多线程编程在，一些敏感数据不允许被多个线程同时访问，此时就是用同步访问技术，保证数据在任何同一时刻，最多有一个线程访问，以保证数据的完整性。
+2. 线程同步，即当有一个线程在对内存进行操作时，其他线程都不可以对这个内存地址进行操作，知道该线程完成操作，其他线程才能对该内存地址进行操作。
+
+#### 同步具体方法-Synchronized
+
+1. 同步代码块
+
+   ```java
+   synchronized(对象){//得到对象的锁，才能操作同步代码
+       //需要被同步代码;
+   }
+   ```
+
+2. synchronized还可以放在方法声明中，表示整个方法-为同步方法
+
+   ```java
+   public synchronized void m(String name){
+       //需要被同步的代码
+   }
+   ```
+
+   
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
