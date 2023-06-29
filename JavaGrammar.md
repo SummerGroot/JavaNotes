@@ -15838,8 +15838,8 @@ class Fish<T, R> {
 
 1. `List<Object> list = new ArrayList<String>();`   //错误！！！
 2. `<?>`：支持任意泛型类型。
-3. `<? extends A>`：支持A类以及A类的子类，规定了泛型的上限。
-4. `<? super A>`：支持A类以及A类的父类，不限于直接父类，规定了泛型的下限。
+3. `<? extends A>`：支持`A`类以及`A`类的子类，规定了泛型的上限。
+4. `<? super A>`：支持`A`类以及`A`类的父类，不限于直接父类，规定了泛型的下限。
 
 ```java
 public class GenericExtends {
@@ -16069,7 +16069,7 @@ class User {
 
 1. 线程由进程创建的，是进程的一个实体。
 2. 一个进程可以拥有多个线程。
-3. 是进程的子任务，是CPU调度和分派的基本单位，实现了进程内部的并发。
+3. 是进程的子任务，是`CPU`调度和分派的基本单位，实现了进程内部的并发。
 
 ### 其他相关概念
 
@@ -16117,7 +16117,7 @@ public class Thread01 {
         }
         2、
         * start0();是本地方法，是JVM调用，底层是C/C++实现
-        * 真正实现多线程的效果，是start0（），而不是run方法
+        * 真正实现多线程的效果，是start0（），而不是run()方法
         private native void start0();
          */
         cat.start();//启动线程---->最终会执行Cat的run方法
@@ -16206,6 +16206,7 @@ public class Thread02 {
 
     }
 }
+
 
 class Animal {
 }
@@ -16459,11 +16460,11 @@ class T extends Thread {
 | `setName`     | 设置线程名称，使之与参数`name`相同                           |
 | `getName`     | 返回该线程的名称                                             |
 | `start`       | 使该线程开始执行；`Java`虚拟机底层调用该线程的`start()`方法  |
-| `run`         | 调用线程对象run方法                                          |
+| `run`         | 调用线程对象`run`方法                                        |
 | `setPriority` | 更改线程的优先级                                             |
 | `getPriority` | 获取线程的优先级                                             |
 | `sleep`       | 在指定的毫秒数内让当前正在执行的线程休眠（暂停执行）         |
-| `interrupt`   | 中断线程                                                     |
+| `interrupt`   | 中断线程休眠                                                 |
 | `yield`       | 线程的礼让。让出`cpu`，让其他线程执行，但礼让的时间不确定，所以也不一定礼让成功。 |
 | `join`        | 线程的插队。插队的线程一旦插队成功，则肯定先执行完插入的线程所有的任务。 |
 
@@ -16481,7 +16482,7 @@ class T extends Thread {
    | `static int` | ``MIN_PRIORITY` `线程可以拥有的最小优先级。 1   |
    | `static int` | ``NORM_PRIORITY` `分配给线程的默认优先级。  5   |
 
-3. `Interrupt`中断线程，但并没有真正的结束线程。所以一般用于中断正在休眠线程。
+3. `Interrupt`中断线程，但并没有真正的结束线程。所以一般**用于中断正在休眠线程**。
 
 4. `sleep`：线程的静态方法，使当前线程休眠。
 
@@ -16658,18 +16659,59 @@ class MyDaemonTread extends Thread {
 
 ## 线程的生命周期
 
+操作系统线程主要由以下三个状态：
+
+- 就绪状态(`Ready`)：线程正在等待使用`CPU`，经调度程序调用之后可进入`Running`状态。
+- 执行状态(`Running`)：线程正在使用`CPU`。
+- 等待状态(`Waiting`)：线程经过等待事件的调用或正在等待其他资源(如`I/O`)。
+
 ### JDK中用Thread.State枚举表示了线程的几种状态
+
+```java
+public enum State{
+    NEW,
+    RUNNABLE,
+    BLOCKED,
+    WAITING,
+    TIMED_WAITING,
+    TERMINATED;
+}
+```
 
 | 状态            | 描述                                                         |
 | --------------- | ------------------------------------------------------------ |
 | `NEW`           | 尚未启动的线程处于此状态。                                   |
 | `RUNNABLE`      | 在`Java`虚拟机中执行的线程处于此状态。                       |
 | `BLOCKED`       | 被阻塞等待监视器锁定的线程处于此状态。                       |
-| `WAITNG`        | 正在等待另一个线程执行特定动作的线程处于此状态。             |
-| `TIMED_WAITING` | 正在等待另一个线程执行动作达到指定等待时间的线程处于此状态。 |
-| `TERMINATED`    | 已退出的线程处于此状态。                                     |
+| `WAITNG`        | 正在等待另一个线程执行特定动作的线程处于此状态。（等待状态。处于等待状态的线程变成RUNNABLE状态需要其他线程唤醒） |
+| `TIMED_WAITING` | 正在等待另一个线程执行动作达到指定等待时间的线程处于此状态。(超时等待状态。线程等待一个具体的时间，时间到后会被自动唤醒) |
+| `TERMINATED`    | 已退出的线程处于此状态。(终止状态。此时线程已执行完毕)       |
 
 ![image-20230322161629234](JavaGrammar.assets/image-20230322161629234.png)
+
+#### NEW
+
+处于`new`状态的线程此时尚未启动。指的是没有调用`Tread`实例的`start()`方法。
+
+#### RANNABLE
+
+表示当前线程正在运行中。处于RUNNABLE状态的线程在java虚拟机中运行，也有可能在等待CPU分配资源。
+
+#### BLOCKED
+
+阻塞状态。处于Blocked状态的线程正等待锁的释放进入同步区。
+
+#### WAITING
+
+等待状态。处于等待状态的线程变成RUNNABLE状态需要其他线程唤醒。
+
+#### TIMED_TAITING
+
+超时等待状态。线程等待一个具体的时间，时间到后会被自动唤醒。
+
+#### TERMINATED
+
+终止状态。此时线程已执行完毕。
 
 ```java
 public class ThreadState_ {
@@ -16708,13 +16750,17 @@ class T extends Thread {
 }
 ```
 
+### BLOCKED与RUNNABLE状态的转换
+
+处于BLOCKED状态的线程是因为在等待锁的释放。
+
 ## 线程同步
 
 ## Synchronized
 
 ### 线程同步机制
 
-1. 在多线程编程在，一些敏感数据不允许被多个线程同时访问，此时就是用同步访问技术，保证数据在任何同一时刻，最多有一个线程访问，以保证数据的完整性。
+1. 在多线程编程，一些敏感数据不允许被多个线程同时访问，此时就是用同步访问技术，保证数据在任何同一时刻，最多有一个线程访问，以保证数据的完整性。
 2. 线程同步，即当有一个线程在对内存进行操作时，其他线程都不可以对这个内存地址进行操作，知道该线程完成操作，其他线程才能对该内存地址进行操作。
 
 ### 同步具体方法-Synchronized
@@ -16754,8 +16800,6 @@ public class SellTicket {
         new Thread(sellTicket03).start();//第1个线程
         new Thread(sellTicket03).start();//第2个线程
         new Thread(sellTicket03).start();//第3个线程
-
-
     }
 }
 
@@ -16844,7 +16888,7 @@ class SellTicket02 implements Runnable {
 ### 基本介绍
 
 1. `Java`在`Java`语言中，引入了对象互斥锁的概念，来保证共享数据操作的完整性。
-2. 每个对象都对应于一个可称为“互斥锁”的标记，这个标记用来保证在任一时刻，只能有一个线程访问该对象。
+2. 每个对象都对应于一个可称为“互斥锁”的标记，这个标记用来**保证在任一时刻，只能有一个线程访问该对象**。
 3. 关键字`synchronized`来与对象的互斥锁联系。当某个对象用`synchronized`修饰时，表明该对象在任一时刻只能由一个线程访问。
 4. 同步的局限性：导致程序的执行效率要降低。
 5. 同步方法（非静态的）的锁可以是`this`，也可以是其他对象（要求是同一个对象）。
@@ -16857,12 +16901,10 @@ public class SellTicket {
         new Thread(sellTicket03).start();//第1个线程
         new Thread(sellTicket03).start();//第2个线程
         new Thread(sellTicket03).start();//第3个线程
-
-
     }
 }
 
-//实现接口的方式,使用synchronized实现贤臣同步
+//实现接口的方式,使用synchronized实现线程同步
 class SellTicket03 implements Runnable {
     private int ticketNum = 100;//让多个线程共享ticketNum
     private boolean loop = true;//控制run方法变量
@@ -16910,8 +16952,8 @@ class SellTicket03 implements Runnable {
 
 ### 注意事项和细节
 
-1. 同步方法如果没有使用static修饰：默认锁对象为this。
-2. 如果方法使用static修饰，默认锁对象：当前类.class。
+1. 同步方法如果没有使用`static`修饰：默认锁对象为`this`。
+2. 如果方法使用`static`修饰，默认锁对象：当前`类.class`。
 3. 实现的落地步骤：
    1. 需要分析上锁的代码。
    2. 选择**同步代码块**或同步方法。
@@ -16981,13 +17023,13 @@ class DeadLockDemo extends Thread {
 
 2. 当前线程在同步代码块、同步方法中遇到`break`、`return`。
 
-   案例：没有正常的完事，经理叫他出来该bug，不得已出来。
+   案例：没有正常的完事，经理叫他出来该`bug`，不得已出来。
 
 3. 当前线程在同步代码块、同步方法中出现了未处理的`Error`或`Exception`，导致异常结束。
 
    案例：没有正常的完事，发现忘带纸，不得已出来。
 
-4. 当前线程在同步代码块、同步方法中执行了线程对象的wait()方法，当前线程暂停，并释放锁。
+4. 当前线程在同步代码块、同步方法中执行了线程对象的`wait()`方法，当前线程暂停，并释放锁。
 
    案例：没有正常完事，觉得需要酝酿下，所以出来等会再进去。
 
@@ -17110,7 +17152,7 @@ public class FileCreate {
     //方式1：new File(String pathname)//根据路径创建一个File对象
     @Test
     public void create01(){
-        String filePath = "G:\\Notes\\Java\\JavaNotes\\file_\\news01.txt";//设置路径
+        String filePath = "G:\\Notes\\Java\\JavaNotes\\file_\\news01.txt";//设置绝对路径
         File file = new File(filePath);//创建File对象
         try {
             file.createNewFile();
@@ -17138,9 +17180,8 @@ public class FileCreate {
     //方式3：new File(String parent,String child)//根据父目录+子路径构建
     @Test
     public void create03(){
-        String parentPath = "G:\\Notes\\Java\\JavaNotes\\file_\\";
         String filePath = "news03.txt";
-        File file = new File(parentPath, filePath);
+        File file = new File("G:\\Notes\\Java\\JavaNotes\\file_\\", filePath);
         try {
             file.createNewFile();
             System.out.println("创建成功");
@@ -17267,8 +17308,8 @@ public class Directory_ {
 
 1. 按照**流的方向**分类：
    1. 以内存作为参照物：
-      1. 往内存中去：叫做输入(`Input`)。或者叫读(`Read`)。
-      2. 从内存中出来：叫做输出(`Output`)。或者叫写(`Write`)。
+      1. 往内存(胃)中去：叫做输入(`Input`)。或者叫读(`Read`)。
+      2. 从内存(胃)中出来：叫做输出(`Output`)。或者叫写(`Write`)。
 2. 按操作数据单位不同分为：
    1. 字节流（`8bit`）（二进制文件，无损操作）。
    2. 字符流（按字符，对应几个字节？跟文件编码有关）（文本文件）。
@@ -17309,7 +17350,7 @@ public class Directory_ {
 
 ![image-20230323152946297](JavaGrammar.assets/image-20230323152946297.png)
 
-### FileInputStream
+#### FileInputStream
 
 | 构造器                                  | 描述                                                         |
 | --------------------------------------- | ------------------------------------------------------------ |
@@ -17330,8 +17371,6 @@ public class FileInputStream_ {
     public static void main(String[] args) {
         //字节输入流，文件---->程序
     }
-
-
     /*
     * read（）单个字节的读取，效率比较低
     * 使用read(byte[] b)优化
@@ -17395,14 +17434,14 @@ public class FileInputStream_ {
 }
 ```
 
-### FileOutputStream
+#### FileOutputStream
 
 ![image-20230323161442324](JavaGrammar.assets/image-20230323161442324.png)
 
 | 构造器                                           | 描述                                                         |
 | ------------------------------------------------ | ------------------------------------------------------------ |
 | `FileOutputStream(File file)`                    | 创建文件输出流以写入由指定的 `File`对象表示的文件。          |
-| `FileOutputStream(File file,  boolean append)`   | 创建文件输出流以写入由指定的 `File`对象表示的文件。          |
+| `FileOutputStream(File file,  boolean append)`   | 创建文件输出流以写入由指定的 `File`对象表示的文件，追加不是覆盖。 |
 | `FileOutputStream(FileDescriptor fdObj)`         | 创建文件输出流以写入指定的文件描述符，表示与文件系统中实际文件的现有连接。 |
 | `FileOutputStream(String name)`                  | 创建文件输出流以指定的名称写入文件。                         |
 | `FileOutputStream(String name,  boolean append)` | 创建文件输出流以指定的名称写入文件。                         |
@@ -17598,7 +17637,7 @@ public class FileReader_ {
 | `write(string)`                    | 写入整个字符串。                 |
 | `write(string,off,len)`            | 写入字符串的指定部分。           |
 
-相关API：`String`类，`toCharArray`：将`String`转换成`char[]`。
+相关`API`：`String`类，`toCharArray`：将`String`转换成`char[]`。
 
 **注意**：`FileWriter`使用后，必须要关闭(`close`)或刷新(`flush`)，否则写入不到指定的文件！
 
@@ -17758,7 +17797,7 @@ public class BufferedReader_ {
             }
             /*
              * 1、bufferedReader.readLine();按行读取文件
-             * 2、当放回null时，表示文件读取完毕*/
+             * 2、当返回null时，表示文件读取完毕*/
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {
@@ -18201,6 +18240,19 @@ public class PrintWriter_ {
 ### 应用
 
 ```java
+public class Properties01 {
+    public static void main(String[] args) throws IOException {
+        //读取mysql.properties文件，并得到相应数据
+        BufferedReader br = new BufferedReader(new FileReader("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\mysql.properties"));
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            //System.out.println(line);
+            String[] split = line.split("=");//split 字符串切割
+            System.out.println(split[0] + "值是：" + split[1]);
+        }
+        br.close();
+    }
+}
 //使用Properties类完成对mysql.properties的读取
 public class Properties02 {
     public static void main(String[] args) throws IOException {
@@ -18237,14 +18289,26 @@ public class Properties03 {
         properties.setProperty("pwd","88888");
     }
 }
+public class Properties04 {
+    public static void main(String[] args) {
 
-//使用Properties类完成mysql.properties的读取，并修改某个key-value
+    }
 
+    @Test
+    public void m1() throws IOException {
+        //使用Properties类完成mysql.properties的读取，并修改某个key-value
+        //创建Proterties对象
+        Properties properties = new Properties();
+        //加载配置文件
+        properties.load(new FileReader("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\mysql.properties"));
+        //将数据显示
+        properties.list(System.out);
+        //修改键值对
+        properties.setProperty("user", "summer");
+        System.out.println("用户名=" + properties.getProperty("user"));
+    }
+}
 ```
-
-
-
-
 
 # 第21章 网络编程
 
@@ -18269,18 +18333,18 @@ public class Properties03 {
 ### IP地址
 
 1. 概念：用于唯一表示网络中的每台计算机/主机。
-2. 查看ip地址：`ipconfig`。
+2. 查看`ip`地址：`ipconfig`。
 3. `ip`地址的表示形式：点分十进制 `xx.xx.xx.xx`。
 4. 每一个十进制数的范围：`0~255`。
-   1. IPV4表示：4个字节（32位）表示，一个字节的范围是0~255。
-   2. IPV6表示：128位表示一个地址，16个字节。
+   1. `IPV4`表示：4个字节（32位）表示，一个字节的范围是0~255。
+   2. `IPV6`表示：128位表示一个地址，16个字节。
 5. `ip`地址的组成=网络地址+主机地址，比如:`192.168.161.69`。
 6. `ipv6`是互联网工程任务组设计的用于替代`ipv4`的下一代`ip`协议，其地址数量号称可以为全世界的每一粒沙子编上一个地址。
 7. 由于`ipv4`最大的问题在于网络地址资源有限，严重制约了互联网的应用和发展。`ipv6`的使用，不仅能解决网络地址资源数量的问题，而且也解决了多种接入设备连入互联网的障碍。
 
 ### ipv4地址分类
 
-特殊的：127.0.0.1表示本机地址。
+特殊的：`127.0.0.1`表示本机地址。
 
 ![image-20230406101312756](JavaGrammar.assets/image-20230406101312756.png)
 
@@ -18289,13 +18353,13 @@ public class Properties03 {
 ### 域名
 
 1. `www.google.com`
-2. 好处：为了方便记忆，解决记ip的困难。
-3. 概念：将ip地址映射成域名。HTTP协议
+2. 好处：为了方便记忆，解决记`ip`的困难。
+3. 概念：将`ip`地址映射成域名。`HTTP`协议
 
 ### 端口号
 
 1. 概念：用于表示计算机上某个特定的网络程序。
-2. 表示形式：以整数形式，范围`0~65535`2个字节表示端口[0~2^16-1]。
+2. 表示形式：以整数形式，范围`0~65535`2个字节表示端口[0~2^16-1^]。
 3. `0~1024`已经被占用(不要使用)，比如`ssh 22`,`ftp 21`,`smtp 25`,`http 80`
 4. 常见的网络程序端口号：
    1. tomcat:8080
@@ -18330,7 +18394,7 @@ public class Properties03 {
 #### UDP协议：用户数据协议
 
 1. 将数据、源、目的封装成数据包，不需要建立连接。
-2. 每个数据报的大小限制在64K内。不适合传输大量数据。
+2. 每个数据报的大小限制在`64K`内。不适合传输大量数据。
 3. 因无需连接，故是不可靠的。
 4. 发送数据结束时，无需释放资源（因为不是面向连接的），速度块。
 
@@ -18746,40 +18810,53 @@ public class UDPSenderB {
 }
 ```
 
-
-
 # 第23章 反射（reflection）
+
+正射：一般情况下，在使用某个类之前已经确定它是什么类了，直接用`new`关键字调用构造方法进行初始化，之后使用这个类的对象来进行操作。
+
+```java
+Car car = new Car();
+car.SetName("奔驰");
+```
 
 ## 反射机制
 
 1. 反射机制允许程序在执行期间借助于`ReflectionAPI`取得任何类的内部信息（比如成员变量，构造器，成员方法等），并能操作对象的属性及方法。反射在设计模式和框架底层都会用到。
-2. 加载完类之后，在堆中就产生了一个`Class`类型的对象（一个类只有一个`Class`对象），这个对象包含了类的完整结构信息。通过这个对象的到类的结构。这个对象就像一面镜子，透过这个镜子看到类的结构，所以，形象的称之为：反射。
+2. 加载完类之后，在堆中就产生了一个`Class`类型的对象（**一个类只有一个`Class`对象**），这个对象包含了类的完整结构信息。通过这个对象得到类的结构。这个对象就像一面镜子，透过这个镜子看到类的结构，所以，形象的称之为：反射。
+3. 通过`java`语言中的反射机制可以操作字节码文件(可以读和修改字节码文件)
 
 ```java
 public class ReflectionQuestion {
     public static void main(String[] args) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         //使用Propeties类，读写配置文件
         Properties properties = new Properties();
+        //加载配置文件键值对
         properties.load(new FileInputStream("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\re.properties"));
         String classfullpath = properties.getProperty("classfullpath");
         String method = properties.getProperty("method");
         //System.out.println(classfullpath);
         System.out.println("classfullpath=" + classfullpath);
+        //classfullpath=com.basic.www.chapter23.reflection_.question.Cat
         System.out.println("method=" + method);
+        //method=cry
+
         //反射机制
         //加载类，返回Class类型的对象cls
         Class cls = Class.forName(classfullpath);
         //通过cls得到你加载的类 com.basic.www.chapter23.reflection_.question.Cat 的对象实例
         Object o = cls.newInstance();
         System.out.println("o的运行类型是=" + o.getClass());
+        //o的运行类型是=class com.basic.www.chapter23.reflection_.question.Cat
+        
         //通过cls得到加载的类com.basic.www.chapter23.reflection_.question.Cat的methodName"hi"的方法对象
         //即：在反射中，可以把方法视为对象（万物皆对象）
         Method method1 = cls.getMethod(method);
         //通过method1调用方法,即通过方法对象调用方法
         method1.invoke(o);//invoke---调用
-        //传统方法对象.方法(),反射机制 方法.invoke(对象);
+        //传统调用方法对象.方法(),反射机制调用 方法.invoke(对象);
     }
 }
+
 //======================re.properties
 classfullpath=com.basic.www.chapter23.reflection_.question.Cat
 method=cry
@@ -18811,12 +18888,14 @@ method=cry
 
 这些类在`java.lang.reflection`
 
-| 类                              | 描述                                                  |
-| ------------------------------- | ----------------------------------------------------- |
-| `java.lang.Class`               | 代表一个类，`Class`对象表示某个类加载后在堆中的对象。 |
-| `java.lang.reflect.Method`      | 代表类的方法,Method对象表示某个类的方法               |
-| `java.lang.reflect.Field`       | 代表类的成员变量，`Field`对象表示某个类的成员变量     |
-| `java.lang.reflect.Constructor` | 代表类的构造方法，`Constructor`对象表示构造器         |
+| 类                              | 描述                                                         |
+| ------------------------------- | ------------------------------------------------------------ |
+| `java.lang.Class`               | 代表一个类，`Class`对象表示某个类加载后在堆中的对象。(代表整个字节码。代表一个类型，代表整个类。) |
+| `java.lang.reflect.Method`      | 代表类的方法,`Method`对象表示某个类的方法(代表字节码中的方法字节码。代表类中的方法。) |
+| `java.lang.reflect.Field`       | 代表类的成员变量，`Field`对象表示某个类的成员变量(代表字节码中的属性字节码。代表类中的成员变量（静态变量+实例变量）。) |
+| `java.lang.reflect.Constructor` | 代表类的构造方法，`Constructor`对象表示构造器(代表字节码中的构造方法字节码。代表类中的构造方法。) |
+
+注：必须先获得`Class`才能获取`Method`、`Constructor`、`Field`。
 
 ```java
 public class Reflection01 {
@@ -18831,12 +18910,16 @@ public class Reflection01 {
         System.out.println("method=" + method);
         //反射机制
         //加载类，返回Class类型的对象cls
+        //获取反射类的Class对象
+        //Class.forName("完整类名带包名")
         Class cls = Class.forName(classfullpath);
         //通过cls得到你加载的类 com.basic.www.chapter23.reflection_.question.Cat 的对象实例
         Object o = cls.newInstance();
+        //注：newInstance()方法内部实际上调用了无参构造器，必须无参构造器的存在才可以。
         System.out.println("o的运行类型是=" + o.getClass());
         //通过cls得到加载的类com.basic.www.chapter23.reflection_.question.Cat的methodName"hi"的方法对象
         //即：在反射中，可以把方法视为对象（万物皆对象）
+        //获取要调用的方法的Method对象
         Method method1 = cls.getMethod(method);
         //通过method1调用方法,即通过方法对象调用方法
         method1.invoke(o);//invoke---调用
@@ -18955,8 +19038,6 @@ public class Class01 {
 }
 ```
 
-
-
 ### Class类方法
 
 | 方法名                                                       | 备注                                                         |
@@ -19009,21 +19090,19 @@ public class Class02 {
 }
 ```
 
+### 获取Class类对象
 
-
-## 获取Class类对象
-
-1. 前提：已知一个类的全类名，且该类在类路径下，可通过`Class`类的静态方法`forName()`获取，可能抛出`ClassNotFoundException`；
+1. 前提：已知一个类的全类名，且该类在类路径下，可通过`Class`类的**静态方法**`forName()`获取，可能抛出`ClassNotFoundException`；
 
    应用场景：多用于配置文件，读取类全路径，加载类。
 
-2. 前提：若已知具体的类，通过类的`class`获取，该方式最为安全可靠，程序性能最高。
+2. 前提：若**已知具体的类**，通过类的`class`获取，该方式最为安全可靠，程序性能最高。
 
    应用场景：多用于参数传递，比如通过反射得到对应构造器对象。
 
-3. 前提：已知某个类的实例，调用该实例的`getClass()`方法获取`Class`对象。
+3. 前提：**已知某个类的实例**，调用该实例的`getClass()`方法获取`Class`对象。
 
-   应用场景：通过创建号的对象，获取`Class`对象
+   应用场景：通过创建好的对象，获取`Class`对象
 
 4. 其他方式
 
@@ -19031,11 +19110,11 @@ public class Class02 {
 
    `Class class4 = cl.loaderClass("类的全类名");`
 
-5. 基本数据(int,char,boolean,float,double,byte,long,short)按如下方式得到Class类对象
+5. 基本数据(`int,char,boolean,float,double,byte,long,short`)按如下方式得到`Class`类对象
 
    `Class cls = 基本数据类型.class;`
 
-6. 基本数据类型对应的包装类，可以通过.type得到Class类对象
+6. 基本数据类型对应的包装类，可以通过`包装类.type`得到`Class`类对象
 
    `Class cls = 包装类.TYPE;`
 
@@ -19079,17 +19158,17 @@ public class GetClass_ {
 
 
 
-## 哪些类型有Class对象
+### 哪些类型有Class对象
 
-### 如下类型有Class对象
+#### 如下类型有Class对象
 
 1. 外部类，成员内部类，静态内部类，局部内部类，匿名内部类。
-2. interface：接口。
+2. `interface`：接口。
 3. 数组
-4. enum：枚举
-5. annotation：注解
+4. `enum`：枚举
+5. `annotation`：注解
 6. 基本数据类型
-7. void
+7. `void`
 
 ```java
 public class AllTypeClass {
@@ -19135,7 +19214,7 @@ public class AllTypeClass {
 
 #### 加载(Loading)
 
-`JVM`在该阶段的主要目的时将字节码从不同的数据源（可能时`class`文件、也可能时`jar`包、甚至网络）转换为**二进制字节流**加载到内存中，并生成一个代表该类的`java.lang.Class`对象
+`JVM`在该阶段的主要目的是将字节码从不同的数据源（可能时`class`文件、也可能时`jar`包、甚至网络）转换为**二进制字节流**加载到内存中，并生成一个代表该类的`java.lang.Class`对象
 
 #### 连接(Linking)
 
@@ -19147,7 +19226,7 @@ public class AllTypeClass {
 
 ##### 准备Proparation
 
-1. JVM会在该阶段对静态变量，分配内存并默认初始化（对应数据类型的默认初始值，如0、0L、null、false等）。这些变量所使用的内存都将在方法却中进行分配。
+1. `JVM`会在该阶段对静态变量，分配内存并默认初始化（对应数据类型的默认初始值，如0、0L、null、false等）。这些变量所使用的内存都将在方法却中进行分配。
 
 ```java
 class A{
@@ -19173,6 +19252,39 @@ class A{
 1. 到初始化阶段，才真正开始执行类中定义的Java程序代码，此阶段是执行`<clinet>()`方法的过程。
 2. `<clinit>()`方法是由编译器按语句在源文件中出现的顺序，依次自动收集类中的所有**静态变量**的赋值动作和**静态代码块**中的语句，并进行合并。
 3. 虚拟机会保证一个类的`<clinit>()`方法在多线程环境中被正确地枷锁、同步，如果多个线程同时去初始化一个类，那么只会有一个线程去执行这个类的`<clinit>()`方法，其他线程都需要阻塞等待，值到活动线程执行`<clinit>()`方法完毕。
+
+```java
+public class ClassLoad02 {
+    public static void main(String[] args) throws ClassNotFoundException {
+        //类加载的初始化阶段
+        /*
+        * 1、加载B类，并生成B的class对象
+        * 2、连接 num=0
+        * 3、初始化
+        * clinit(){
+        * System.out.println("B的静态代码块被执行");
+          //num=300;
+        * num =100;
+        * }  合并
+        *
+        * 4、输出构造器*/
+        //new B();//类加载
+        System.out.println(B.num);//10，如果直接使用类的静态属性，也会导致类的加载
+        //加载类的时候，是有同步机制控制
+        Class<?> b = Class.forName("com.basic.www.chapter23.classload.B");
+    }
+}
+class B{
+    static{
+        System.out.println("B的静态代码块被执行");
+        num=300;
+    }
+    static int num =100;
+    public B(){
+        System.out.println("B的无参构造器被执行");
+    }
+}
+```
 
 ## 通过反射获取类的结构信息
 
@@ -19212,18 +19324,18 @@ class A{
 
 ### Java.lang.reflect.Constructor类
 
-| 方法                  | 描述                      |
-| --------------------- | ------------------------- |
-| `getModifiers()`      | 以int形式返回修饰符       |
-| `getName()`           | 返回构造器名（全类名）    |
-| `getParameterTypes()` | 以Class[]返回参数类型数组 |
+| 方法                  | 描述                        |
+| --------------------- | --------------------------- |
+| `getModifiers()`      | 以`int`形式返回修饰符       |
+| `getName()`           | 返回构造器名（全类名）      |
+| `getParameterTypes()` | 以`Class[]`返回参数类型数组 |
 
 ## 通过反射创建对象
 
 1. 方式一：调用类中的`public`修饰的无参构造器。
 2. 方式二：调用类中指定构造器。
 3. `Class`类相关方法
-   1. `newInstance`：调用类中的无参构造器，获取对应类的对象。
+   1. `newInstance()`：调用类中的无参构造器，获取对应类的对象。
    2. `getConstructor(Class...class)`：根据参数列表，获取对应的`public`构造器对象。
    3. `getDecalaredConstructor(Class...class)`：根据参数列表，获取对应的所有构造器对象。
 4. `Constructor`类相关方法
@@ -19238,7 +19350,7 @@ public class ReflectCreateInstance {
         Class<?> usercls = Class.forName("com.basic.www.chapter23.reflection_.User");
         //2、通过public的无参构造器创建实例
         Object o = usercls.newInstance();
-        System.out.println(o);
+        System.out.println(o);//User{age=10, name='summer'}
         //3、通过public的有参构造器创建实例
         /*
         constructor对象就是
@@ -19250,15 +19362,15 @@ public class ReflectCreateInstance {
         * 2、创建实例，并传入形参*/
         Constructor<?> constructor = usercls.getConstructor(String.class);
         Object o1 = constructor.newInstance("jack");
-        System.out.println(o1);
+        System.out.println(o1);//User{age=10, name='jack'}
         //4、通过private的有参构造器创建实例
         //得到private的构造器对象
         Constructor<?> constructor01 = usercls.getDeclaredConstructor(int.class, String.class);
         //创建实例
         constructor01.setAccessible(true);//爆破(暴力破解)，使用反射可以访问private构造器。
         Object o2 = constructor01.newInstance(99, "张三");
-        System.out.println(o2);
-        
+        System.out.println(o2);//User{age=99, name='张三'}
+
     }
 }
 class User{//User类
@@ -19348,7 +19460,7 @@ class Student {
 
 ### 访问方法
 
-1. 根据方法名和参数列表获取Method方法对象：`Method m = class.getDeclaredMehod(方法名,XX.class);`
+1. 根据方法名和参数列表获取`Method`方法对象：`Method m = class.getDeclaredMehod(方法名,XX.class);`
 2. 获取对象：`Object o = class.newInstance();`
 3. 爆破：`m.setAccessible(true);`
 4. 访问：`Object returnValue = n.invoke(o,实参列表);`
@@ -22035,46 +22147,496 @@ public class Jdbc01 {
 }
 ```
 
-## 获取数据连接5种方式
-
-### 方式1
+### 获取数据连接5种方式
 
 ```java
-//获取Driver实现类对象
-Driver driver = new Driver();
-String url="jdbc:mysql://localhost:3306/数据库名";
-Properties info = new Properties();
-info.setProperty("user","root");
-info.setProperty("password","123456");
-Connection conn = driver.connect(url,info);
-System.out.println(conn);
+public class JdbcConn {
+    //连接mysql的5种方式
+    @Test
+    //方式1
+    public void connect01() throws SQLException {
+        //创建driver对象
+        Driver driver = new Driver();
+        //
+        String url = "jdbc:mysql://localhost:3306/fxy_db02";
+        //将用户名和密码放到配置文件种Properties对象
+        Properties properties = new Properties();
+        //user 和 password 是写好了，后的值根据实际情况写
+        properties.setProperty("user", "root");//用户名
+        properties.setProperty("password", "123456");//密码
+        Connection connect = driver.connect(url, properties);
+        System.out.println(connect);
+    }
+
+    @Test
+    //方式2
+    public void connect02() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        //使用反射加载Driver类,动态加载，更加灵活，减少依赖性
+        Class<?> aClass = Class.forName("com.mysql.jdbc.Driver");
+        //创建Driver对象
+        Driver driver = (Driver) aClass.newInstance();
+        String url = "jdbc:mysql://localhost:3306/fxy_db02";
+        //将用户名和密码放到配置文件种Properties对象
+        Properties properties = new Properties();
+        //user 和 password 是写好了，后的值根据实际情况写
+        properties.setProperty("user", "root");//用户名
+        properties.setProperty("password", "123456");//密码
+        Connection connect = driver.connect(url, properties);
+        System.out.println("方式2=" + connect);
+    }
+
+    @Test
+    //方式3 DriverManager 替代 Driver
+    public void connect03() throws ClassNotFoundException, InstantiationException, IllegalAccessException, SQLException {
+        //使用反射加载Driver类
+        Class<?> aClass = Class.forName("com.mysql.jdbc.Driver");
+        //创建Driver对象
+        Driver driver = (Driver) aClass.newInstance();
+        //创建url  user password
+        String url = "jdbc:mysql://localhost:3306/fxy_db02";
+        String user = "root";
+        String password = "123456";
+        //注册Driver驱动
+        DriverManager.registerDriver(driver);
+        Connection connection = DriverManager.getConnection(url, user, password);
+        System.out.println("方式3 = " + connection);
+
+    }
+
+    @Test
+    //方式4 Class.forName()自动完成注册驱动
+    //这种方式推荐使用
+    public void connect04() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+        //使用反射得到Driver类
+        //在加载Driver类时，完成注册
+        /*
+        源码
+        static {  静态代码块，在类加载时，会执行一次
+            try {
+                DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+                //注册driver工作已经完成
+            } catch (SQLException var1) {
+                throw new RuntimeException("Can't register driver!");
+            }
+        }
+        */
+        Class<?> aClass = Class.forName("com.mysql.cj.jdbc.Driver");
+        //创建url  user password
+        String url = "jdbc:mysql://localhost:3306/fxy_db02";
+        String user = "root";
+        String password = "123456";
+        Connection connection = DriverManager.getConnection(url, user, password);
+        System.out.println("方式4 = " + connection);
+        /*
+         * 1、mysql驱动5.1.6可以无需Class.forName("com.mysq;.jdbc.Driver");
+         * 2、从jdk1.5以后使用jdbc4，不再需要显示调用class.forName()注册而是自动调用驱动
+         * jar包下META-INF\services\java.sql.Driver文本种的类名称去注册*/
+    }
+
+    @Test
+    //方式5:在方式4的基础上优化，增加配置文件，让连接mysql更加灵活
+    public void connect05() throws ClassNotFoundException, IOException, SQLException {
+        //通过Properties对象获取配置文件的信息
+        Properties properties = new Properties();
+        properties.load(new FileInputStream("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\com\\basic\\www\\chapter25\\jdbc\\myjdbc\\mysql.Properties"));
+        // 获取URL user password
+        String user = properties.getProperty("user");
+        String password = properties.getProperty("password");
+        String driver = properties.getProperty("driver");
+        String url = properties.getProperty("url");
+
+        //Class.forName(driver);
+
+        Connection connection = DriverManager.getConnection(url, user, password);
+        System.out.println("方式5=" + connection);
+
+    }
+
+}
 ```
 
-### 方式2
+## ResultSet[结果集]
+
+### 基本介绍
+
+1. 表示数据库结果集的数据表，通常通过执行查询数据库的语句生成。
+2. `ResultSet`对象保持一个光标指向其当前的数据行。最初，光标位于第一行之前。
+3. `next`方法将光标移动到下一行，并且由于在`ResultSet`对象种没有更多行时返回`false`，因此可以在`while`循环种使用循环遍历结果集。
+4. 表示数据库结果集的数据表，通常通过执行查询数据库的语句生成。
 
 ```java
-//方式1 会直接使用com.mysql.jdbc.Driver(),属于静态加载，灵活性差，依赖强。
-Class clazz = Class.forName("com.mysql.jdbc.Driver");
-Driver driver = clazz.newInstance();
-String url="jdbc:mysql://localhost:3306/数据库名";
-Properties info = new Properties();
-info.setProperty("user","root");
-info.setProperty("password","123456");
-Connection conn = driver.connect(url,info);
-System.out.println(conn);
+public class ResultSet_ {
+    //演示select语句返回Resultset
+    public static void main(String[] args) throws IOException, SQLException {
+        //通过Properties获取配置文件信息
+        Properties properties = new Properties();
+        properties.load(new FileInputStream("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\com\\basic\\www\\chapter25\\jdbc\\myjdbc\\mysql.Properties"));
+        // 获取URL user password
+        String user = properties.getProperty("user");
+        String password = properties.getProperty("password");
+        String driver = properties.getProperty("driver");
+        String url = properties.getProperty("url");
+        //注册驱动
+        //Class.forName(driver);
+        //得到连接
+        Connection connection = DriverManager.getConnection(url, user, password);
+
+        //得到statement
+        Statement statement = connection.createStatement();
+        //写sql语句
+        String sql = "select id,name,sex,borndate from actor";
+        //执行给定的SQL语句，该语句返回单个 ResultSet对象
+        /*
+        +----+-----------+-----+---------------------+--------------+
+        | id | name      | sex | borndate            | phone        |
+        +----+-----------+-----+---------------------+--------------+
+        |  1 | mary      | 女  | 1970-11-11 00:00:00 | 123456789123 |
+        |  2 | 刘德华    | 男  | 1970-12-12 00:00:00 | 11111        |
+        |  3 | jack      | 男  | 1990-11-11 00:00:00 | 22222        |
+        +----+-----------+-----+---------------------+--------------+
+        */
+        ResultSet resultSet = statement.executeQuery(sql);
+        //使用while循环取出数据
+        while (resultSet.next()) {//让光标向后移动，如果没有，则返回false
+            int id = resultSet.getInt(1);//获取该行的第1列数据
+            String name = resultSet.getString(2);
+            String sex = resultSet.getString(3);
+            Date date = resultSet.getDate(4);
+            System.out.println(id + "\t" + name + "\t" + sex + "\t" + date);
+        }
+
+
+        //关闭连接
+        resultSet.close();
+        statement.close();
+        connection.close();
+    }
+}
 ```
 
 
 
+## Statement
 
+### 基本介绍
 
+1. `Statement`对象用于执行静态`SQL`语句并返回其生成的结果的对象。
 
+2. 在连接建立后，需要对数据库进行访问，执行命名或是`SQL`语句，可以通过`Statement`[存在SQL注入]、`PreparedStatement`[预处理]、`CallableStatement`[存储过程]。
 
+3. `Statement`对象执行`SQL`语句，存在**`SQL`注入风险**。
 
+4. `SQL`注入是利用某些系统没有对用户输入的数据进行充分的检查，而在用户输入数据种注入非法的`SQL`语句段或命令，恶意攻击数据库。
 
+   ```sql
+   -- SQL 注入
+   -- 创建一张表
+   CREATE table `admin`(
+   	`name` VARCHAR(32) not NULL UNIQUE,
+   	`pwd`  VARCHAR(32) not NULL DEFAULT ""
+   ) CHARACTER set utf8;
+   INSERT INTO `admin` 
+   VALUES
+   ('tom','123');
+   -- 查寻
+   SELECT * FROM `admin`
+   WHERE `name` = 'tom' and pwd = '123'
+   -- 输入用户名 为 1'OR
+   -- 输入密码为 or '1' = '1'
+   SELECT * FROM `admin`
+   WHERE `name` = '1' OR'  and pwd = 'OR '1' ='1'
+   ```
 
+   ```java
+   public class Statement_ {
+       public static void main(String[] args) throws SQLException, IOException {
+   
+           Scanner scanner = new Scanner(System.in);
+           //用户输入
+           System.out.println("请输入管理名的名字：");
+           //让用户输入管理员名和密码
+           String admin_name = scanner.nextLine();//希望看到sql注入，使用nextline()  next() 接收到空额或''表示接收
+           //1' or
+           System.out.println("请输入管理员密码：");
+           String admin_pwd = scanner.nextLine();
+           //or '1' = '1 万能密码
+   
+   
+           //statement注入问题
+           //通过Properties获取配置文件信息
+           Properties properties = new Properties();
+           properties.load(new FileInputStream("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\com\\basic\\www\\chapter25\\jdbc\\myjdbc\\mysql.Properties"));
+           // 获取URL user password
+           String user = properties.getProperty("user");
+           String password = properties.getProperty("password");
+           String driver = properties.getProperty("driver");
+           String url = properties.getProperty("url");
+           //注册驱动
+           //Class.forName(driver);
+           //得到连接
+           Connection connection = DriverManager.getConnection(url, user, password);
+   
+           //得到statement
+           Statement statement = connection.createStatement();
+           //写sql语句
+           String sql = "select name,pwd from admin where name ='"
+                   + admin_name + "'  and pwd = '" + admin_pwd + "' ";
+           ResultSet resultSet = statement.executeQuery(sql);
+           if (resultSet.next()) {
+               //如果查询到一条记录，则说明该管理员存储
+               System.out.println("恭喜，登录成功");
+           } else {
+               System.out.println("登录失败！！！");
+           }
+           //关闭连接
+           resultSet.close();
+           statement.close();
+           connection.close();
+       }
+   }
+   ```
 
+5. 要防范`SQL`注入，只要用`PreparedStatement`(从`Statement`扩展而来)取代`Statement`就可以了。
 
+## PreparedStatement
+
+### 基本介绍
+
+1. ``PreparedStatement`执行的`SQL`语句中的参数用问号(?)来表示，调用`PreparedStatement`对象的`setXxxx()`方法来设置这些参数`.setXxx()`方法有两个参数，第一个参数是要设置的`SQL`语句中的参数的索引(从1开始)，第二个是设置`SQL`语句中的参数的值。
+2. 调用`executeQuery()`,返回`ResultSet`对象
+3. 调用`executeUpdate()`：执行更新，包括增、删、改，返回受影响行数
+
+### 预处理好处
+
+1. 不再使用`+`拼接`sql`语句，减少语法错误 。
+2. 有效的解决了`sql`注入问题。
+3. 大大减少了编译次数，效率较高。
+
+## 封装JDBCUtils
+
+在`jdbc`操作中，获取连接和释放资源是经常使用到，可以将其封装`JDBC`连接的工具类`JDBCUtils`
+
+```java
+public class JDBC_Utils {
+    //定义相关的属性，因为只需要一份
+    private static String user;//用户名
+    private static String pwd;//密码
+    private static String url;//url
+    private static String driver;//driver
+
+    //在static代码块去初始化
+    static {
+        try {
+            Properties properties = new Properties();
+            properties.load(new FileInputStream("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\com\\basic\\www\\chapter25\\jdbc\\myjdbc\\mysql.Properties"));
+            //读取相关的属性值
+            user = properties.getProperty("user");
+            pwd = properties.getProperty("password");
+            url = properties.getProperty("url");
+            driver = properties.getProperty("driver");
+        } catch (IOException e) {
+            //在实际开发中,将编译异常转成运行异常
+            //调用者可以捕获该异常，也可以选择默认处理该异常。
+            throw new RuntimeException(e);
+        }
+    }
+
+    //连接数据库，返回connection
+    public static Connection getConnection() {
+        try {
+            return DriverManager.getConnection(url, user, pwd);
+        } catch (SQLException e) {
+            //将编译异常转成运行异常
+            throw new RuntimeException(e);
+        }
+    }
+
+    //关闭相关资源
+    //1、ResultSet结果集
+    //2、Statement 或者 ProparedStatement
+    //3、connection
+    public static void close(ResultSet set, Statement statement, Connection connection) {
+        //判断是否为空
+        try {
+            if (set != null) {
+                set.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+```
+
+## 事务
+
+### 基本介绍
+
+1. `JDBC`程序中当一个`Connection`对象创建时，默认情况下是自动提交事务：每次执行一个`SQL`语句时，如果执行成功，就会向数据库自动提交，而不能回滚。
+2. `JDBC`程序中为了让多个和`SQL`语句作为一个整体执行，需要使用事务。
+3. 调用`Connection`的`setAutoCommit(false)`可以取消自动提交事务。
+4. 在所有的`SQL`语句都成功执行后，调用`commit(); `方法提交事务。
+5. 在其中某个操作失败或出现异常时，调用`rollback();` 方法回滚事务。
+
+### 应用
+
+经典的转账业务
+
+```java
+ public class Transaction_ {
+    @Test
+    //没使用事务
+    public void noTransaction() {
+        //操作转账
+        //得到连接
+        Connection connection = null;
+        //组织一个sql
+        String sql01 = "update account set balance= balance-100 where id = 1 ";
+        String sql02 = "update account set balance= balance+100 where id = 2 ";
+        PreparedStatement preparedStatement = null;
+        //创建ProparedStatement
+        try {
+            connection = JDBC_Utils.getConnection();//在默认情况下，connection对象默认自动提交
+            preparedStatement = connection.prepareStatement(sql01);
+            //执行
+            preparedStatement.executeUpdate();
+
+            int i = 1 / 0;//抛出异常
+            preparedStatement = connection.prepareStatement(sql02);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            //关闭资源
+            JDBC_Utils.close(null, preparedStatement, connection);
+        }
+    }
+
+    @Test
+    //使用事务
+    public void useTransaction() {
+        //操作转账
+        //得到连接
+        Connection connection = null;
+        //组织一个sql
+        String sql01 = "update account set balance= balance-100 where id = 1 ";
+        String sql02 = "update account set balance= balance+100 where id = 2 ";
+        PreparedStatement preparedStatement = null;
+        //创建ProparedStatement
+        try {
+            connection = JDBC_Utils.getConnection();
+            //将connection设置为不自动提交
+            connection.setAutoCommit(false);//开启事务
+            preparedStatement = connection.prepareStatement(sql01);
+            //执行
+            preparedStatement.executeUpdate();
+
+            //int i = 1 / 0;//抛出异常
+            preparedStatement = connection.prepareStatement(sql02);
+            preparedStatement.executeUpdate();
+            //这里提交
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("执行发生异常，撤销执行sql");
+            try {
+                //这里可以进行回滚，撤销执行的sql
+                connection.rollback();//默认回滚事务开始状态
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            throw new RuntimeException(e);
+        } finally {
+            //关闭资源
+            JDBC_Utils.close(null, preparedStatement, connection);
+        }
+    }
+
+}
+```
+
+## 批处理
+
+### 基本介绍
+
+1. 当需要成批插入或者更新记录。可以采用`Java`的批量更新机制，这一机制允许多条语句一次性提交给数据库批量处理。通常情况下比单独提交处理更有效率。
+2. `JDBC`的批量处理语句包括：
+   1. `addBatch()`：添加需要批量处理的`SQL`语句或参数。
+   2. `executeBatch()`：执行批量处理语句。
+   3. `clearBatch()`：清空批量处理的语句。
+3. `JDBC`连接`MySQL`时，如果要使用批量处理功能，请在`url`中加参数`?rewriteBatchedStatements=TRUE`
+4. 批处理往往和`PreparedStatement`一起搭配使用，既可以减少编译次数，又减少允许次数，效率大大提高。
+
+```java
+public class Batch01 {
+    @Test
+    //传统方法添加数据
+    public void nobatch() throws SQLException {
+        Connection connection = JDBC_Utils.getConnection();
+        String sql = "insert into admin02 values (null,?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        System.out.println("开始执行");
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 5000; i++) {
+            preparedStatement.setString(1, "jack" + i);
+            preparedStatement.setString(2, "666");
+            preparedStatement.executeUpdate();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("传统方式花费时间为：" + (end - start) + "毫秒");//1536毫秒
+        //关闭连接
+        JDBC_Utils.close(null, preparedStatement, connection);
+    }
+
+    @Test
+    //使用批量处理
+    public void useBatch() throws SQLException {
+        Connection connection = JDBC_Utils.getConnection();
+        String sql = "insert into admin02 values (null,?,?)";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        System.out.println("开始执行");
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 5000; i++) {
+            preparedStatement.setString(1, "jack" + i);
+            preparedStatement.setString(2, "666");
+            //将sql语句加入到批处理包中
+
+            preparedStatement.addBatch();
+            //当有1000条记录时，再批量执行
+            if ((i + 1) % 1000 == 0) {
+                //满1000条就批量执行
+                preparedStatement.executeBatch();
+                //清空一把
+                preparedStatement.clearBatch();
+            }
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("批量处理耗时为：" + (end - start) + "毫秒");
+        //关闭连接
+        JDBC_Utils.close(null, preparedStatement, connection);
+    }
+}
+```
+
+## 数据库连接池
+
+### 传统获取Connection问题分析
+
+1. 传统的`JDBC`数据库连接使用`DriverManager`来获取，每次向数据库建立连接的时候都要将`Connection`加载到内存中，再验证IP地址，用户名和密码(0.05s~1s)。需要数据库连接的时候，就向数据库要求一个，频繁的进行数据库连接操作将占用很多的系统资源，容易造成服务器崩溃。
+2. 每一次数据库连接，使用完后都得断开，如果程序出现异常而未能关闭，将导致数据库内存泄漏，最终将导致重启数据库。
+3. 传统获取连接的方式，不能控制创建的连接数量，如连接过多，也可能导致内存谢罗，MySQL崩溃。
+4. 可以采用数据连接池技术解决。
+
+### 数据库连接池基本介绍
+
+1. 预先在缓冲池中放入一定数量的连接，当需要建立数据库连接时，只需要从"缓冲池"中取出一个，使用完毕之后再放回。
+2. 数据库连接池负责分配、管理和释放数据库连接，它允许应用程序**重复使用**一个现有的数据库连接，而不是重新建立一个。
+3. 当应用程序向连接池请求的连接数超过最大连接数量时，这些请求将被加入到等待队列中。
 
 # 第27章 正则表达式
 
