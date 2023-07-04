@@ -22745,7 +22745,168 @@ public class C3P0_ {
 
 一个正则表达式，就是用某种模式去匹配字符串的一个公式。
 
+### 底层分析
 
+```java
+public class RegTheory {
+    public static void main(String[] args) {
+        //分析正则表达式的底层实现
+        String content = "1998Java是世界上使用最广泛的编程语言之一。" +
+                "Java最初由Sun Microsystems在1990年代开发，用于开发从Web应用程序到移动应用程序到批处理应用程序的所有内容。" +
+                "Java最初是一种纯粹的面向对象的语言，但现在已经发展成为一种多范例语言，可以高度适应任何情况。" +
+                "拥有庞大的开发人员社区和支持库，Java是开发几乎所有类型的应用程序的理想选择。" +
+                "Java是最初由开发James Gosling(詹姆斯·高斯林，他被称为Java编程语言之父)在Sun Microsystems公司（现已经被Oracle收购），" +
+                "并于1995年发布了作为Sun公司的一个核心组成部分Java平台。" +
+                "James Gosling(詹姆斯·高斯林)，Mike Sheridan(迈克·谢里丹)和Patrick Naughton(帕特里克·诺顿)于1991年6月启动了Java语言项目。" +
+                "Java最初是为交互式电视设计的，但在当时的数字有线电视行业来说太先进了。该语言最初是在James Gosling(詹姆斯·高斯林)办公室外的一棵橡树之后被称为Oak的。" +
+                "后来，该项目以Green命名，并最终从Java coffee(印度尼西亚的一种咖啡)重命名为Java。";
+        //目标：匹配所有四个数字
+        //1、\\d 表示一个任意的数字 0~9
+        //String regStr = "\\d\\d\\d\\d";
+        String regStr = "(\\d\\d)(\\d\\d)";
+        //什么时分组，比如：(\d\d)(\d\d)，正则表达式中有()，
+        //表示分组，第一个括号，表示第一组，第二个小括号表示第二组，以此类推
+        //2、创建模式对象[即正则表达式对象]
+        Pattern pattern = Pattern.compile(regStr);
+        //3、创建匹配器
+        //说明：创建匹配器matcher，按照正则表达式的规则，去匹配content字符串
+        Matcher matcher = pattern.matcher(content);
+        //4、开始匹配
+        /*
+        * matcher.find()完成的任务
+        * 1、根据指定的规则，定位满足规则的子字符串(比如1998)((19)(89))
+        * 2、找到后，将子字符串的开始索引记录到matcher对象的属性 int[] groups;
+        *   groups[0] = 0,把该子字符串的结束的索引+1的值记录到groups[1] = 4
+        *   如果是分组 记录1组()匹配的字符串groups[2]= 0 groups[3] = 2
+        *            记录2组()匹配的字符串groups[4]= 2 groups[5] = 4
+        *            如果有更多的分组  以此类推
+        *3、同时记录odLast的值为 子字符串结束的 索引+1的值即4，即下次执行find时，就从4开始匹配
+        *
+        * matcher.group(0)分析
+        *源码
+        public String group(int group) {
+        if (first < 0)
+            throw new IllegalStateException("No match found");
+        if (group < 0 || group > groupCount())
+            throw new IndexOutOfBoundsException("No group " + group);
+        if ((groups[group*2] == -1) || (groups[group*2+1] == -1))
+            return null;
+        return getSubSequence(groups[group * 2], groups[group * 2 + 1]).toString();
+        }
+        * 1、根据groups[0]=0 和 groups[1]=4 的记录的位置，从content开始截取子字符串返回
+        *  [0,4)
+        *如果再次执行find()，仍然按照上面的分析
+        * */
+        while (matcher.find()) {
+            //1、如果正则表达式有() 即分组
+            //2、取出匹配的字符串规则如下
+            //3、groups(0) 表示匹配到的子字符串
+            //4、groups(1) 表示匹配到的子字符串的第1组字串
+            //5、但是分组不能越界
+            System.out.println("找到：" + matcher.group(0));
+            System.out.println("第1组()匹配到的值=" + matcher.group(1));
+            System.out.println("第2组()匹配到的值=" + matcher.group(2));
+        }
+    }
+}
+```
+
+## 正则表达式语法
+
+### 元字符(Metacharacter)-转义号`\\ `
+
+说明：在使用正则表达式去检索某些特殊字符的时候，需要用到转义字符号，否则检索不到结果，甚至会报错。
+
+在`java`的正则表达式中，两个`\\`代表其他语言中的一个`\`
+
+需要用到转义符号的字符有：`.、*、+、()、$、/、\、?、[]、^、{}`
+
+```java
+public class RegExp02 {
+    public static void main(String[] args) {
+        //转义字符
+        //String content = "abc$(abc(123(";
+        String content = "xxx@qq.com";
+        //匹配(
+        //String regStr = "\\(";
+        String regStr = "\\.";
+        Pattern pattern = Pattern.compile(regStr);
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()) {
+            System.out.println("找到：" + matcher.group(0));
+        }
+    }
+}
+```
+
+
+
+### 限定符
+
+
+
+### 选择匹配符
+
+### 分组组合和反向引用符
+
+### 特殊字符
+
+### 字符匹配符
+
+| 符号  |                                                      | 示例           | 描述                                                 |
+| ----- | ---------------------------------------------------- | -------------- | ---------------------------------------------------- |
+| `[]`  | 可接收的字符列表                                     | `[cdefg]`      | `cdefg`中的任意1个字符                               |
+| `[^]` | 不可接收的字符列表                                   | `[^abc]`       | 除`abc`之外的任意1个字符，包括数字和特殊符号         |
+| `-`   | 连字符                                               | `A-Z`          | 任意单个大写字母                                     |
+| `.`   | 匹配除`\n`以外的任何字符                             | `a...b`        | 以a开头，b结尾，中间包括2个任意字符的长度为4的字符串 |
+| `\\d` | 匹配单个数字字符，相当于`[0~9]`                      | `\\d{3}{\\d}?` | 包含3个或4个数字的字符串                             |
+| `\\D` | 匹配单个非数字字符，相当于`[^0~9]`                   | `\\D(\\d)*`    | 以单个非数字字符开头，后接任意个数字字符串           |
+| `\\w` | 匹配单个数字、大小写字母字符，相当于`[0~9a~zA~Z]`    | `\\d{3}\\w{4}` | 以3个数字字符开头的长度为7的数字字母字符串           |
+| `\\W` | 匹配单个非数字、大小写字母字符，相当于`[^0~9a~zA~Z]` | `\\W+\\d{2}`   | 以至少1个非数字字母字符开头，2个数字字符结尾的字符串 |
+
+`java`正则表达式默认是区分字母大小写的，如何实现不区分大小写
+
+- `(?i)abc`：表示abc都不区分大小写。
+- `a(?i)bc`：表示bc不区分大小写。
+- `ab((?i)b)c`：表示只有b不区分大小写。
+- `Pattern pat = Pattern.compile(regExp,Pattern.CASE_INSENSITIVE);`
+
+```java
+public class RegExp03 {
+    public static void main(String[] args) {
+        //字符匹配符
+        String content = "a11c8abcABC";
+        //正则规则
+        //String regStr = "[a-z]";//匹配a-z之间任意一个字符
+        //String regStr = "[A-Z]";//匹配A-Z之间任意一个字符
+        String regStr = "abc";//匹配abc字符串[默认区分大小写]
+        //String regStr = "(?i)abc";//不区分大小写
+        //创建pattern 对象
+        Pattern pattern = Pattern.compile(regStr, Pattern.CASE_INSENSITIVE);//不区分大小写
+        //创建matcher对象
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()) {
+            System.out.println("找到：" + matcher.group(0));
+        }
+    }
+
+    @Test
+    public void test01() {
+        String content = "a11c8abcABC";
+        //String regExp = "[^a-z]";
+        String regExp = "[^a-z{2}]";
+        Pattern pattern = Pattern.compile(regExp);
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()) {
+            System.out.println("找到 ：" + matcher.group(0));
+        }
+    }
+}
+```
+
+
+
+### 定位符
 
 
 
