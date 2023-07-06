@@ -22649,6 +22649,8 @@ public class Batch01 {
 5. `BoneCP`数据库连接池，速度快。
 6. **`Druid`**（德鲁伊）是阿里提供的数据库连接池，集`DBCP`、`C3P0`、`Proxool`优点于一身的数据库连接池。
 
+#### C3P0 应用实例
+
 ```java
 public class C3P0_ {
     @Test
@@ -22736,6 +22738,117 @@ public class C3P0_ {
     </named-config>
 </c3p0-config>
 ```
+
+#### Druid(德鲁伊)应用实例
+
+```java
+public class Druid_ {
+    @Test
+    //测试Druid使用
+    public void testDruid() throws Exception {
+        //加入Druid jar
+        //加入配置文件，将该文件拷贝到项目的src目录下
+        //创建Properties对象
+        Properties properties = new Properties();
+        properties.load(new FileInputStream("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\druid.properties"));
+        //创建一个指定参数的数据库连接池 Druid连接池
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(properties);
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 5_000_000; i++) {
+            //拿到连接
+            Connection connection = dataSource.getConnection();
+            //关闭连接
+            connection.close();
+        }
+        long end = System.currentTimeMillis();
+        System.out.println("连接耗时" + (end - start) + "ms");//834ms
+
+    }
+}
+```
+
+#### JDBDUtils工具类改成Druid(德鲁伊)实现
+
+```java
+public class JDBCUtilsByDruid {
+    //基于Druid数据库连接池的工具类
+    private static DataSource ds;
+
+    //在静态代码块完成初始化
+    static {
+        Properties properties = new Properties();
+        try {
+            properties.load(new FileInputStream("G:\\IDEA\\JavaStudy\\JavaSE\\JavaBasic\\src\\com\\basic\\www\\chapter25\\jdbc\\myjdbc\\mysql.Properties"));
+            ds = DruidDataSourceFactory.createDataSource(properties);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    //编写getConnection方法
+    public static Connection getConnection() throws SQLException {
+        return ds.getConnection();
+    }
+
+    //关闭连接：数据库连接池技术中，close方法不是真的断掉连接
+    //而是把使用的Connection对象放回连接池
+    public static void close(ResultSet resultSet, Statement statement, Connection connection) {
+        try {
+            if (resultSet != null) {
+                resultSet.close();
+            }
+            if (statement != null) {
+                statement.close();
+            }
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+public class JDBCUtilsByDruid_Use {
+    @Test
+    public void testSelect() {
+        System.out.println("使用Druid方式完成");
+        //1、得到连接
+        Connection connection = null;
+        //2、组织一个sql
+        String sql = "select * from actor where id = ?";
+        PreparedStatement preparedStatement = null;
+        ResultSet set = null;
+        //3、创建PreparedStatement对象
+        try {
+            connection = JDBCUtilsByDruid.getConnection();
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, 5);
+            //执行，得到结果集
+            set = preparedStatement.executeQuery();
+            //遍历该结果集
+            while (set.next()) {
+                int id = set.getInt("id");
+                String name = set.getString("name");
+                String sex = set.getString("sex");
+                Date borndate = set.getDate("borndate");
+                String phone = set.getString("phone");
+                System.out.println(id + "\t" + name + "\t" + sex + "\t" + borndate + "\t" + phone);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            //关闭资源
+            JDBCUtilsByDruid.close(set, preparedStatement, connection);
+        }
+    }
+}
+```
+
+### Apache-DBUtils
+
+
+
+
 
 
 
