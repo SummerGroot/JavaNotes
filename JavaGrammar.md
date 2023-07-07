@@ -23015,9 +23015,9 @@ public class RegExp03 {
 }
 ```
 
-
-
 ### 定位符
+
+
 
 
 
@@ -23175,6 +23175,74 @@ public class Lambda02 {
 
 
 ## 函数式(Functional)接口
+
+1. 只包含一个抽象方法的接口，称为函数式接口。
+2. 可以通过`Lambda`表达式来创建该接口的对象。(若`Lambda`表达式抛出一个受检异常)，那么该异常需要在目标接口的抽象方法上进行声明。
+3. 可以在一个接口上使用`@FunctionalInterface`注解，这样可以检查它是否是一个函数式接口。同时`javadoc`也会包含一条声明，说明这个接口是一个函数式接口。
+4. 在`java.util.function`包下定义了`Java8`的丰富的函数式接口。
+
+### Java内置四大和兴函数式接口
+
+| 函数式接口                | 参数类型 | 返回类型  | 用途                                                         |
+| ------------------------- | -------- | --------- | ------------------------------------------------------------ |
+| `Consumer<T>`消费型接口   | `T`      | `void`    | 对类型为`T`的对象应用操作，包含方法，`void accept(T t)`      |
+| `Supplier<T>`供给型接口   | `null`   | `T`       | 返回类型为`T`的对象，包含方法，`T get()`                     |
+| `Function<T,R>`函数型接口 | `T`      | `R`       | 对类型为`T`的对象应用操作，并返回结果。结果是R类型的对象，包含方法，`R apply(T t)` |
+| `Predicate<T>`断定型接口  | `T`      | `boolean` | 确定类型为`T`的对象是否满足某约束，并返回`boolean`值，包含方法，`boolean test(T t)` |
+
+```java
+public class FunctionalInterfaceTest {
+    //java内置的四大和兴接口
+    //消费型 Consumer<T>
+    @Test
+    public void test01() {
+        happyTime(500, new Consumer<Double>() {
+            @Override
+            public void accept(Double aDouble) {
+                System.out.println("学习好，学习棒，奖励自己：" + aDouble);
+            }
+        });
+        System.out.println("===lambda方式===");
+        happyTime(1000, money -> System.out.println("学习好，学习棒，奖励自己：" + money));
+    }
+
+    public void happyTime(double money, Consumer<Double> con) {
+        con.accept(money);
+    }
+
+    //供给型 Supplier<T>
+    @Test
+    public void test02() {
+        List<String> list = Arrays.asList("成都", "重庆", "云南", "贵州");
+        List<String> filterStrs01 = filterString(list, new Predicate<String>() {
+            @Override
+            public boolean test(String s) {
+                return s.contains("成");
+            }
+        });
+        System.out.println(filterStrs01);
+        System.out.println("===lambda方式===");
+        List<String> filterStrs02 = filterString(list, s -> s.contains("重"));
+        System.out.println(filterStrs02);
+    }
+
+    //根据给定的规则去过滤集合中的字符串。
+    public List<String> filterString(List<String> list, Predicate<String> pre) {
+        ArrayList<String> filterList = new ArrayList<>();
+        for (String s : list) {
+            if (pre.test(s)) {
+                filterList.add(s);
+            }
+        }
+        return filterList;
+    }
+
+    //函数型 Function<T,R>
+    //断定型 Predicate<T>
+}
+```
+
+
 
 ## 方法引用与构造器引用
 
