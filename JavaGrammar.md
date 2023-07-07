@@ -22848,10 +22848,6 @@ public class JDBCUtilsByDruid_Use {
 
 
 
-
-
-
-
 # 第27章 正则表达式
 
 ## 介绍
@@ -23025,5 +23021,163 @@ public class RegExp03 {
 
 
 
+# Java8
+
+## Lambda 表达式
+
+`Lambda`是一个**匿名函数**，可以把`Lambda`表达式理解为是一段可以传递的代码(将代码像数据一样进行传递)。使用它可以写出更简洁、更灵活的代码。作为一种更紧凑的代码风格，使用`Java`的语言表达能力得到了提升。
+
+```java
+public class Lambda01 {
+    //Lambda表达式
+    @Test
+    public void test01() {
+        Runnable r01 = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("我爱中国！！！");
+            }
+        };
+        r01.run();
+        System.out.println("================================");
+        //-> lambda操作符
+        Runnable r02 = () -> System.out.println("我爱lambda");
+
+        r02.run();
+    }
+
+    @Test
+    public void test02() {
+        Comparator<Integer> com01 = new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return Integer.compare(o1, o2);
+            }
+        };
+        int compare01 = com01.compare(12, 21);
+        System.out.println(compare01);//-1
+        System.out.println("lambda表达式写法");
+        Comparator<Integer> com02 = (o1, o2) -> Integer.compare(o1, o2);
+        int compare02 = com02.compare(123, 21);
+        System.out.println(compare02);//-1
+        //方法引用
+        Comparator<Integer> com03 = Integer :: compare;
+        int compare03 = com02.compare(123, 21);
+        System.out.println(compare03);//-1
+    }
+}
+```
+
+### Lambda-6种方式
+
+```java
+public class Lambda02 {
+    //Lambda 的使用
+    //(o1, o2) -> Integer.compare(o1, o2);
+    //格式：
+    /*
+     * ->：Lambda操作符 箭头操作符
+     * 左边：Lambda形参列表（其实就是接口中的抽象方法的形参列表）
+     * 右边：Lambda体(就是重写方法的抽象方法的方法体)
+     * */
+    //Lambda 表达式的使用（6种情况）
+    /*
+    * 左边：Lambda形参列表的参数类型可以省略(类型推断)
+    * 如果Lambda形参列表只有一个参数，其一对()也可以省略
+    * 右边：Lambda体应该使用一对 {} 包裹
+    * 如果Lambda体只有一条执行语句(可能是return) 省略这一对{} 和return
+    * */
+    //Lambda本质：作为接口的实例
+    @Test
+    public void test01() {
+        //格式1：无参，无返回值
+        Runnable r01 = new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("我爱中国！！！");
+            }
+        };
+        r01.run();
+        System.out.println("================================");
+        //-> lambda操作符
+        Runnable r02 = () -> {
+            System.out.println("我爱lambda");
+        };
+        r02.run();
+    }
+
+    @Test
+    public void test02() {
+        //格式2：需要一个参数，但没有返回值
+        Consumer<String> con01 = new Consumer<String>() {
+            public void accept(String s) {
+                System.out.println(s);
+            }
+        };
+        con01.accept("summer");
+        System.out.println("======Lambda======");
+        Consumer<String> con02 = (String s) -> {
+            System.out.println(s);
+        };
+        con02.accept("action");
+    }
+
+    @Test
+    public void test03() {
+        //格式3：数据类型可以省略，因为由编译器推断得出，称为“类型推断”；
+        System.out.println("======Lambda======");
+        Consumer<String> con02 = (s) -> {
+            System.out.println(s);
+        };
+        con02.accept("action");
+    }
+
+    @Test
+    public void test04() {
+        //语法4：Lambda若只需要一个参数时，参数的小括号可省略
+        System.out.println("======Lambda======");
+        Consumer<String> con02 = s -> {
+            System.out.println(s);
+        };
+        con02.accept("action");
+    }
+
+    @Test
+    public void test05() {
+        //语法5：Lambda需要两个或以上的参数，多条执行语句，并且可以有返回值
+        Comparator<Integer> com01 = new Comparator<Integer>() {
+            public int compare(Integer o1, Integer o2) {
+                System.out.println(o1);
+                System.out.println(o2);
+                return o1.compareTo(02);
+            }
+        };
+        System.out.println(com01.compare(12, 21));
+        System.out.println("======Lambda======");
+        Comparator<Integer> com02 = (o1, o2) -> {
+            System.out.println(o1);
+            System.out.println(o2);
+            return o1.compareTo(02);
+        };
+        System.out.println(com02.compare(12, 6));
+    }
+
+    @Test
+    public void test06() {
+        //语法6：当Lambda体只有一条语句时，return与大括号若有，都可以省略
+        System.out.println("======Lambda======");
+        Comparator<Integer> com02 = (o1, o2) -> o1.compareTo(02);
+        System.out.println(com02.compare(12, 125));
+    }
+}
+```
 
 
+
+## 函数式(Functional)接口
+
+## 方法引用与构造器引用
+
+## 强大的Stream API
+
+## Optional类
